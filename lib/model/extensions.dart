@@ -1,0 +1,13 @@
+extension RecordIndexing<T1, T2> on (T1, T2) {
+  dynamic operator [](int index) {
+    switch (index) {
+      case 0:
+        return this.$1;
+      case 1:
+        return this.$2;
+      default:
+        throw RangeError("Invalid index $index for a record of length 2.");
+    }
+  }
+
+}
