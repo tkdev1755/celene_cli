@@ -8,10 +8,6 @@ import '../model/celeneObject.dart';
 import 'package:dart_console/dart_console.dart';
 
 class ShowClassContentView extends View {
-
-
-
-
   List<Course> options = [];
   int selectedIndex = 0;
   bool loadingMessageDrawn = false;
@@ -36,8 +32,10 @@ class ShowClassContentView extends View {
         console.setBackgroundColor(dLSelectedColor);
         console.writeLine('> $textToWrite');
         console.resetColorAttributes();
+        console.write("\n");
       } else {
         console.writeLine('  $textToWrite');
+        console.write("\n");
       }
     }
   }

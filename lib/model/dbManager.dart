@@ -13,15 +13,15 @@ class DBManager{
   Map<String,dynamic> _data  = {};
 
   DBManager(){
-    File secureStorageFile = File(DB_PATH);
-    if (!secureStorageFile.existsSync()){
+    File storageFile = File(DB_PATH);
+    if (!storageFile.existsSync()){
       print("dbFile does not exist, creating it");
-      secureStorageFile.createSync();
+      storageFile.createSync();
       _data = {};
     }
     else{
-      secureStorageFile.openRead();
-      Map<String,dynamic> res = jsonDecode(secureStorageFile.readAsStringSync());
+      storageFile.openRead();
+      Map<String,dynamic> res = jsonDecode(storageFile.readAsStringSync());
       _data = res;
     }
   }
@@ -48,7 +48,6 @@ class DBManager{
     if (_data.isNotEmpty){
       if (_data.containsKey("courses")){
         for (Map<String,dynamic> i in _data["courses"]){
-          print("I is ${i}");
           Classes newClass = Classes(i["name"], i["cID"]);
           newClass.courseID = i["id"];
           newClass.updateSavePath();
@@ -65,7 +64,6 @@ class DBManager{
     Map<String,List<FileEntry>> fileIndex = {};
     if (_data.isNotEmpty){
       if (_data.containsKey("files")){
-        print(_data["files"]);
         Map<String, dynamic> test = _data["files"];
         test.forEach((k,v){
           if (!fileIndex.containsKey(k)){
@@ -107,6 +105,10 @@ class DBManager{
     }
   }
 
+  saveUserSecureStoragePreferences(bool preferences){
+    _data["secureStorageStatus"] = preferences;
+  }
+
   void addFile(Course file,String filename, String courseID){
     if (!_data.containsKey("files")){
       _data["files"] = {};
@@ -129,7 +131,7 @@ class DBManager{
     int lastcourse = _data["files"][courseID].length;
     if (file.type == "Dossier"){
       print("The following file is a folder, so we are obligated to unzip it");
-      String folderPath = "$courseID/${filename.substring(0, (filename.length-4-1))}";
+      String folderPath = "$courseID/${filename.substring(0, (filename.length-4))}";
       final bytes = File(("$courseID/$filename")).readAsBytesSync();
       Archive archive = ZipDecoder().decodeBytes(bytes);
       _data["files"][courseID][lastcourse-1]["children"] = [];

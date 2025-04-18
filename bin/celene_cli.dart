@@ -1,6 +1,6 @@
 
 import 'package:args/args.dart';
-import 'package:celene_cli/celeneManager.dart' as cManager;
+import 'package:celene_cli/celeneCLI.dart' as cManager;
 const String version = '0.0.1';
 
 ArgParser buildParser() {

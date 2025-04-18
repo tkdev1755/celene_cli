@@ -15,8 +15,8 @@ import 'package:cookie_store/cookie_store.dart' as cStore;
 
 
 class CeleneParser{
-  late final (String,String) _credentials;
-  CASAuth? casAuth = null;
+  late final (String,String)? _credentials;
+  CASAuth? _casAuth;
   bool loggedIn = false;
   List<Classes> courses;
   Map<String,List<FileEntry>> files = {};
@@ -45,31 +45,42 @@ class CeleneParser{
   void setCredentials((String,String) credentials){
     _credentials = credentials;
   }
+  void setCAS(CASAuth cas){
+    _casAuth = cas;
+  }
 
   Future<bool> loginToCelene() async{
     if (_credentials == null){
       print("CREDENTIAL NULL SO DOING NOTHING");
       throw Exception("Credentials didn't exist at the time of creation");
     }
-    print("creds are ${_credentials}");
-    casAuth ??= CASAuth();
+    print("creds are $_credentials");
+    _casAuth ??= CASAuth();
+
     try{
-      print("");
+
     }
     on Exception{
       print("Exception while connecting to CAS");
       loggedIn = false;
       return false;
     }
-    await casAuth!.loginToCas(_credentials[0], _credentials[1], "Celene");
 
-    casAuth!.sessionDate = DateTime.now();
+    int casResult = await _casAuth!.loginToCas(_credentials[0], _credentials[1], "Celene");
+    if (casResult == -1){
+      return false;
+    }
+
+    _casAuth!.sessionDate = DateTime.now();
     loggedIn = true;
-    saveCeleneSession();
+    await saveCeleneSession();
     return true;
   }
 
-  void saveCeleneSession(){
+  Future<bool> saveCeleneSession() async {
+    _casAuth ??= CASAuth();
+
+    bool saveResult = await _casAuth!.saveCASSession([("MoodleSession","moodleSession"),("MOODLEID1_","moodleID")]);
     /*if (casAuth !=null){
       print("Saving session NOW !");
       if (casAuth!.secureStorage.get("casCookies") != null){
@@ -93,13 +104,16 @@ class CeleneParser{
       casAuth!.secureStorage.write(saveData, "casCookies");
       print(casAuth!.secureStorage.get("casCookies")?.value);
     }*/
+    return saveResult;
   }
-  bool loadCeleneSession(){
-    casAuth ??= CASAuth();
-    SessionValue? sessionValue  = null;
 
-    if (sessionValue == null){
-      print("Nothing to load here");
+  bool loadCeleneSession(){
+    _casAuth ??= CASAuth();
+    // The tuple represents $1-> name of the value stored in secure storage ; $2 -> name of the cookie in the cookiejar ; $3 -> url of the cookie
+    bool result = _casAuth!.loadCASSession([("moodleID","MOODLEID1_","https://celene.insa-cvl.fr/"), ("moodleSession","MoodleSession","https://celene.insa-cvl.fr")]);
+    loggedIn = result;
+    /*if (sessionValue == null){
+      print("Nothing to load h ere");
       return false;
     }
     print("We do have a value");
@@ -120,13 +134,11 @@ class CeleneParser{
       newCookie.path = v["path"]!;
       casAuth!.session.cookieStore.cookies.add(newCookie);
     });
-    print("Added successfully ${cookies.length}");
-    return true;
-
+    print("Added successfully ${cookies.length}");*/
+    return result;
   }
 
   Future<List<Course>> getClassData(cID,classID) async{
-    print("Got into the function");
     List<FileEntry> downloadedCourse = files.containsKey(classID) ? files[classID]! : [];
     print(files);
     List<String> displayNames = downloadedCourse.map((v) => v.entryName).toList();
@@ -141,17 +153,18 @@ class CeleneParser{
 
       print("Successfully logged in to Celene");
     }
-    if (casAuth != null){
+    print(_casAuth?.session.cookieStore.cookies);
+    if (_casAuth != null){
       Uri classUrl = getClassUrl(cID);
       print("Now retrieving class data : class url is ${classUrl}");
       //casAuth!.prepareRequest();
       print("CAS AUTH HEADERS");
       Response classData;
       try{
-        classData = await casAuth!.session.get(classUrl, headers: casAuth!.headers);
+        classData = await _casAuth!.session.get(classUrl, headers: _casAuth!.headers);
       }
       on ClientException{
-        classData = await casAuth!.session.get(classUrl, headers: casAuth!.headers);
+        classData = await _casAuth!.session.get(classUrl, headers: _casAuth!.headers);
       }
       print("Get response finished");
       if (classData.statusCode == 200){
@@ -159,7 +172,7 @@ class CeleneParser{
         //casAuth!.session.updateCookies(classData);
         //casAuth!.prepareRequest();
         BeautifulSoup soup = BeautifulSoup(classData.body);
-        print(soup.prettify());
+        //print(soup.prettify());
         RegExp patternToSearch = RegExp(r'^activity activity-wrapper');
         List<Bs4Element> li_elements = soup.findAll("li", class_:"activity activity-wrapper");
         print("Found ${li_elements.length} li_elements");
@@ -200,10 +213,10 @@ class CeleneParser{
     int tries = 0;
     Response downloadResponse;
     try {
-      downloadResponse = await casAuth!.session.get(uri,headers: casAuth!.headers);
+      downloadResponse = await _casAuth!.session.get(uri,headers: _casAuth!.headers);
     }
     on ClientException {
-      downloadResponse = await casAuth!.session.get(uri,headers: casAuth!.headers);
+      downloadResponse = await _casAuth!.session.get(uri,headers: _casAuth!.headers);
       tries++;
     }
     if (downloadResponse.statusCode == 200){
@@ -247,10 +260,10 @@ class CeleneParser{
     print("Now sending data");
     Response dlResponse;
     try {
-      dlResponse = await casAuth!.session.get(dlLink, headers: casAuth!.headers);
+      dlResponse = await _casAuth!.session.get(dlLink, headers: _casAuth!.headers);
     }
     on ClientException{
-      dlResponse = await casAuth!.session.get(dlLink, headers: casAuth!.headers);
+      dlResponse = await _casAuth!.session.get(dlLink, headers: _casAuth!.headers);
     }
     print("Recieved data");
     if (dlResponse.statusCode == 200){
@@ -346,6 +359,7 @@ class Course{
   static constructFromFileInfo(FileEntry courseFile){
     Course subCourse = Course(courseFile.name, "https://celene.insa-cvl.fr", courseFile.type);
     subCourse.updateDownloadStatus();
+    subCourse.fromFolder = true;
     return subCourse;
   }
 
@@ -359,6 +373,6 @@ class Course{
   @override
   String toString() {
     // TODO: implement toString
-    return "Nom : ${name} \t Type : ${type}";
+    return "Nom : ${name}    Type : ${type}";
   }
 }

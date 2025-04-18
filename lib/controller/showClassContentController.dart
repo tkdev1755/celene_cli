@@ -3,7 +3,7 @@
 import 'dart:io';
 import 'dart:math';
 
-import 'package:celene_cli/celeneManager.dart';
+import 'package:celene_cli/celeneCLI.dart';
 import 'package:celene_cli/controller/controller.dart';
 import 'package:celene_cli/model/fileManager.dart';
 

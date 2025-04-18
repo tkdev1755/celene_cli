@@ -3,11 +3,13 @@ import 'dart:io';
 import 'dart:async';
 import 'dart:math';
 import 'package:beautiful_soup_dart/beautiful_soup.dart';
+import 'package:celene_cli/model/secureStorage.dart';
 import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
+import 'package:intl/intl.dart';
 import 'package:secure_session/secure_session.dart';
 import 'package:encrypt/encrypt.dart';
-
+import 'package:cookie_store/cookie_store.dart' as cStore;
+import 'extensions.dart';
 import 'sessionManager.dart';
 import 'package:http_session/http_session.dart';
 
@@ -22,54 +24,30 @@ class CASAuth{
   String casEndpoint = "https://cas.insa-cvl.fr/cas/login"; // CAS Login Endpoint
   HttpSession session = HttpSession(
       maxRedirects: 15,
-
   );
   DateTime? sessionDate;
   bool loadedFromDisk = false;
+  bool _sessionStatus = false;
   Map<String,String> headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
     'Accept-Encoding' : 'gzip, deflate, br'
-};
-  late Map<String,String> secureStorage;
+  };
+  static String loadCasSessionDebugHeader = "[CASAuth - loadCasSession]";
+  static String saveCasSessionDebugHeader = "[CASAuth - saveCasSession]";
+  static String loginCasSessionDebugHeader = "[CASAuth - loginCas]";
+  SecureStorage? secureStorage;
 
-  CASAuth(){
-    _loadSecureStorage();
-  }
+  CASAuth();
 
-  int _setSystemPassword(){
-    return 1;
-  }
-  int _getSystemPassword(){
-    if (Platform.isMacOS){
-      print("We are on macOS");
-    }
-    else if (Platform.isLinux){
-      print("We are on Linux");
-    }
-    return 1;
-  }
-  int _loadSecureStorage(){
 
-      //File secureStorageFile = File(SECURE_STORAGE_PATH);
-      //secureStorageFile.openRead();
-      //Map<String,dynamic> res = jsonDecode(secureStorageFile.readAsStringSync());
-      //secureStorage = res;
-      return 1;
+  setSecureStorage(SecureStorage sStorage){
+    secureStorage = sStorage;
   }
 
-  void _dumpSecureStorage() async{
-    File secureStorageFile = File(SECURE_STORAGE_PATH);
-    String strRes = jsonEncode(secureStorage);
-    await secureStorageFile.writeAsString(strRes);
-  }
 
   Future<int> loginToCas(login,password,service) async {
     DateTime startDate = DateTime.now();
-    if (loadCASSession()){
-      loadedFromDisk = true;
-      sessionDate = DateTime.now();
-      return 1;
-    }
+
     if (!casServiceENUM.containsKey(service)){
       print("Service passed in parameters isn't supported or doesn't exists");
       return -1;
@@ -111,40 +89,20 @@ class CASAuth{
       http.Response sd = await followRedirects(response);
       print("Redirected");
       if (sd.statusCode == 200){
+        _sessionStatus = true;
         print("Conn sucessfull");
       }
     }
     else{
       print("Not redirected");
-      //session.updateCookies(response);
+      return -1;
     }
     print(session.cookieStore.cookies);
-    saveCASSession();
     print("Delta between now and last conn request ${DateTime.now().difference(startDate).inSeconds} secondes");
+
     return 1;
   }
 
-  /*Future<http.Response> _get(String url) async {
-    final response = await client.get(
-      Uri.parse(url),
-      headers: {
-        if (session.getCookies().isNotEmpty) 'Cookie': session.generateCookieHeader(),
-      },
-    );
-    session.updateCookies(response);
-    return response;
-  }*/
-
-  /*Future<http.StreamedResponse> getStreamed(String url) async {
-
-    final request = http.Request('GET', Uri.parse(url))
-      ..followRedirects = false
-      ..headers['cookie'] = headers["Cookie"]!;
-    http.StreamedResponse resp = await client.send(request);
-    //session.updateCookiesFromStreamResponse(resp);
-    prepareRequest();
-    return resp;
-  }*/
 
   // Seems to be necessary if there are specifics redirects to connect to the CAS service
   Future<http.Response> followRedirects(http.Response response) async {
@@ -181,12 +139,82 @@ class CASAuth{
     headers["Cookie"] = session.generateCookieHeader();
   }*/
 
-  bool loadCASSession(){
-
-    return false;
+  bool loadCASSession(List<(String,String,String)> keysToGet){
+    String debugHeader = loadCasSessionDebugHeader;
+    String errorMessage = "FALSE RETURN";
+    if (secureStorage == null){
+      print("$debugHeader - $errorMessage : secure storage wasn't set");
+      return false;
+    }
+    if (!secureStorage!.getSecureStorageStatus()){
+      print("$debugHeader - $errorMessage : secure storage exists but something hasn't loaded correctly");
+      return false;
+    }
+    String? stringSessionDate = secureStorage!.getValue("sessionDate");
+    if (stringSessionDate == null){
+      print("$debugHeader - $errorMessage : Session date value was non-existent in secure storage");
+      return false;
+    }
+    else{
+      DateTime sessionDate = DateFormat("dd/MM/yyyy-HH:mm").parse(stringSessionDate!);
+      if (DateTime.now().difference(sessionDate).inMinutes > 30){
+        print("$debugHeader - $errorMessage : Session date was too old");
+        return false;
+      }
+    }
+    keysToGet.add(("casCookie","TGC","https://cas.insa-cvl.fr/"));
+    for ((String,String,String) i in keysToGet){
+      String? value = secureStorage!.getValue(i[0]);
+      if (value == null){
+        print("$debugHeader - $errorMessage : searched cookie didn't exist in storage");
+        return false;
+      }
+      cStore.Cookie newCookie = cStore.Cookie(
+        i[1]!,
+        value,
+      );
+      Uri websiteURI = Uri.parse(i[2]);
+      newCookie.path = websiteURI.path;
+      newCookie.domain = websiteURI.host;
+      session.cookieStore.cookies.add(newCookie);
+    }
+    return true;
   }
 
-  bool saveCASSession(){
-   return false;
+  Future<bool> saveCASSession(List<(String,String)> cookiesToSave) async {
+    String debugHeader = saveCasSessionDebugHeader;
+    String errorMessage = "FALSE RETURN";
+    cookiesToSave.add(("TGC","casCookie"));
+    if (sessionDate == null || secureStorage == null){
+      print("$debugHeader - $errorMessage : Either session date was null or the secure storage wasn't set");
+      print("Sessiondate ${sessionDate?.day} | secureStorage $secureStorage");
+      return false;
+    }
+    if (!_sessionStatus){
+      print("$debugHeader - $errorMessage : Session wasn't initiated correctly");
+      return false;
+    }
+    if (DateTime.now().difference(sessionDate!).inMinutes > 30){
+      print("$debugHeader - $errorMessage :  Session was too old ${DateTime.now().difference(sessionDate!).inMinutes}");
+      return false;
+    }
+    if (!secureStorage!.getSecureStorageStatus()){
+      print("$debugHeader - $errorMessage : Secure storage wasn't set properly");
+      print("$debugHeader - $errorMessage : Here is all the data ${secureStorage!.getSecureStorageStatus()}");
+      return false;
+    }
+    List<cStore.Cookie> cookiesJar = session.cookieStore.cookies;
+    secureStorage!.setValue("sessionDate", DateFormat("dd/MM/yyyy-HH:mm").format(sessionDate!));
+    for ((String,String) i in cookiesToSave){
+      Iterable<cStore.Cookie> search =  cookiesJar.where((e) => e.name == i[0]);
+      if (search.isEmpty){
+        print("$debugHeader - $errorMessage : Value researched wasn't found in the cookie");
+        return false;
+      }
+      secureStorage!.setValue(i[1], search.first.value);
+    }
+
+    bool dumpResult = await secureStorage!.dump();
+    return dumpResult;
   }
 }

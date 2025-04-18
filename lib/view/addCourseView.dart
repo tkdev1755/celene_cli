@@ -3,7 +3,7 @@
 
 import 'dart:io';
 
-import 'package:celene_cli/celeneManager.dart';
+import 'package:celene_cli/celeneCLI.dart';
 import 'package:celene_cli/view/view.dart';
 
 class AddCourseView extends View{
