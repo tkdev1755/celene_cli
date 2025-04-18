@@ -20,9 +20,14 @@ class DBManager{
       _data = {};
     }
     else{
-      storageFile.openRead();
-      Map<String,dynamic> res = jsonDecode(storageFile.readAsStringSync());
-      _data = res;
+      Stream<List<int>> file = storageFile.openRead();
+      if (storageFile.lengthSync() == 0){
+        _data = {};
+      }
+      else{
+        Map<String,dynamic> res = jsonDecode(storageFile.readAsStringSync());
+        _data = res;
+      }
     }
   }
 
