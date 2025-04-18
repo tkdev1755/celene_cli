@@ -11,7 +11,7 @@ if (!(Test-Path -Path $outputPath)) {
 # 1. Compiler l'application Dart
 Write-Host "Compilation de l'application Dart..."
 Push-Location $projectRoot
-dart compile exe bin/main.dart -o bin/app.exe
+dart compile exe bin/celene_cli.dart
 Pop-Location
 
 # 2. Compiler le binaire C avec Makefile
