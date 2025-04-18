@@ -1,5 +1,5 @@
 # Variables
-$projectRoot = "$env:USERPROFILE\StudioProject\celene_cli"
+$projectRoot = "$env:USERPROFILE\celene_cli"
 $apiWindowsPath = "$projectRoot\lib\model\KeychainAPI\windows"
 $outputPath = "$projectRoot\bin\windows_x64"
 
