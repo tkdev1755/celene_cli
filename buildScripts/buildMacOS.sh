@@ -1,10 +1,15 @@
 #!/bin/bash
 
+if [ "$#" -ne 1 ]; then
+    echo "❌ Utilisation : $0 <ARCH>"
+    exit 1
+fi
+ARCH=$1
 C_BIN=libkeychain.dylib
 DART_BIN=celene_cli
 WORK_DIR=~/StudioProjects/celene_cli
 LIB_DIR=lib/model/KeychainAPI/macos
-BIN_DIR=bin/celeneCli_macOS_x64
+BIN_DIR=bin/celeneCli_macOS_$ARCH
 
 if [ -d $WORK_DIR ]; then
       cd "$WORK_DIR" || { echo "Erreur : Impossible d'accéder au dossier $WORK_DIR."; exit 1; }

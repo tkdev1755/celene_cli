@@ -36,7 +36,7 @@ class MacOSKeychainBindings extends KeyringBase{
   late final DartFreePassword _freePassword;
 
   MacOSKeychainBindings() {
-    final libPath = Platform.isMacOS ? path.join(Directory.current.path, 'libkeychain.dylib')
+    final libPath = Platform.isMacOS ? path.join('libkeychain.dylib')
     : throw UnsupportedError("macOS only");
     _lib = DynamicLibrary.open(libPath);
 
