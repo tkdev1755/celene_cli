@@ -1,4 +1,3 @@
-A sample command-line application providing basic argument parsing with an entrypoint in `bin/`.
 # Celene_CLI
 
 # Quel est le but de cette app ?
