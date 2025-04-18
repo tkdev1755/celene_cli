@@ -35,7 +35,7 @@ class WindowsKeychainBindings extends KeyringBase{
 
   WindowsKeychainBindings(){
     _lib = Platform.isWindows
-        ? DynamicLibrary.open(path.join(Directory.current.path, 'lib/model/KeychainAPI/windows/libkeychain.dll'))
+        ? DynamicLibrary.open(path.join(Directory.current.path, 'libkeychain.dll'))
         : throw UnsupportedError('Fonctionne uniquement sur Windows');
 
     _setPassword = _lib

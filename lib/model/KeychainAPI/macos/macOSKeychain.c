@@ -77,10 +77,10 @@ void free_password(char* ptr) {
     }
 }
 
-int main(int argc, char *argv[]) {
+/*int main(int argc, char *argv[]) {
     char test[255];
 
     bzero(test);
     printf("test is %s", test);
     return EXIT_SUCCESS;
-}
+}*/

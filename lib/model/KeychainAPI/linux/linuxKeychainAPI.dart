@@ -18,7 +18,7 @@ class LinuxKeychainBindings extends KeyringBase {
   late final DartFreePassword _freePassword;
 
   LinuxKeychainBindings() {
-    final _lib = DynamicLibrary.open(path.join(Directory.current.path, 'lib/model/KeychainAPI/linux/libkeychain.so'));
+    final _lib = DynamicLibrary.open(path.join(Directory.current.path, 'libkeychain.so'));
 
     _storePassword = _lib
         .lookup<NativeFunction<CStorePassword>>('store_password')
