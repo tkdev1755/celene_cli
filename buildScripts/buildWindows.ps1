@@ -1,6 +1,6 @@
 # Variables
 $projectRoot = "$env:USERPROFILE\StudioProject\celene_cli"
-$apiWindowsPath = "$projectRoot\model\KeychainAPI\windows"
+$apiWindowsPath = "$projectRoot\lib\model\KeychainAPI\windows"
 $outputPath = "$projectRoot\bin\windows_x64"
 
 # Crée le dossier de sortie s'il n'existe pas
