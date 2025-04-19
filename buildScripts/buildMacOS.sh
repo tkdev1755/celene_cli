@@ -15,7 +15,7 @@ if [ -d $WORK_DIR ]; then
       cd "$WORK_DIR" || { echo "Erreur : Impossible d'accéder au dossier $WORK_DIR."; exit 1; }
 fi
 echo "Compilation du binaire DART";
-
+dart pub get
 dart compile exe bin/celene_cli.dart
 if [ $? -ne 0 ]; then
   echo "Error while compiling the dart exec"
