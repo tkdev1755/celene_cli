@@ -1,5 +1,6 @@
 import 'dart:ffi';
 import 'package:celene_cli/model/KeychainAPI/keyring.dart';
+import 'package:celene_cli/model/extensions.dart';
 import 'package:ffi/ffi.dart';
 import 'package:path/path.dart' as path;
 
@@ -17,7 +18,7 @@ class LinuxKeychainBindings extends KeyringBase {
   late final DartFreePassword _freePassword;
 
   LinuxKeychainBindings() {
-    final _lib = DynamicLibrary.open(path.join('libkeychain.so'));
+    final _lib = DynamicLibrary.open(path.join('${BASEDIR}libkeychain.so'));
 
     _storePassword = _lib
         .lookup<NativeFunction<CStorePassword>>('store_password')

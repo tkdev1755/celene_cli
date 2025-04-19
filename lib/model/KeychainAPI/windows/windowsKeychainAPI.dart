@@ -1,5 +1,6 @@
 import 'dart:ffi';
 import 'package:celene_cli/model/KeychainAPI/keyring.dart';
+import 'package:celene_cli/model/extensions.dart';
 import 'package:ffi/ffi.dart';
 import 'dart:io';
 
@@ -34,7 +35,7 @@ class WindowsKeychainBindings extends KeyringBase{
 
   WindowsKeychainBindings(){
     _lib = Platform.isWindows
-        ? DynamicLibrary.open('libkeychain.dll')
+        ? DynamicLibrary.open('${BASEDIR}libkeychain.dll')
         : throw UnsupportedError('Fonctionne uniquement sur Windows');
 
     _setPassword = _lib

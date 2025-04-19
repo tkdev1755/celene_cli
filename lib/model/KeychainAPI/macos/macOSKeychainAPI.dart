@@ -1,6 +1,7 @@
 import 'dart:ffi';
 import 'dart:io';
 import 'package:celene_cli/model/KeychainAPI/keyring.dart';
+import 'package:celene_cli/model/extensions.dart';
 import 'package:ffi/ffi.dart';
 import 'package:path/path.dart' as path;
 
@@ -36,7 +37,7 @@ class MacOSKeychainBindings extends KeyringBase{
   late final DartFreePassword _freePassword;
 
   MacOSKeychainBindings() {
-    final libPath = Platform.isMacOS ? path.join('libkeychain.dylib')
+    final libPath = Platform.isMacOS ? path.join(BASEDIR,'libkeychain.dylib')
     : throw UnsupportedError("macOS only");
     _lib = DynamicLibrary.open(libPath);
 
