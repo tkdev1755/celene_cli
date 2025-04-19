@@ -3,7 +3,6 @@ import 'package:celene_cli/model/KeychainAPI/keyring.dart';
 import 'package:ffi/ffi.dart';
 import 'dart:io';
 
-import 'package:path/path.dart' as path;
 
 // Définitions FFI
 typedef SetPasswordC = Bool Function(
@@ -35,7 +34,7 @@ class WindowsKeychainBindings extends KeyringBase{
 
   WindowsKeychainBindings(){
     _lib = Platform.isWindows
-        ? DynamicLibrary.open(path.join(Directory.current.path, 'libkeychain.dll'))
+        ? DynamicLibrary.open('libkeychain.dll')
         : throw UnsupportedError('Fonctionne uniquement sur Windows');
 
     _setPassword = _lib
