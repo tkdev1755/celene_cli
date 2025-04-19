@@ -1,6 +1,6 @@
 #!/bin/bash
 
-C_BIN=libkeychain.dylib
+C_BIN=libkeychain.so
 DART_BIN=celene_cli.exe
 WORK_DIR=/celene_cli
 LIB_DIR=lib/model/KeychainAPI/linux
