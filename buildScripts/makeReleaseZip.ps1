@@ -34,7 +34,7 @@ switch ($target.ToLower()) {
 # Exécution du script de build
 Write-Host "🚀 Exécution du script de build : $buildScript" -ForegroundColor Cyan
 if (Test-Path $buildScript) {
-    bash $buildScript
+    $buildScript
 } else {
     Write-Host "❌ Script de build introuvable : $buildScript" -ForegroundColor Red
     exit 1
@@ -58,4 +58,4 @@ if (Test-Path $zipFile) {
 
 Compress-Archive -Path "$binDir\*" -DestinationPath $zipFile
 
-Write-Host "✅ Packaging terminé : $zipFile" -ForegroundColor Green
+#Write-Host "✅ Packaging terminé : $zipFile" -ForegroundColor Green
