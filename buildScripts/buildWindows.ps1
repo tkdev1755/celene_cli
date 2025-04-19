@@ -43,6 +43,7 @@ $appDllPath = "$apiWindowsPath\libkeychain.dll"
 if (Test-Path $appDllPath) {
     Write-Host "Déplacement de libkeychain.dll..."
     Move-Item -Path $appDllPath -Destination $outputPath -Force
+
 } else {
     Write-Warning "libkeychain.dll introuvable après la compilation du C."
 }

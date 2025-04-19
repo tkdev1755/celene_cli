@@ -15,6 +15,7 @@ $version = $args[2]
 $projectDir = "$env:USERPROFILE\celene_cli"
 $binDir = ""
 $buildScript = ""
+$installScriptPath = "$projectDir\install.bat"
 
 # Sélection du script de build et du dossier selon la cible
 switch ($target.ToLower()) {
@@ -46,8 +47,9 @@ if (!(Test-Path $binDir)) {
 if (!(Test-Path "$projectDir\releases")) {
     New-Item -Path "$projectDir\releases" -ItemType Directory
 }
-
 # Création de l'archive ZIP
+Copy-Item -Path $installScriptPath -Destination $binDir
+
 if (!(Test-Path "$projectDir\releases\version_$VERSION")) {
     New-Item -Path "$projectDir\releases\version_$VERSION" -ItemType Directory
 }
