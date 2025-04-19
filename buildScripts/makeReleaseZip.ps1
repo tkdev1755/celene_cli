@@ -58,4 +58,3 @@ if (Test-Path $zipFile) {
 
 Compress-Archive -Path "$binDir\*" -DestinationPath $zipFile
 
-#Write-Host "✅ Packaging terminé : $zipFile" -ForegroundColor Green
