@@ -55,7 +55,7 @@ N’hésitez pas à proposer des fonctionnalités si vous avez des idées, et m�
 # Questions fréquentes
 
 - > Pourquoi il y’a des fichiers `.dll`, `.dylib`, `.so` avec le binaire ?
-    - >> Le langage de programmation utilisé (Dart) ne possède pas de librairie donnant accès au trousseau de clé du système d’exploitation, par conséquent j’ai du développer une "librairie" en C pour interagir avec le trousseau de clés, plus de détail sont donnés dans le wiki. Tout le code source de la « librairie » C est disponible sur le github dans le dossier lib/model/KeychainAPI/${votre_système_d’exploitation}/${votre_système_d’exploitation}keychainAPI.c
+    - Le langage de programmation utilisé (Dart) ne possède pas de librairie donnant accès au trousseau de clé du système d’exploitation, par conséquent j’ai du développer une "librairie" en C pour interagir avec le trousseau de clés, plus de détail sont donnés dans le wiki. Tout le code source de la « librairie » C est disponible sur le github dans le dossier lib/model/KeychainAPI/${votre_système_d’exploitation}/${votre_système_d’exploitation}keychainAPI.c
 
 ----
 
