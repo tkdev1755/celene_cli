@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the main function from the celeneCLI library, for the Dart programming language.">
+  <title>main function - celeneCLI library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">celene_cli</a></li>
+    <li><a href="../celeneCLI">celeneCLI.dart</a></li>
+    <li class="self-crumb">main function</li>
+  </ol>
+  <div class="self-name">main</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button" title="Toggle brightness">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        dark_mode
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        light_mode
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+  <div
+      id="dartdoc-main-content"
+      class="main-content"
+      data-above-sidebar="celeneCLI&#47;celeneCLI-library-sidebar.html"
+      data-below-sidebar="">
+      <div>
+<h1><span class="kind-function">main</span> function 
+ 
+</h1></div>
+
+    <section class="multi-line-signature">
+        
+<span class="returntype"><a href="https://api.dart.dev/stable/3.7.2/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/3.7.2/dart-core/int-class.html">int</a></span>&gt;</span></span>
+<span class="name ">main</span>(<wbr>)
+
+        
+
+    </section>
+    
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">Future&lt;int&gt; main() async{
+  &#47;&#47; Initialisation de la classe DBManager pour récupérer les préférences utilisateur
+  DBManager db = DBManager();
+
+  &#47;&#47; Reconstructions des attributs utilisés par l&#39;objet CeleneParser et SecretManager pour les passer après aux classes concernées
+  Map&lt;String,dynamic&gt; dbData = db.reconstruct();
+
+  &#47;&#47; Création de l&#39;objet SecretManager
+  &#47;&#47; dbData[&quot;secureStorageStatus&quot;] -&gt; Indique si l&#39;utilisateur à activé la persistance de session
+  &#47;&#47; dbData[&quot;credentialSaved&quot;] -&gt; Indique si l&#39;utilisateur à enregistré ses logins CAS dans le trousseau
+  SecretManager secrets = SecretManager(dbData[&quot;secureStorageStatus&quot;],dbData[&quot;credentialSaved&quot;], dbData[&quot;username&quot;]);
+
+  &#47;&#47; Si SecretsManager ne trouve pas de login lors de la phase d&#39;initialisation
+  if (!secrets.getCredentialStatus()){
+    &#47;&#47; Alors on demande à l&#39;utilisateur de donner ses identifiants
+    (bool,String) credentials = await secrets.setCredentialsView();
+    &#47;&#47; Enregistrement des préférences utilisateurs si l&#39;utilisateur à décidé d&#39;enregistrer ses logins sur le trousseau.
+    db.saveUserCredentialPreferences(credentials);
+    db.saveUserSecureStoragePreferences(secrets.isSecureStorageSet());
+  }
+
+  SecureStorage? secureStorage;
+  &#47;&#47; initialisation de la classe CASAuth
+  CASAuth cas = CASAuth();
+
+  &#47;&#47; Si l&#39;utilisateur à activé la persistance de session
+  if (dbData[&quot;secureStorageStatus&quot;]){
+    &#47;&#47; Alors on crée&#47;lit le stockage sécurisé
+
+    &#47;&#47; Création de l&#39;objet SecureStorage en passant la clé de chiffrement en paramètre (secrets.getSecureStorageKey())
+    secureStorage = SecureStorage(dbData[&quot;secureStorageStatus&quot;], secrets.getSecureStorageKey(), secrets.getSecureStorageIV());
+
+    &#47;&#47; On fixe l&#39;attribut secureStorage de la classe CASAuth à l&#39;objet initialisé précédement;
+
+    cas.setSecureStorage(secureStorage);
+  }
+
+  &#47;&#47; Création de la classe CeleneParser en lui passant en paramètre les cours enregistré par l&#39;utilisateur
+  CeleneParser celene = CeleneParser(dbData[&quot;courses&quot;]);
+  &#47;&#47; On passe les logins CAS à la classe pour se connecter à Celene ensuite
+  celene.setCredentials(secrets.getCredentials());
+
+  &#47;&#47; On fixe l&#39;attribut CAS à l&#39;objet CAS crée précédemment
+  celene.setCAS(cas);
+
+  &#47;&#47; On passe les fichiers téléchargés par l&#39;utilisateur à la classe CeleneParser
+  celene.files = dbData[&quot;files&quot;];
+
+  &#47;&#47; Si aucune session n&#39;as pu être chargée (soit pas de session, soit session trop vieille)
+  if (!celene.loadCeleneSession()){
+    &#47;&#47; Alors on se connecte à celene
+    print(&quot;No session detected, need to log in&quot;);
+    &#47;&#47; Lancement de la fonction loginToCelene() pour se connecter au CAS et créer une session Celene
+    bool result = await celene.loginToCelene();
+
+    &#47;&#47; Si on a pas réussi à se connecter (Mauvais mdp ou mauvais login)
+    if (!result){
+      &#47;&#47; TODO - Add better error handling
+      print(&quot;ERROR while connecting to celene&quot;);
+      throw Exception(&quot;Error while connecting to celene&quot;);
+    }
+  }
+
+  print(&quot;Logged in sucessuflly&quot;);
+  &#47;&#47; Initialisons de la page de sélection de cours (initialisation du controlleur et de la vue)
+  ChooseCourseController ccController = ChooseCourseController(celene,db);
+  ChooseCourseView ccView = ChooseCourseView(ccController);
+  &#47;&#47; On fixe la vue à afficher à celle de sélection de cours (ccView)
+  navigator.setView(ccView);
+
+  while (true){
+    &#47;&#47; Affichage à l&#39;écran de la vue qui a été fixée avec navigator.setView();
+    await navigator.display();
+  }
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">celene_cli</a></li>
+    <li><a href="../celeneCLI">celeneCLI</a></li>
+    <li class="self-crumb">main function</li>
+</ol>
+
+    <h5>celeneCLI library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-left-->
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    celene_cli
+      1.0.1
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

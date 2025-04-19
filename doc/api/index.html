@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="celene_cli API docs, for the Dart programming language.">
+  <title>celene_cli - Dart API docs</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="static-assets/github.css?v1">
+  <link rel="stylesheet" href="static-assets/styles.css?v1">
+  <link rel="icon" href="static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li class="self-crumb">celene_cli package</li>
+  </ol>
+  <div class="self-name">celene_cli</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button" title="Toggle brightness">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        dark_mode
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        light_mode
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+  <div id="dartdoc-main-content" class="main-content">
+      
+<section class="desc markdown">
+  <h1 id="celene_cli">Celene_CLI</h1>
+<h1 id="quel-est-le-but-de-cette-app-">Quel est le but de cette app ?</h1>
+<ul>
+<li>Permettre d’accéder à la plateforme de E-Learning celene sans passer par le site web.</li>
+<li>Gérer les différentes ressources téléchargées sur cette plateforme et éviter d’à chaque fois re-télécharger des fichiers parce qu’on ne sait plus où ils sont</li>
+</ul>
+<h1 id="quelles-fonctionnalits-">Quelles fonctionnalités ?</h1>
+<h2 id="fonctionnalits-implmente">Fonctionnalités implémentée</h2>
+<p>✅ - Connexion automatique au CAS</p>
+<p>✅ - Ajout des cours sur Celene manuellement à travers les URL de ces derniers</p>
+<p>✅ - Téléchargement des fichier/dossiers présents sur la page Celene d'un cours et ouverture des fichiers si déjà téléchargés</p>
+<p>✅ - Persistance des sessions d'une instance du programme à l'autre (limitée dans le temps)</p>
+<p>✅ - Portabilité de l'outil (fonctionne sur GNU/Linux, MacOS et Windows)</p>
+<h2 id="fonctionnalit--venir">Fonctionnalité à venir</h2>
+<blockquote>
+<p>Ces fonctionnalité sont classées par ordre de priorité (🟥 : Important, implémentation prochaine, 🟨: Moyennement important, implémentation une fois les fct importantes implémentées)</p>
+</blockquote>
+<p>🟥 - Import des cours automatiques à partir du profil utilisateur Celene</p>
+<p>🟥 - Pouvoir réinitialiser depuis le CLI les préférences utilisateur</p>
+<p>🟥 - Implémentations des fonctionnalités de modification et de suppressions des credentials au niveau des trousseaux systèmes (expliqué plus bas)</p>
+<p>🟨 - Optimisations au niveau de l'usage de la ram (C'est pas très fameux en ce moment)</p>
+<p>N’hésitez pas à proposer des fonctionnalités si vous avez des idées, et même contribuer en faisant des pull requests</p>
+<h1 id="fonctionnement--de-la-connexion-automatique-et-persistance-de-session">Fonctionnement  de la connexion automatique et persistance de session</h1>
+<ul>
+<li>Lorsque vous acceptez d’enregistrer vos logins CAS lors de la première ouverture du programme ces derniers ne quittent jamais votre appareil et sont enregistrés de manière sécurisée. Les information de connexion sont enregistrées dans le "trousseau de clés" de votre système d’exploitation (<code>Keychain</code> pour MacOS, <code>Windows Credential Manager</code> pour Windows, et <code>GNOME-Secret</code> pour GNU/Linux) et sont lus au démarrage du programme pour pouvoir vous connecter automatiquement au CAS. Le programme ne lit aucune autre entrée du trousseau de clés et une attention particulière a été faite pour que les fonctions ne soient pas accessibles n'importe où à n'importe quel moment.</li>
+<li>En ce qui concerne la persistance de session, les données de session sont stockées dans un fichier chiffré à l’aide d’un mot de passe généré aléatoirement pour chaque utilisateur qui lance le programme. Ce même mot de passe est stocké dans le trousseau de clé de votre système d’exploitation et n’est visible dans ce dit trousseau que si vous entrez le mot de passe de votre session</li>
+</ul>
+<blockquote>
+<p>Si cela n’est pas assez sécurisé à votre goût, vous pouvez toujours ne pas enregistrer vos informations de connexion et ne pas enregistrer vos données de sessions en répondant «&nbsp;no&nbsp;» ou «&nbsp;n&nbsp;» lorsqu’on vous pose la question au démarrage du programme</p>
+</blockquote>
+<blockquote>
+<p>J’ai essayé de prendre toutes les précautions possibles lorsqu’il s’agit de "sécuriser" ces données sensibles, cependant, de par mon manque d’expérience, je ne pense pas avoir la meilleure implémentation et suis à l’écoute de tout conseil visant à améliorer la sécurisation de ces données</p>
+</blockquote>
+<h1 id="comment-utiliser-celene_cli">Comment utiliser celene_cli</h1>
+<h2 id="installation">Installation</h2>
+<ul>
+<li>Afin d’installer le logiciel, vous devez tout d’abord télécharger le binaire depuis la page Release de ce repo git en fonction de votre système d’exploitation</li>
+<li>Une fois le binaire téléchargé. Dézippez le fichier zip et lancez le script <code>install.sh</code> (Linux&amp;MacOS) ou <code>install.ps1</code> (Windows)
+<ul>
+<li>Ce script va déplacer le binaire et les fichiers associés à celui-ci vers votre dossier utilisateur dans le dossier celeneCLI, c’est ici que vous retrouverez les fichiers téléchargés par le programme et l’index des cours</li>
+<li>Il ajoutera ensuite le binaire à votre PATH pour que vous puissiez l’appeler depuis votre terminal , par défaut le script l’ajoute sous le nom de «&nbsp;celene&nbsp;», vous pouvez changer ce nom dans le script avec la variable $celene_cli_name</li>
+</ul>
+</li>
+<li>Maintenant vous pouvez utiliser le programme depuis votre terminal</li>
+</ul>
+<h1 id="questions-frquentes">Questions fréquentes</h1>
+<ul>
+<li>
+<blockquote>
+<p>Pourquoi il y’a des fichiers <code>.dll</code>, <code>.dylib</code>, <code>.so</code> avec le binaire ?</p>
+</blockquote>
+<ul>
+<li>
+<blockquote>
+<blockquote>
+<p>Le langage de programmation utilisé (Dart) ne possède pas de librairie donnant accès au trousseau de clé du système d’exploitation, par conséquent j’ai du développer une "librairie" en C pour interagir avec le trousseau de clés, plus de détail sont donnés dans le wiki. Tout le code source de la «&nbsp;librairie&nbsp;» C est disponible sur le github dans le dossier lib/model/KeychainAPI/${votre_système_d’exploitation}/${votre_système_d’exploitation}keychainAPI.c</p>
+</blockquote>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ul>
+<li>
+<blockquote>
+<p>Pourquoi avoir développé en Dart et pas en python ?</p>
+</blockquote>
+<ul>
+<li>
+<blockquote>
+<blockquote>
+<p>En majeure partie parce que c’est le langage que je maitrise le mieux et puis que je le trouvais le plus approprié pour développer ce genre d’outil. Cependant je peux comprendre pourquoi python peut être plus intéressant sur certains points (plus de librairies disponibles, connu de tous, et performances correctes)</p>
+</blockquote>
+</blockquote>
+</li>
+<li>
+<blockquote>
+<blockquote>
+<p>Également cela m’as permis de réutiliser le code développé intégralement dans le GUI que j’ai développé à l’aide du framework Flutter au lieu de devoir réécrire toute la logique de connexion pour le GUI</p>
+</blockquote>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+
+
+      <section class="summary">
+          <h2>Libraries</h2>
+        <dl>
+          <dt id="celeneCLI">
+  <span class="name"><a href="celeneCLI">celeneCLI</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="addCourseController">
+  <span class="name"><a href="controller_addCourseController">controller/addCourseController</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="chooseCourseController">
+  <span class="name"><a href="controller_chooseCourseController">controller/chooseCourseController</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="controller">
+  <span class="name"><a href="controller_controller">controller/controller</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="navigator">
+  <span class="name"><a href="controller_navigator">controller/navigator</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="showClassContentController">
+  <span class="name"><a href="controller_showClassContentController">controller/showClassContentController</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="casAuthentification">
+  <span class="name"><a href="model_casAuthentification">model/casAuthentification</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="celeneObject">
+  <span class="name"><a href="model_celeneObject">model/celeneObject</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="DBManager">
+  <span class="name"><a href="model_DBManager">model/DBManager</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="dbManager">
+  <span class="name"><a href="model_dbManager">model/dbManager</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="extensions">
+  <span class="name"><a href="model_extensions">model/extensions</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="fileManager">
+  <span class="name"><a href="model_fileManager">model/fileManager</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="keyring">
+  <span class="name"><a href="model_KeychainAPI_keyring">model/KeychainAPI/keyring</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="linuxKeychainAPI">
+  <span class="name"><a href="model_KeychainAPI_linux_linuxKeychainAPI">model/KeychainAPI/linux/linuxKeychainAPI</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="macOSKeychainAPI">
+  <span class="name"><a href="model_KeychainAPI_macos_macOSKeychainAPI">model/KeychainAPI/macos/macOSKeychainAPI</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="windowsKeychainAPI">
+  <span class="name"><a href="model_KeychainAPI_windows_windowsKeychainAPI">model/KeychainAPI/windows/windowsKeychainAPI</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="secretManager">
+  <span class="name"><a href="model_secretManager">model/secretManager</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="secureStorage">
+  <span class="name"><a href="model_secureStorage">model/secureStorage</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="addCourseView">
+  <span class="name"><a href="view_addCourseView">view/addCourseView</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="chooseCourseView">
+  <span class="name"><a href="view_chooseCourseView">view/chooseCourseView</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="showClassContentView">
+  <span class="name"><a href="view_showClassContentView">view/showClassContentView</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="view">
+  <span class="name"><a href="view_view">view/view</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+        </dl>
+      </section>
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li class="self-crumb">celene_cli package</li>
+</ol>
+
+    <h5 class="hidden-xs"><span class="package-name">celene_cli</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="celeneCLI">celeneCLI</a></li>
+      <li><a href="controller_addCourseController">controller/addCourseController</a></li>
+      <li><a href="controller_chooseCourseController">controller/chooseCourseController</a></li>
+      <li><a href="controller_controller">controller/controller</a></li>
+      <li><a href="controller_navigator">controller/navigator</a></li>
+      <li><a href="controller_showClassContentController">controller/showClassContentController</a></li>
+      <li><a href="model_casAuthentification">model/casAuthentification</a></li>
+      <li><a href="model_celeneObject">model/celeneObject</a></li>
+      <li><a href="model_DBManager">model/DBManager</a></li>
+      <li><a href="model_dbManager">model/dbManager</a></li>
+      <li><a href="model_extensions">model/extensions</a></li>
+      <li><a href="model_fileManager">model/fileManager</a></li>
+      <li><a href="model_KeychainAPI_keyring">model/KeychainAPI/keyring</a></li>
+      <li><a href="model_KeychainAPI_linux_linuxKeychainAPI">model/KeychainAPI/linux/linuxKeychainAPI</a></li>
+      <li><a href="model_KeychainAPI_macos_macOSKeychainAPI">model/KeychainAPI/macos/macOSKeychainAPI</a></li>
+      <li><a href="model_KeychainAPI_windows_windowsKeychainAPI">model/KeychainAPI/windows/windowsKeychainAPI</a></li>
+      <li><a href="model_secretManager">model/secretManager</a></li>
+      <li><a href="model_secureStorage">model/secureStorage</a></li>
+      <li><a href="view_addCourseView">view/addCourseView</a></li>
+      <li><a href="view_chooseCourseView">view/chooseCourseView</a></li>
+      <li><a href="view_showClassContentView">view/showClassContentView</a></li>
+      <li><a href="view_view">view/view</a></li>
+</ol>
+
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div>
+</main>
+<footer>
+  <span class="no-break">
+    celene_cli
+      1.0.1
+  </span>
+  
+</footer>
+
+
+<script src="static-assets/highlight.pack.js?v1"></script>
+<script src="static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+
