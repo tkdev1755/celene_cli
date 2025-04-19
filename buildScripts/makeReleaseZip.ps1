@@ -2,7 +2,7 @@
 $ErrorActionPreference = "Stop"
 
 # Vérification du paramètre
-if ($args.Count -ne 2) {
+if ($args.Count -ne 3) {
     Write-Host "❌ Utilisation : .\build_and_package.ps1 [macos|linux] <ARCH> <VERSION>" -ForegroundColor Red
     exit 1
 }
@@ -10,33 +10,30 @@ if ($args.Count -ne 2) {
 $target = $args[0]
 $arch = $args[1]
 $version = $args[2]
+
 # Définition des chemins
-$projectDir = "$env:USERPROFILE\celene_cli\"
+$projectDir = "$env:USERPROFILE\celene_cli"
 $binDir = ""
 $buildScript = ""
 
 # Sélection du script de build et du dossier selon la cible
 switch ($target.ToLower()) {
-    "macos" {
-        $buildScript = "buildMacos.sh"
-        $binDir = Join-Path $projectDir "bin\mac_X86"
-    }
     "windows" {
         $buildScript = "buildWindows.ps1"
         $binDir = Join-Path $projectDir "bin\celeneCLI_Windows_$ARCH"
     }
     default {
-        Write-Host "❌ Paramètre invalide. Utilisez 'windows'." -ForegroundColor Red
+        Write-Host "Paramètre invalide. Utilisez 'windows' uniquement." -ForegroundColor Red
         exit 1
     }
 }
 
 # Exécution du script de build
-Write-Host "🚀 Exécution du script de build : $buildScript" -ForegroundColor Cyan
+Write-Host "Exécution du script de build : $buildScript" -ForegroundColor Cyan
 if (Test-Path $buildScript) {
-    $buildScript
+    & ".\$buildScript" "$ARCH"
 } else {
-    Write-Host "❌ Script de build introuvable : $buildScript" -ForegroundColor Red
+    Write-Host "Script de build introuvable : $buildScript" -ForegroundColor Red
     exit 1
 }
 
@@ -46,15 +43,21 @@ if (!(Test-Path $binDir)) {
     exit 1
 }
 
-# Création de l'archive ZIP
-$zipFile = Join-Path $projectDir "${target}_x86_package.zip"
+if (!(Test-Path "$projectDir\releases")) {
+    New-Item -Path "$projectDir\releases" -ItemType Directory
+}
 
-Write-Host "📦 Compression du contenu de $binDir dans $zipFile ..." -ForegroundColor Yellow
+# Création de l'archive ZIP
+if (!(Test-Path "$projectDir\releases\version_$VERSION")) {
+    New-Item -Path "$projectDir\releases\version_$VERSION" -ItemType Directory
+}
+
+$zipFile = Join-Path "$projectDir\releases\version_$VERSION" "celeneCLI_${target}_$ARCH.zip"
+
 
 # PowerShell natif (pas besoin de zip.exe !)
 if (Test-Path $zipFile) {
     Remove-Item $zipFile -Force
 }
 
-Compress-Archive -Path "$binDir\*" -DestinationPath $zipFile
-
+Compress-Archive -Path (Join-Path $binDir '*') -DestinationPath $zipFile

@@ -1,7 +1,15 @@
 # Variables
+
+
+if ($args.Count -ne 1) {
+    Write-Host "❌ Utilisation : .\buildWindows.ps1  <ARCH>" -ForegroundColor Red
+    exit 1
+}
+
+$ARCH = $args[0]
 $projectRoot = "$env:USERPROFILE\celene_cli"
 $apiWindowsPath = "$projectRoot\lib\model\KeychainAPI\windows"
-$outputPath = "$projectRoot\bin\windows_x64"
+$outputPath = "$projectRoot\bin\celeneCLI_windows_$ARCH"
 
 # Crée le dossier de sortie s'il n'existe pas
 if (!(Test-Path -Path $outputPath)) {
