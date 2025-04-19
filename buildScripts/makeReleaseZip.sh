@@ -45,7 +45,15 @@ if [ ! -d "$BIN_DIR" ]; then
 fi
 cp "$PROJECT_DIR/install.sh" "$BIN_DIR/"
 # Création du zip
-mkdir "${PROJECT_DIR}releases/version_$VERSION"
+
+if [ ! -d "${PROJECT_DIR}releases/" ]; then
+    mkdir "${PROJECT_DIR}releases"
+fi
+
+if [ ! -d "${PROJECT_DIR}releases/version_$VERSION" ]; then
+    mkdir "${PROJECT_DIR}releases/version_$VERSION"
+fi
+
 ZIP_FILE="${PROJECT_DIR}releases/version_$VERSION/celeneCLI_${TARGET}_${ARCH}.zip"
 
 echo "📦 Compression du contenu de $BIN_DIR dans $ZIP_FILE ..."

@@ -17,7 +17,9 @@ else
 fi
 
 # Création du dossier d'installation
-mkdir -p "$INSTALL_DIR"
+if [ ! -d $INSTALL_DIR ]; then
+  mkdir -p "$INSTALL_DIR"
+fi
 
 # Copie des fichiers
 cp "$APP_NAME" "$INSTALL_DIR/"
@@ -39,13 +41,13 @@ echo "Fichier de configuration détecté : $SHELL_RC (Shell : $SHELL_NAME)"
 
 # Ajout de l'alias si pas encore présent
 if grep -q "alias $celene_cli_name=" "$SHELL_RC"; then
-    echo "ℹ️ Alias '$celene_cli_name' déjà existant dans $SHELL_RC. Pas de modification."
+    echo "Alias '$celene_cli_name' déjà existant dans $SHELL_RC. Aucune modification n'as été apportée"
 else
     echo "Ajout de l'alias dans $SHELL_RC..."
     echo "" >> "$SHELL_RC"
     echo "# Alias celene_cli" >> "$SHELL_RC"
       echo "alias $celene_cli_name=\"$INSTALL_DIR/$APP_NAME\"" >> "$SHELL_RC"
-    echo "✅ Alias ajouté avec succès !"
+    echo "Alias ajouté !"
 fi
 
 echo ""
