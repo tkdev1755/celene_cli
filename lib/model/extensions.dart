@@ -1,5 +1,5 @@
 import 'dart:io';
-
+/// Extension permettant d'obtenir un parsing des Records (tuples) comme en python
 extension RecordIndexing<T1, T2> on (T1, T2) {
   dynamic operator [](int index) {
     switch (index) {
@@ -13,7 +13,7 @@ extension RecordIndexing<T1, T2> on (T1, T2) {
   }
 
 }
-
+/// Extension permettant d'obtenir un parsing des Records (tuples) comme en python
 extension RecordIndexing2<T1, T2,T3> on (T1, T2,T3) {
   dynamic operator [](int index) {
     switch (index) {

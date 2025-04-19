@@ -28,7 +28,8 @@ typedef DartReadPassword = Pointer<Utf8> Function(
 
 typedef CFreePassword = Void Function(Pointer<Utf8>);
 typedef DartFreePassword = void Function(Pointer<Utf8>);
-
+/// {@category SAFETY}
+/// Interface FFI (Foreign Function Interface) permettant d'intéragir avec une librairie dynamique C (Ici le Trousseau de clé)
 class MacOSKeychainBindings extends KeyringBase{
 
   late final DynamicLibrary _lib;

@@ -3,7 +3,8 @@ import 'package:celene_cli/model/KeychainAPI/linux/linuxKeychainAPI.dart';
 import 'package:celene_cli/model/KeychainAPI/windows/windowsKeychainAPI.dart';
 
 import 'macos/macOSKeychainAPI.dart';
-
+/// {@category SAFETY}
+/// Classe abstraite pour intéragir avec les API trousseau de clés des OS (linux,windows,macos)
 abstract class KeyringBase{
 
   int addPassword(String account, String service, String password);
@@ -11,9 +12,10 @@ abstract class KeyringBase{
   String? readPassword(String account, String service);
 }
 
-/// Interface unifiée pour accéder au trousseau de clés
+/// {@category SAFETY}
+/// Interface unifiée pour accéder au trousseau de clés du système d'exploitation
 class Keyring {
-
+  /// Objet permettant d'intéragir avec les API trousseau de clé, change en fonction de la plateforme
   KeyringBase? base;
 
   Keyring(){
@@ -28,6 +30,9 @@ class Keyring {
     }
   }
 
+  /// Fonction récupèrant un mot de passe donné depuis le trousseau de clé.
+  /// Prends un nom de service et un nom d'utilisateur.
+  /// retourne une String si le mot de passe est trouvé, null autrement.
   String? getPassword(String service, String username){
     if (base == null){
       print("Base isn't initialized");
@@ -37,6 +42,10 @@ class Keyring {
     return password;
   }
 
+
+  /// Fonction fixant un mot de passe dans le trousseau de clé.
+  /// Prends un nom de service, username et mot de passe.
+  /// retourne 0 si le mot de passe a été ajouté correctement
   int setPassword(String serviceName, String username, String password){
     if (base == null){
       print("KeyringBase isn't initialized properly");

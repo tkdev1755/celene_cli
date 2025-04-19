@@ -12,6 +12,8 @@ typedef DartStorePassword = int Function(Pointer<Utf8>, Pointer<Utf8>);
 typedef DartGetPassword = Pointer<Utf8> Function(Pointer<Utf8>);
 typedef DartFreePassword = void Function(Pointer<Utf8>);
 
+/// {@category SAFETY}
+/// Interface FFI (Foreign Function Interface) permettant d'intéragir avec une librairie dynamique C (Ici le GNOME-SECRET de GNU/Linux)
 class LinuxKeychainBindings extends KeyringBase {
   late final DartStorePassword _storePassword;
   late final DartGetPassword _getPassword;

@@ -49,10 +49,12 @@ void main(List<String> arguments) async {
     }
 
     // Act on the arguments provided.
-    print('Positional arguments: ${results.rest}');
+    //print('Positional arguments: ${results.rest}');
 
-
+    /* ---- LANCEMENT de la fonction principale du programme -----*/
     await cManager.main();
+
+    // Le code qui suit n'est pas utilisé car l'arrêt du programme s'effectue à l'intérieur de la fonction main();
     if (verbose) {
       print('[VERBOSE] All arguments: ${results.arguments}');
     }

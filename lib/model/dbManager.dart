@@ -7,8 +7,15 @@ import 'package:celene_cli/model/fileManager.dart';
 import 'package:archive/archive.dart';
 import 'package:archive/archive_io.dart';
 import 'extensions.dart';
+
+/// {@category USER-DATA}
+/// Classe gérant les préférences utilisateurs
 class DBManager{
+
+  /// Chemin du fichier contenant les préférences utilisateurs
   String DB_PATH = "${BASEDIR}db.json";
+
+  /// Objet contenant les informations utilistaeur
   Map<String,dynamic> _data  = {};
 
   DBManager(){
@@ -29,7 +36,7 @@ class DBManager{
       }
     }
   }
-
+  /// Fonction reconstruisant les listes d'objets nécessaire au bon fonctionnement de l'application
   Map<String,dynamic> reconstruct(){
     List<Classes> courses = reconstructCourses();
     Map<String, List<FileEntry>> files = reconstructFileIndex();
@@ -47,6 +54,7 @@ class DBManager{
 
   }
 
+  /// Fonction reconstruisant les cours celene enregistrés par l'utilisateur
   List<Classes> reconstructCourses(){
     List<Classes> classes = [];
     if (_data.isNotEmpty){
@@ -63,7 +71,7 @@ class DBManager{
     }
     return classes;
   }
-
+  /// Fonction reconstruisant les fichiers téléchargés par l'utilisateur
   Map<String, List<FileEntry>> reconstructFileIndex(){
     Map<String,List<FileEntry>> fileIndex = {};
     if (_data.isNotEmpty){
@@ -93,6 +101,7 @@ class DBManager{
     return fileIndex;
   }
 
+  // Permet d'ajouter une clé à Data
   addData(String key, dynamic value){
     if (!_data.containsKey(key)){
       _data[key] = value;
@@ -102,17 +111,19 @@ class DBManager{
     }
   }
 
+  /// Fonction sauvegardant les préférences de l'utilisataur vis à vis de la connexion automatique
   saveUserCredentialPreferences((bool,String) preferences){
     _data["credentialSaved"]= preferences[0];
     if (preferences[0]){
       _data["username"] = preferences[1];
     }
   }
-
+  /// Fonction sauvegardant les préférences de l'utilisateur vis à vis de la persistance de session
   saveUserSecureStoragePreferences(bool preferences){
     _data["secureStorageStatus"] = preferences;
   }
 
+  /// Fonction ajoutant un fichier téléchargé à l'index des fichiers téléchargé
   void addFile(Course file,String filename, String courseID){
     if (!_data.containsKey("files")){
       _data["files"] = {};
@@ -161,6 +172,7 @@ class DBManager{
       }
     }
   }
+  /// Fonction ajoutant un cours à l'index de cours existant
   void addCourse(Classes classes){
     if (!_data.containsKey("courses")){
         _data["courses"] = [];
@@ -173,6 +185,7 @@ class DBManager{
     _data["courses"].add(serializedClass);
   }
 
+  /// Fonction écrivant les changements effectués sur la "base de donnée" sur le disque
   Future<void> dumpChanges() async{
     print("Dumping changes to file");
     File dbFile = File(DB_PATH);

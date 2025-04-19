@@ -6,28 +6,39 @@ import 'dart:typed_data';
 
 import 'package:celene_cli/model/extensions.dart';
 import 'package:encrypt/encrypt.dart';
-
+/// {@category SAFETY}
+/// Classe stockant les informations de session de l'utilisateur de manière sécurisée
 class SecureStorage{
-
+  /// Attribut représentant les données déchiffrées
   Map<String, String> _data = {};
-
+  /// Clé de chiffrement du SecureStorage
   String? _secureStorageKey;
+  /// Objet Key représentant la clé de chiffrement du SecureStorage
   late Key? _encryptedSecureStorageKey;
+  /// Clé de chiffrement (IV) du SecureStorage
   IV? _secureStorageIV;
+  /// Indique si le SecureStorage est activé (Si l'utilisateur à choisi d'activer la persistance de session)
   bool _secureStorageStatus = false;
+
+  /// Indique si le SecureStorage a été correctement déchiffré et a été lu correctement
   bool _secureStorageReadStatus = false;
+  /// Chemin de stocakge du secureStorage
   String SECURE_STORAGE_PATH = "${BASEDIR}secStorage.key";
 
+  /// Header de debugage
   static String secStorageInitDebugHeader = "[SecureStorage - loadSecureStorage]";
+  /// Header de debugage
   static String dumpDebugHeader = "[SecureStorage - Dump]";
-
+  /// Objet Encrypter permettant le chiffrement des données
   late Encrypter? _encrypter;
+
   SecureStorage(this._secureStorageStatus,this._secureStorageKey,this._secureStorageIV){
       if (_secureStorageStatus){
         _secureStorageReadStatus = loadSecureStorage();
       }
   }
 
+  /// Fonction permettant le chargement et déchiffrement du SecureStorage
   bool loadSecureStorage(){
     print("$secStorageInitDebugHeader - SecureStorage was set");
     if (_secureStorageKey == null || _secureStorageIV == null){
@@ -60,7 +71,7 @@ class SecureStorage{
       }
     }
   }
-
+  /// Fonction permettant de chiffrer le SecureStorage et d'écrire le fichier chiffré sur le disque
   Future<bool> dump() async{
     if (!_secureStorageReadStatus){
       print("$dumpDebugHeader - FALSE RETURN : SecureStorage was correctly initialized but data from file wasn't correctly parsed");
@@ -79,10 +90,13 @@ class SecureStorage{
 
     return true;
   }
+
+  /// Fonction permettant de savoir si le SecureStorage à été correctement initialisé
   bool getSecureStorageStatus(){
     return _secureStorageReadStatus;
   }
 
+  /// Fonction permettant d'obtenir la valeur d'une clé du SecureStorage
   String? getValue(String key){
     if (_secureStorageReadStatus && _secureStorageStatus){
       if (_data.containsKey(key)) {
@@ -96,6 +110,7 @@ class SecureStorage{
     }
   }
 
+  /// Fonction permettant d'attribuer une valeur à une clé au sein du SecureStorage
   void setValue(String key, String value){
     if (_secureStorageReadStatus && _secureStorageStatus){
       print("$secStorageInitDebugHeader - setValue : setting key $key on value $value");

@@ -8,28 +8,40 @@ import 'package:http/http.dart';
 import 'extensions.dart';
 import 'package:uuid/uuid.dart';
 
-
-
+/// {@category API-WEB}
+/// /// {@subCategory API Celene}
+/// Classe permettant d'intéragir avec la plateforme Celene
 class CeleneParser{
+
+  /// Mot de passe et login pour se connecter
   late final (String,String)? _credentials;
+  /// Objet CASAuth pour créer une session celene
   CASAuth? _casAuth;
+  /// Indique l'état de la session actuelle
   bool loggedIn = false;
+
+  /// Liste des cours enregistrés par l'utilisateur
   List<Classes> courses;
+  /// Dictionnaire des fichiers téléchargés par l'utilisateur
   Map<String,List<FileEntry>> files = {};
+  /// URL pointant sur la plateforme Celene
   String celeneEndpoint = "https://celene.insa-cvl.fr";
   CeleneParser(
       this.courses
       );
+
+  /// Permet d'obtenir l'URL d'un cours sur celene à partir de l'ID
   Uri getClassUrl(cID){
     String url = "$celeneEndpoint/course/view.php?id=${cID}";
     return Uri.parse(url);
   }
-
+  /// Permet d'obtenir l'URL de téléchargement d'un dossier sur celene à partir de son ID
   Uri getFolderDownloadLink(id){
     String url = "$celeneEndpoint/mod/folder/download_folder.php?id=${id}";
     return Uri.parse(url);
   }
 
+  /// Permet d'obtenir l'ID d'un cours sur celene à partir de l'URL
   static int getIDFromUrl(String url){
     Map<String,String>  params = Uri.parse(url).queryParameters;
     if (!params.containsKey("id")){
@@ -38,13 +50,16 @@ class CeleneParser{
     return int.parse(params["id"]!);
   }
 
+  /// Initialise l'attribut credentials à la valeur passée en paramètre
   void setCredentials((String,String) credentials){
     _credentials = credentials;
   }
+
+  /// Initialise l'attribut casAuth à la valeur passée en paramètre
   void setCAS(CASAuth cas){
     _casAuth = cas;
   }
-
+  /// Fonction pour se connecter à celene et créer une session
   Future<bool> loginToCelene() async{
     if (_credentials == null){
       print("CREDENTIAL NULL SO DOING NOTHING");
@@ -72,7 +87,7 @@ class CeleneParser{
     await saveCeleneSession();
     return true;
   }
-
+  /// Sauvegarde la session Celene si la persistance de session est activée
   Future<bool> saveCeleneSession() async {
     _casAuth ??= CASAuth();
 
@@ -103,8 +118,11 @@ class CeleneParser{
     return saveResult;
   }
 
+  /// Charge la session celene si la persistance de session à été activée
+  /// Retourne vrai si la session a été chargée correctement, faux autrement
   bool loadCeleneSession(){
     _casAuth ??= CASAuth();
+
     // The tuple represents $1-> name of the value stored in secure storage ; $2 -> name of the cookie in the cookiejar ; $3 -> url of the cookie
     bool result = _casAuth!.loadCASSession([("moodleID","MOODLEID1_","https://celene.insa-cvl.fr/"), ("moodleSession","MoodleSession","https://celene.insa-cvl.fr")]);
     loggedIn = result;
@@ -133,7 +151,7 @@ class CeleneParser{
     print("Added successfully ${cookies.length}");*/
     return result;
   }
-
+  /// Récupère et lit la page d'un cours sur celene, retourne la liste des ressources disponibles sur cette page
   Future<List<Course>> getClassData(cID,classID) async{
     List<FileEntry> downloadedCourse = files.containsKey(classID) ? files[classID]! : [];
     print(files);
@@ -197,6 +215,7 @@ class CeleneParser{
     return courses;
   }
 
+  /// Téléchage un fichier disponible sur celene
   Future<String> _downloadFile(String link,savePath) async {
     if (!loggedIn){
       loginToCelene();
@@ -244,6 +263,7 @@ class CeleneParser{
     }
   }
 
+  /// Télécharge un dossier disponible sur celene
   Future<String> _downloadFolder(String link,String savePath) async {
     print("Downloading folder");
     int objID = getIDFromUrl(link);
@@ -284,16 +304,18 @@ class CeleneParser{
     return "";
   }
 
+  /// Télécharge un lien disponible sur celene (ouvre ce lien dans le navigateur)
   Future<String> _downloadLink(String link,String savePath) async {
     await FileEntry.openLink(link);
     return "downloading";
   }
-
+  /// Fonction faisant appel aux fonctions de téléchargement en fonction du type de fichier passé en paramètre
   Future<String> downloadElement(link, eltType, savePath) async{
     Map<String,Function(String,String)> functionMap = _bindParser(this);
     return await functionMap[eltType]!.call(link,savePath);
   }
 
+  /// Fonction associant un type de fichier disponible sur celene (String) à une fonction de téléchargement
   Map<String, Function(String,String)> _bindParser(CeleneParser parser) {
     return {
       "Fichier": parser._downloadFile,
@@ -303,6 +325,8 @@ class CeleneParser{
   }
 }
 
+
+/// Classe représentant un cours disponible sur celene
 class Classes{
   String name;
   String courseID = "";
@@ -313,7 +337,7 @@ class Classes{
     this.courseID = Uuid().v1().substring(0,5);
     this.savePath = courseID;
   }
-
+  /// mettre à jour le chemin de sauvgarde si non initialisé
   void updateSavePath(){
     savePath = courseID;
   }
@@ -323,6 +347,8 @@ class Classes{
 
 
 }
+
+/// Classe représentant une ressource disponible sur une page d'un cours sur celene
 class Course{
   String name;
   String link;
@@ -333,6 +359,7 @@ class Course{
 
   Course(this.name,this.link,this.type);
 
+  /// Transforme un élément html depuis la page celene vers une cours
   static Course? constructFromCeleneInfo(Bs4Element data){
     Bs4Element? courseAtag = data.find("a",class_: "aalink stretched-link");
     if (courseAtag != null){
@@ -350,20 +377,23 @@ class Course{
     }
     return null;
   }
+
+  /// Transforme un objet File en un objet Course, utile notamment pour les fichiers d'un dossier sur celene
   static constructFromFileInfo(FileEntry courseFile){
     Course subCourse = Course(courseFile.name, "https://celene.insa-cvl.fr", courseFile.type);
     subCourse.updateDownloadStatus();
     subCourse.fromFolder = true;
     return subCourse;
   }
-
+  /// Met à jour le statut de téléchargement d'une ressource
   void updateDownloadStatus(){
     downloaded = true;
   }
-
+  /// Attribue un fichier associé pour pouvoir ensuite ouvrir ce dit fichier
   void setFile(FileEntry file){
     associatedFile = file;
   }
+  /// Fonctions d'affichage
   @override
   String toString() {
     // TODO: implement toString

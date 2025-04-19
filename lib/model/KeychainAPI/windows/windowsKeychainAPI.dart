@@ -28,6 +28,8 @@ typedef ReadPasswordDart = bool Function(
     int maxLen,
     );
 
+/// {@category SAFETY}
+/// Interface FFI (Foreign Function Interface) permettant d'intéragir avec une librairie dynamique C (Ici le Windows Credential Manager)
 class WindowsKeychainBindings extends KeyringBase{
   static late final DynamicLibrary _lib;
   static late final SetPasswordDart _setPassword;

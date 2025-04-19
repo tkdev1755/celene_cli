@@ -9,22 +9,40 @@ import 'package:encrypt/encrypt.dart';
 import 'package:uuid/uuid.dart';
 import 'extensions.dart';
 
+/// {@category SAFETY}
+/// Classe stockant les informations confidentielles de l'utilisateur
 class SecretManager{
-
+  /// login CAS de l'utilisateur (si sauvegardé)
   String? _login;
+  /// Mot de passe CAS de l'utilisateur (si sauvegardé)
   String? _password;
+  /// Indique si les informations de connexion ont été sauvegardé
   bool _credentialSaved;
+  /// Indique si le SecureStorage est activé (Persistance de session activée)
   bool _secureStorageSet;
+  /// Clé de déchiffrement du SecureStorage (si activé)
   String? _secureStorageKey;
+  /// IV de déchiffrement du SecureStorage (si activé)
   String? _secureStorageIV;
+  /// Indique si les informations de connexion ont pu être chargée correctement
   bool _credentialLoaded = false;
+  /// Indique si les informations de déchiffrement du SecureStorage ont pu être chargées correctement
   bool _secureStorageLoaded = false;
+
+  /// Objet permettant d'intéragir avec le trousseau de clé du système
   final Keyring _keyring = Keyring();
+
+  /// Nom de service utilisé pour l'enregistrement des informations de connexion de l'utilisateur
   final String _SERVICE_NAME = "celeneManager";
+  /// Nom de service utilisé pour l'enregistrement des informations de déchiffrement du SecureStorage
   final String _SECURE_SERVICE_NAME = "celeneManagerSecureStorage";
+  /// Nom d'utilisateur utilisé pour l'enregistrement des informations de déchiffrement du SecureStorage
   final String _SECURE_SERVICE_USERNAME = "cmssUser";
+  /// Nom de service utilisé pour l'enregistrement des informations de déchiffrement du SecureStorage (IV)
   final String _SECURE_SERVICE_IVNAME = "celeneManagerSecureStorageIV";
+  /// Nom d'utilisateur utilisé pour l'enregistrement des informations de déchiffrement du SecureStorage (IV)
   final String _SECURE_SERVICE_IVUSERNAME = "cmssIVUser";
+
   SecretManager(this._secureStorageSet, this._credentialSaved,this._login){
     if (_credentialSaved){
       if (_login == null){
@@ -39,7 +57,7 @@ class SecretManager{
       _secureStorageLoaded = _secureStorageKey != null && _secureStorageIV != null;
     }
   }
-
+  /// Fonction permettant de récupérer les informations de connexion CAS
   (String,String) getCredentials(){
     if (_credentialLoaded){
       return (_login!,_password!);
@@ -48,7 +66,8 @@ class SecretManager{
       throw Exception("Credential aren't loaded");
     }
   }
-
+  /// Fonction permettant de fixer les informations de connexion CAS
+  /// Par défaut elle ne sont pas enregistrée dans le trousseau de clé du système
   bool setCredentials(String username, String password,{bool saveToKeyring=false}){
     _login = username;
     _password = password;
@@ -69,15 +88,19 @@ class SecretManager{
     }
     return false;
   }
-
+  /// Fonction permettant d'obtenir le status de lecture des informations de connexion CAS.
+  /// Vrai si les informations ont été chargées, faux sinon
   getCredentialStatus(){
     return _credentialLoaded;
   }
-
+  /// Fonction permettant d'obtenir le status de lecture des informations de chiffrement du Secure Storage.
+  /// Vrai si les informations ont été chargées, faux sinon
   getSecureStorageStatus(){
     return _secureStorageLoaded;
   }
 
+  /// Fonction permettant d'obtenir la clé de déchiffrement du SecureStorage
+  /// retourne null si la clé n'existe pas
   String? getSecureStorageKey(){
     if (_secureStorageLoaded){
       return _secureStorageKey;
@@ -86,6 +109,8 @@ class SecretManager{
       return null;
     }
   }
+  /// Fonction permettant d'obtenir la clé de déchiffrement (IV) du SecureStorage
+  /// retourne null si la clé n'existe pas
   IV? getSecureStorageIV(){
     if  (_secureStorageLoaded){
       return IV.fromBase64(_secureStorageIV!);
@@ -95,6 +120,8 @@ class SecretManager{
     }
   }
 
+  /// Fonction créant les clés de chiffrement du secureStorage
+  /// retourne False si l'une des deux étapes à échoué
   bool setSecureStorage(){
     bool secureStorageKeyStatus = setSecureStorageKey();
     bool secureStorageIVStatus = setSecureStorageIV();
@@ -102,11 +129,12 @@ class SecretManager{
     return _secureStorageSet;
   }
 
+  /// Permet de savoir si le secureStorage (Persistance de session) est activée par l'utilisateur
   isSecureStorageSet(){
     return _secureStorageSet;
   }
 
-
+  /// Fonction créant la clé de chiffrement aléatoire du SecureStorage
   bool setSecureStorageKey(){
     String key = Uuid().v4().substring(0,16);
     int result = _keyring.setPassword(_SECURE_SERVICE_NAME, _SECURE_SERVICE_USERNAME, key);
@@ -115,7 +143,7 @@ class SecretManager{
     }
     return result == 0;
   }
-
+  /// Fonction créant la clé de chiffrement aléatoire (IV) du SecureStorage
   bool setSecureStorageIV(){
     IV iv = IV.fromLength(16);
     int result = _keyring.setPassword(_SECURE_SERVICE_IVNAME, _SECURE_SERVICE_IVUSERNAME, iv.base64);
@@ -125,6 +153,7 @@ class SecretManager{
     return result == 0;
   }
 
+  /// Vue permettant de demander à l'utilisateur d'entrer ses informations de connexion
   Future<(bool,String)> setCredentialsView() async {
     final Console console = Console();
     String userName = "";
@@ -146,19 +175,22 @@ class SecretManager{
     bool activateSecureStorage = (stringSaveCredentials.toUpperCase() == "Y" || stringSaveCredentials.toUpperCase() == "YES" || stringSaveCredentials.toUpperCase() == "OUI");
     print("Saving credentials ? :$saveCredentials");
     bool credResult = setCredentials(userName, password, saveToKeyring: saveCredentials);
-    bool secureStorageResult = setSecureStorage();
+    bool secureStorageResult = false;
+    if (activateSecureStorage){
+      secureStorageResult = setSecureStorage();
+    }
     print("Credential save result :$credResult");
     print("Secure storage save result $secureStorageResult");
     return (credResult && saveCredentials, userName);
   }
 
+  /// Fonction permettant de cacher le résultat de l'entrée standard à l'écran, utilisé lorsqu'un mot de passe est demandé ?
   Future<String> getSecureEntry({String prompt = '> '}) async {
     // Dumb function to cover dart lack of secure keyboard entry capabilities (doesn't print stdin to the screen when the secure entry is written by the user)
     // Doesn't work on windows for some weird reason
     if (!Platform.isWindows){
       stdin.echoMode = false;
       stdin.lineMode = false;
-
     }
     stdout.write(prompt);
     final buffer = <int>[];

@@ -1,53 +1,61 @@
-import 'dart:convert';
 import 'dart:io';
 import 'dart:async';
-import 'dart:math';
 import 'package:beautiful_soup_dart/beautiful_soup.dart';
 import 'package:celene_cli/model/secureStorage.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:secure_session/secure_session.dart';
-import 'package:encrypt/encrypt.dart';
 import 'package:cookie_store/cookie_store.dart' as cStore;
 import 'extensions.dart';
-import 'sessionManager.dart';
 import 'package:http_session/http_session.dart';
 
 
 Map<String, String> casServiceENUM = {
   "Celene" : "https%3A%2F%2Fcelene.insa-cvl.fr%2Flogin%2Findex.php"
 };
-
+/// {@category API-WEB}
+/// Classe permettant la connexion au CAS de l'INSA CVL
 class CASAuth{
+  /// Paramètre service lorsqu'il faut se rediriger vers un service en particulier
   String SERVICE_PARAM = "?service=";
-  String SECURE_STORAGE_PATH = "secureStorage.json";
+  /// Adresse du CAS de l'INSA CVL
   String casEndpoint = "https://cas.insa-cvl.fr/cas/login"; // CAS Login Endpoint
+
+  /// Objet Sessions contenant les cookies et à partir duquel il faut effectuer les requêtes
   HttpSession session = HttpSession(
       maxRedirects: 15,
   );
+
+  /// Date de création de la session
   DateTime? sessionDate;
-  bool loadedFromDisk = false;
+
+  /// Indique si on est connecté correctement au CAS
   bool _sessionStatus = false;
+  /// Headers pour simuler un vrai navigateur web
   Map<String,String> headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
     'Accept-Encoding' : 'gzip, deflate, br'
   };
+
+  /// Headers pour debug
   static String loadCasSessionDebugHeader = "[CASAuth - loadCasSession]";
   static String saveCasSessionDebugHeader = "[CASAuth - saveCasSession]";
   static String loginCasSessionDebugHeader = "[CASAuth - loginCas]";
+  /// Objet SecureStorage permettant la persistance de session
   SecureStorage? secureStorage;
 
   CASAuth();
 
-
+  /// Initialise le secureStorage si celui-ci exists
   setSecureStorage(SecureStorage sStorage){
     secureStorage = sStorage;
   }
 
-
-  Future<int> loginToCas(login,password,service) async {
+  /// Fonction permettant de se connecter au CAS
+  /// String login : Login de l'utilisatuer
+  /// String password : Mot de passe de l'utilisateur
+  /// String service : Service vers lequel effectuer la redirection
+  Future<int> loginToCas(String login,String password, String service) async {
     DateTime startDate = DateTime.now();
-
     if (!casServiceENUM.containsKey(service)){
       print("Service passed in parameters isn't supported or doesn't exists");
       return -1;
@@ -105,6 +113,7 @@ class CASAuth{
 
 
   // Seems to be necessary if there are specifics redirects to connect to the CAS service
+  /// Fonction prenant en charge les redirections dans le cadre d'une connexion à un service
   Future<http.Response> followRedirects(http.Response response) async {
     final url = response.headers["location"];
     /*final request = http.Request('GET', Uri.parse(url!))
@@ -135,10 +144,9 @@ class CASAuth{
     return response;
   }
 
-  /*prepareRequest(){
-    headers["Cookie"] = session.generateCookieHeader();
-  }*/
-
+  /// Fonction chargeant la session CAS si celle-ci existe
+  /// prends les cookies à récupérer au sein du secureStorage
+  /// Retourne vrai si session chargée correctement, faux sinon
   bool loadCASSession(List<(String,String,String)> keysToGet){
     String debugHeader = loadCasSessionDebugHeader;
     String errorMessage = "FALSE RETURN";
@@ -181,6 +189,9 @@ class CASAuth{
     return true;
   }
 
+  /// Fonction sauvegardant la session CAS dans le secureStorage
+  /// Prends une liste de cookie à sauvegarder
+  /// Retourne vrai si la session a été sauvegardée correctement
   Future<bool> saveCASSession(List<(String,String)> cookiesToSave) async {
     String debugHeader = saveCasSessionDebugHeader;
     String errorMessage = "FALSE RETURN";
