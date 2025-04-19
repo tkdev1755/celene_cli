@@ -2,7 +2,7 @@
 
 C_BIN=libkeychain.dylib
 DART_BIN=celene_cli.exe
-WORK_DIR=/app
+WORK_DIR=/celen_cli
 LIB_DIR=lib/model/KeychainAPI/linux
 BIN_DIR=bin/celeneCli_linux_x64
 
