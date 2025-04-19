@@ -4,13 +4,9 @@ import 'dart:io';
 import 'package:beautiful_soup_dart/beautiful_soup.dart';
 import 'package:celene_cli/model/casAuthentification.dart';
 import 'package:celene_cli/model/fileManager.dart';
-import 'package:celene_cli/model/secretManager.dart';
 import 'package:http/http.dart';
-import 'package:intl/intl.dart';
 import 'extensions.dart';
 import 'package:uuid/uuid.dart';
-import 'package:secure_session/secure_session.dart';
-import 'package:cookie_store/cookie_store.dart' as cStore;
 
 
 
@@ -141,7 +137,6 @@ class CeleneParser{
   Future<List<Course>> getClassData(cID,classID) async{
     List<FileEntry> downloadedCourse = files.containsKey(classID) ? files[classID]! : [];
     print(files);
-    List<String> displayNames = downloadedCourse.map((v) => v.entryName).toList();
     print("Loaded downloaded courses");
     List<Course> courses = [];
     if (!loggedIn){
@@ -173,7 +168,6 @@ class CeleneParser{
         //casAuth!.prepareRequest();
         BeautifulSoup soup = BeautifulSoup(classData.body);
         //print(soup.prettify());
-        RegExp patternToSearch = RegExp(r'^activity activity-wrapper');
         List<Bs4Element> li_elements = soup.findAll("li", class_:"activity activity-wrapper");
         print("Found ${li_elements.length} li_elements");
         for (Bs4Element i in li_elements){
@@ -231,7 +225,7 @@ class CeleneParser{
         filename = filename.substring(11, filename.length-1);
         filename = utf8.decode(latin1.encode(filename));
         print("Filename is $filename");
-        File downloadedFile = File("$savePath/$filename");
+        File downloadedFile = File("$BASEDIR$savePath/$filename");
         downloadedFile.createSync(recursive: true);
         await downloadedFile.writeAsBytes(downloadResponse.bodyBytes);
         print("File downloaded and saved on disk");
@@ -277,7 +271,7 @@ class CeleneParser{
         filename.replaceAll('"', '');
         filename = utf8.decode(latin1.encode(filename));
         print("Filename is ${filename}");
-        File downloadedFile = File("${savePath}/${filename}");
+        File downloadedFile = File("$BASEDIR${savePath}/${filename}");
         downloadedFile.createSync(recursive: true);
         await downloadedFile.writeAsBytes(dlResponse.bodyBytes);
         print("File downloaded and saved on disk");
@@ -350,7 +344,7 @@ class Course{
           String courseType = accessHide.getText(strip: true);
           accessHide.decompose();
           String courseName = span.getText(strip: true);
-          return Course(courseName,courseLink!, courseType);
+          return Course(courseName,courseLink, courseType);
         }
       }
     }

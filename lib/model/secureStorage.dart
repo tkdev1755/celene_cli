@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:celene_cli/model/extensions.dart';
 import 'package:encrypt/encrypt.dart';
 
 class SecureStorage{
@@ -15,7 +16,7 @@ class SecureStorage{
   IV? _secureStorageIV;
   bool _secureStorageStatus = false;
   bool _secureStorageReadStatus = false;
-  String SECURE_STORAGE_PATH = "secStorage.key";
+  String SECURE_STORAGE_PATH = "${BASEDIR}secStorage.key";
 
   static String secStorageInitDebugHeader = "[SecureStorage - loadSecureStorage]";
   static String dumpDebugHeader = "[SecureStorage - Dump]";

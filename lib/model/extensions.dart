@@ -27,3 +27,6 @@ extension RecordIndexing2<T1, T2,T3> on (T1, T2,T3) {
   }
 
 }
+
+String BASEDIR = "~/celeneCLI/";
+String WIN_BASEDIR = "~\\celeneCLI\\";

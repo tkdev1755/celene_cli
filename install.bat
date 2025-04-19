@@ -3,7 +3,7 @@ setlocal enabledelayedexpansion
 
 REM Configuration
 set "APP_NAME=celene_cli.exe"
-set "INSTALL_DIR=%USERPROFILE%\celene_cli"
+set "INSTALL_DIR=%USERPROFILE%\celeneCLI"
 
 REM Détection du système d'exploitation
 ver | findstr /i "Windows" > nul

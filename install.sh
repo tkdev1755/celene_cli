@@ -3,7 +3,7 @@
 set -e  # Arrêter le script en cas d'erreur
 
 APP_NAME="celene_cli"
-INSTALL_DIR="$HOME/celeneCli"
+INSTALL_DIR="$HOME/celeneCLI"
 celene_cli_name="celene"
 # Détection du système
 OS="$(uname)"

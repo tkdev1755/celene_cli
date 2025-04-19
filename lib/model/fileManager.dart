@@ -1,6 +1,6 @@
 
 import 'dart:io';
-import 'package:path/path.dart' as path;
+import 'package:celene_cli/model/extensions.dart';
 
 class FileEntry{
   String name;
@@ -25,10 +25,10 @@ class FileEntry{
     if (!Platform.isWindows){
       if (folder){
         print("Path is ${file.courseID}/${file.parent}/${file.name}");
-        await Process.run("open", ["${file.courseID}/${file.parent}/${file.name}"]);
+        await Process.run("open", ["${BASEDIR}${file.courseID}/${file.parent}/${file.name}"]);
       }
       else{
-        await Process.run("open", ["${file.courseID}/${file.name}"]);
+        await Process.run("open", ["${BASEDIR}${file.courseID}/${file.name}"]);
       }
     }
     else{
@@ -37,14 +37,14 @@ class FileEntry{
       if (folder){
         await Process.start(
           'cmd',
-          ['/c', 'start', '', "${file.courseID}\\${file.parent}\\${file.name}"],
+          ['/c', 'start', '', "$WIN_BASEDIR${file.courseID}\\${file.parent}\\${file.name}"],
           runInShell: true,
         );
       }
       else{
         await Process.start(
           'cmd',
-          ['/c', 'start', '', "${file.courseID}\\${file.name}"],
+          ['/c', 'start', '', "$WIN_BASEDIR${file.courseID}\\${file.name}"],
           runInShell: true,
         );
       }

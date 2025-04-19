@@ -1,7 +1,6 @@
 
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:celene_cli/model/celeneObject.dart';
 import 'package:celene_cli/model/fileManager.dart';
@@ -9,7 +8,7 @@ import 'package:archive/archive.dart';
 import 'package:archive/archive_io.dart';
 import 'extensions.dart';
 class DBManager{
-  String DB_PATH = "db.json";
+  String DB_PATH = "${BASEDIR}db.json";
   Map<String,dynamic> _data  = {};
 
   DBManager(){
@@ -136,8 +135,8 @@ class DBManager{
     int lastcourse = _data["files"][courseID].length;
     if (file.type == "Dossier"){
       print("The following file is a folder, so we are obligated to unzip it");
-      String folderPath = "$courseID/${filename.substring(0, (filename.length-4))}";
-      final bytes = File(("$courseID/$filename")).readAsBytesSync();
+      String folderPath = "$BASEDIR$courseID/${filename.substring(0, (filename.length-4))}";
+      final bytes = File(("$BASEDIR$courseID/$filename")).readAsBytesSync();
       Archive archive = ZipDecoder().decodeBytes(bytes);
       _data["files"][courseID][lastcourse-1]["children"] = [];
       for (final uFile in archive){
