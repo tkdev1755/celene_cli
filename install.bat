@@ -43,8 +43,8 @@ if %errorlevel% equ 0 (
 )
 
 echo.
-echo 🚀 L'application est maintenant installée.
-echo ➡️ Lance 'app' depuis n'importe quel terminal.
+echo L'application est maintenant installée.
+echo Lance 'celene_cli' depuis n'importe quel terminal.
 
 endlocal
 pause
