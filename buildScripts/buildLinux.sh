@@ -6,6 +6,7 @@ WORK_DIR=/celen_cli
 LIB_DIR=lib/model/KeychainAPI/linux
 BIN_DIR=bin/celeneCli_linux_x64
 
+
 if [ -d $WORK_DIR ]; then
       cd "$WORK_DIR" || { echo "Erreur : Impossible d'accéder au dossier $WORK_DIR."; exit 1; }
 fi
