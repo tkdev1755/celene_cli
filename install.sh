@@ -38,7 +38,6 @@ else
 fi
 
 echo "Fichier de configuration détecté : $SHELL_RC (Shell : $SHELL_NAME)"
-
 # Ajout de l'alias si pas encore présent
 if grep -q "alias $celene_cli_name=" "$SHELL_RC"; then
     echo "Alias '$celene_cli_name' déjà existant dans $SHELL_RC. Aucune modification n'as été apportée"
