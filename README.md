@@ -47,9 +47,9 @@ N’hésitez pas à proposer des fonctionnalités si vous avez des idées, et m�
 ## Installation
 
 - Afin d’installer le logiciel, vous devez tout d’abord télécharger le binaire depuis la page Release de ce repo git en fonction de votre système d’exploitation
-- Une fois le binaire téléchargé. Dézippez le fichier zip et lancez le script `install.sh` (Linux&MacOS) ou `install.ps1` (Windows)
+- Une fois le binaire téléchargé. Dézippez le fichier zip et lancez le script `install.sh` (Linux&MacOS) ou `install.bat` (Windows)
     - Ce script va déplacer le binaire et les fichiers associés à celui-ci vers votre dossier utilisateur dans le dossier celeneCLI, c’est ici que vous retrouverez les fichiers téléchargés par le programme et l’index des cours
-    - Il ajoutera ensuite le binaire à votre PATH pour que vous puissiez l’appeler depuis votre terminal , par défaut le script l’ajoute sous le nom de « celene », vous pouvez changer ce nom dans le script avec la variable $celene_cli_name
+    - Il ajoutera ensuite le binaire à votre PATH pour que vous puissiez l’appeler depuis votre terminal , par défaut le script l’ajoute sous le nom de « celene », vous pouvez changer ce nom dans le script avec la variable $celene_cli_name (UNIX uniquement)
 - Maintenant vous pouvez utiliser le programme depuis votre terminal
 
 # Questions fréquentes
@@ -60,8 +60,8 @@ N’hésitez pas à proposer des fonctionnalités si vous avez des idées, et m�
 ----
 
 - > Pourquoi avoir développé en Dart et pas en python ?
-    - >> En majeure partie parce que c’est le langage que je maitrise le mieux et puis que je le trouvais le plus approprié pour développer ce genre d’outil. Cependant je peux comprendre pourquoi python peut être plus intéressant sur certains points (plus de librairies disponibles, connu de tous, et performances correctes)
-    - >> Également cela m’as permis de réutiliser le code développé intégralement dans le GUI que j’ai développé à l’aide du framework Flutter au lieu de devoir réécrire toute la logique de connexion pour le GUI
+    -  En majeure partie parce que c’est le langage que je maitrise le mieux et puis que je le trouvais le plus approprié pour développer ce genre d’outil. Cependant je peux comprendre pourquoi python peut être plus intéressant sur certains points (plus de librairies disponibles, connu de tous, et performances correctes)
+    -  Également cela m’as permis de réutiliser le code développé intégralement dans le GUI que j’ai développé à l’aide du framework Flutter au lieu de devoir réécrire toute la logique de connexion pour le GUI
 
 
 
