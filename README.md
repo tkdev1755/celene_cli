@@ -1,4 +1,3 @@
-
 # Celene_CLI
 
 # Quel est le but de cette app ?
@@ -26,11 +25,11 @@
 
 🟥 - Import des cours automatiques à partir du profil utilisateur Celene
 
-🟥 - Affichage correct de pages avec énormément de ressources pages celenes
+🟥 - Affichage correct de pages avec énormément de ressources
 
 🟥 - Recherche dans une page cours
 
-🟥 - Affichage des catégorie parente des ressources d'une pages c
+🟥 - Affichage des catégorie parente des ressources d'une page celene
 
 🟥 - Pouvoir réinitialiser depuis le CLI les préférences utilisateur
 
