@@ -74,17 +74,17 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Future&lt;bool&gt; loginToCelene() async{
   if (_credentials == null){
-    print(&quot;CREDENTIAL NULL SO DOING NOTHING&quot;);
+    logger(&quot;CREDENTIAL NULL SO DOING NOTHING&quot;);
     throw Exception(&quot;Credentials didn&#39;t exist at the time of creation&quot;);
   }
-  print(&quot;creds are $_credentials&quot;);
+  logger(&quot;creds are $_credentials&quot;);
   _casAuth ??= CASAuth();
 
   try{
 
   }
   on Exception{
-    print(&quot;Exception while connecting to CAS&quot;);
+    logger(&quot;Exception while connecting to CAS&quot;);
     loggedIn = false;
     return false;
   }
@@ -126,7 +126,7 @@
 <footer>
   <span class="no-break">
     celene_cli
-      1.0.1
+      1.0.2
   </span>
   
 </footer>

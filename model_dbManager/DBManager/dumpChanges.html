@@ -73,11 +73,11 @@
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; dumpChanges() async{
-  print(&quot;Dumping changes to file&quot;);
+  logger(&quot;Dumping changes to file&quot;);
   File dbFile = File(DB_PATH);
   if (dbFile.existsSync()){
     dbFile.writeAsStringSync(jsonEncode(_data));
-    print(&quot;Dumped changes to file&quot;);
+    logger(&quot;Dumped changes to file&quot;);
   }
 }</code></pre>
 </section>
@@ -107,7 +107,7 @@
 <footer>
   <span class="no-break">
     celene_cli
-      1.0.1
+      1.0.2
   </span>
   
 </footer>

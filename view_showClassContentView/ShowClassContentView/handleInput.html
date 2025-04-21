@@ -79,13 +79,22 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">@override
 Future&lt;void&gt; handleInput() async {
+  int startIndex = (displayedSubList)*MAX_DISPLAY_LINES;
+  int endIndex = (displayedSubList+1)*(MAX_DISPLAY_LINES);
+  int displayEndIndex = endIndex &lt; options.length ? endIndex : options.length;
   var key = await console.readKey();
   if (key.isControl) {
     switch (key.controlChar) {
       case ControlCharacter.arrowUp:
+        if (selectedIndex == startIndex){
+          displayedSubList = (displayedSubList -1) % maxSublists;
+        }
         selectedIndex = (selectedIndex - 1) % options.length;
         break;
       case ControlCharacter.arrowDown:
+        if (selectedIndex+1 == displayEndIndex){
+          displayedSubList = (displayedSubList +1) % maxSublists;
+        }
         selectedIndex = (selectedIndex + 1) % options.length;
         break;
       case ControlCharacter.ctrlC:
@@ -134,7 +143,7 @@ Future&lt;void&gt; handleInput() async {
 <footer>
   <span class="no-break">
     celene_cli
-      1.0.1
+      1.0.2
   </span>
   
 </footer>

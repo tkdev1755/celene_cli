@@ -58,8 +58,9 @@
     <section class="multi-line-signature">
       
 <span class="returntype"><a href="../../model_celeneObject/Course-class.html">Course</a>?</span>
-<span class="name ">constructFromCeleneInfo</span>(<wbr><ol class="parameter-list single-line"> <li><span class="parameter" id="constructFromCeleneInfo-param-data"><span class="type-annotation"><a href="https://pub.dev/documentation/beautiful_soup_dart/0.3.0/beautiful_soup_dart/Bs4Element-class.html">Bs4Element</a></span> <span class="parameter-name">data</span></span></li>
-</ol>)
+<span class="name ">constructFromCeleneInfo</span>(<wbr><ol class="parameter-list"> <li><span class="parameter" id="constructFromCeleneInfo-param-data"><span class="type-annotation"><a href="https://pub.dev/documentation/beautiful_soup_dart/0.3.0/beautiful_soup_dart/Bs4Element-class.html">Bs4Element</a></span> <span class="parameter-name">data</span>, {</span></li>
+<li><span class="parameter" id="constructFromCeleneInfo-param-parent"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.7.2/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">parent</span>, </span></li>
+</ol>})
 
       
 
@@ -73,8 +74,9 @@
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">static Course? constructFromCeleneInfo(Bs4Element data){
+  <pre class="language-dart"><code class="language-dart">static Course? constructFromCeleneInfo(Bs4Element data,{String? parent}){
   Bs4Element? courseAtag = data.find(&quot;a&quot;,class_: &quot;aalink stretched-link&quot;);
+  logger(&quot;Course topic ! ${parent}&quot;);
   if (courseAtag != null){
     String? courseLink = courseAtag.getAttrValue(&quot;href&quot;);
     Bs4Element? span = courseAtag.find(&quot;span&quot;, class_: &quot;instancename&quot;);
@@ -84,7 +86,8 @@
         String courseType = accessHide.getText(strip: true);
         accessHide.decompose();
         String courseName = span.getText(strip: true);
-        return Course(courseName,courseLink, courseType);
+
+        return Course(courseName,courseLink, courseType,topic: parent);
       }
     }
   }
@@ -117,7 +120,7 @@
 <footer>
   <span class="no-break">
     celene_cli
-      1.0.1
+      1.0.2
   </span>
   
 </footer>

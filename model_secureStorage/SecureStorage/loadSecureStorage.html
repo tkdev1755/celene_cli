@@ -73,7 +73,7 @@
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">bool loadSecureStorage(){
-  print(&quot;$secStorageInitDebugHeader - SecureStorage was set&quot;);
+  logger(&quot;$secStorageInitDebugHeader - SecureStorage was set&quot;);
   if (_secureStorageKey == null || _secureStorageIV == null){
     &#47;&#47; TODO - Add better error handling
     throw Exception(&quot;Secure storage was marked as set but no marks of it on the host system&quot;);
@@ -83,7 +83,7 @@
     _encrypter = Encrypter(AES(_encryptedSecureStorageKey!));
     File storageFile = File(SECURE_STORAGE_PATH);
     if (!storageFile.existsSync()){
-      print(&quot;$secStorageInitDebugHeader -  key file does not exist, creating it&quot;);
+      logger(&quot;$secStorageInitDebugHeader -  key file does not exist, creating it&quot;);
       storageFile.createSync();
       _data = {};
       return true;
@@ -99,7 +99,7 @@
       Map&lt;String,dynamic&gt; res = jsonDecode(data);
       _secureStorageReadStatus  = true;
       _data = res.cast();
-      print(&quot;$secStorageInitDebugHeader - Data resssemble to this ${_data}&quot;);
+      logger(&quot;$secStorageInitDebugHeader - Data resssemble to this ${_data}&quot;);
       return true;
     }
   }
@@ -131,7 +131,7 @@
 <footer>
   <span class="no-break">
     celene_cli
-      1.0.1
+      1.0.2
   </span>
   
 </footer>

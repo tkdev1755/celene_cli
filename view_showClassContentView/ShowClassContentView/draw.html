@@ -80,14 +80,18 @@
   <pre class="language-dart"><code class="language-dart">@override
 void draw() {
   if (controller.getFlag(&quot;downloadCourse&quot;)){
-
     return;
   }
+  MAX_DISPLAY_LINES = ((console.windowHeight&#47;2).floor())-5 &gt; 5 ? ((console.windowHeight&#47;2).floor())-5 : 5 ;
+  maxSublists = (optionLength &#47; MAX_DISPLAY_LINES).ceil();
+  int startIndex = (displayedSubList)*MAX_DISPLAY_LINES;
+  int endIndex = (displayedSubList+1)*(MAX_DISPLAY_LINES);
+  int displayEndIndex = endIndex &lt; options.length ? endIndex : options.length;
   console.clearScreen();
   console.setForegroundColor(ConsoleColor.cyan);
   console.writeLine(&#39;=== Selectionne le fichier à télécharger&#47;ouvrir ===&#39;);
   console.resetColorAttributes();
-  for (int i = 0; i &lt; options.length; i++) {
+  for (int i = startIndex; i &lt; displayEndIndex; i++) {
     String textToWrite = options[i].downloaded ? &#39;${options[i]} (Téléchargé)&#39; : &#39;${options[i]}&#39;;
     if (i == selectedIndex) {
       ConsoleColor dLSelectedColor = options[i].downloaded ? ConsoleColor.green : ConsoleColor.yellow;
@@ -129,7 +133,7 @@ void draw() {
 <footer>
   <span class="no-break">
     celene_cli
-      1.0.1
+      1.0.2
   </span>
   
 </footer>

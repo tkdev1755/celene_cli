@@ -74,12 +74,12 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Future&lt;bool&gt; dump() async{
   if (!_secureStorageReadStatus){
-    print(&quot;$dumpDebugHeader - FALSE RETURN : SecureStorage was correctly initialized but data from file wasn&#39;t correctly parsed&quot;);
+    logger(&quot;$dumpDebugHeader - FALSE RETURN : SecureStorage was correctly initialized but data from file wasn&#39;t correctly parsed&quot;);
     return false;
   }
   if (_secureStorageIV == null || _secureStorageKey == null || _encrypter == null || _encryptedSecureStorageKey == null){
-    print(&quot;$dumpDebugHeader - FALSE RETURN : Either _secureStorageIV || _secureStorageKey || _encrypter || _encryptedSecureStorageKey was null, here is the result&quot;);
-    print(&quot;$dumpDebugHeader - FALSE RETURN : $_secureStorageIV || $_secureStorageKey || $_encrypter || $_encryptedSecureStorageKey&quot;);
+    logger(&quot;$dumpDebugHeader - FALSE RETURN : Either _secureStorageIV || _secureStorageKey || _encrypter || _encryptedSecureStorageKey was null, here is the result&quot;);
+    logger(&quot;$dumpDebugHeader - FALSE RETURN : $_secureStorageIV || $_secureStorageKey || $_encrypter || $_encryptedSecureStorageKey&quot;);
     return false;
   }
   Encrypted encrypted = _encrypter!.encrypt(jsonEncode(_data), iv: _secureStorageIV);
@@ -117,7 +117,7 @@
 <footer>
   <span class="no-break">
     celene_cli
-      1.0.1
+      1.0.2
   </span>
   
 </footer>

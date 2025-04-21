@@ -80,21 +80,21 @@ Retourne vrai si la session a été sauvegardée correctement</p>
   String errorMessage = &quot;FALSE RETURN&quot;;
   cookiesToSave.add((&quot;TGC&quot;,&quot;casCookie&quot;));
   if (sessionDate == null || secureStorage == null){
-    print(&quot;$debugHeader - $errorMessage : Either session date was null or the secure storage wasn&#39;t set&quot;);
-    print(&quot;Sessiondate ${sessionDate?.day} | secureStorage $secureStorage&quot;);
+    logger(&quot;$debugHeader - $errorMessage : Either session date was null or the secure storage wasn&#39;t set&quot;);
+    logger(&quot;Sessiondate ${sessionDate?.day} | secureStorage $secureStorage&quot;);
     return false;
   }
   if (!_sessionStatus){
-    print(&quot;$debugHeader - $errorMessage : Session wasn&#39;t initiated correctly&quot;);
+    logger(&quot;$debugHeader - $errorMessage : Session wasn&#39;t initiated correctly&quot;);
     return false;
   }
   if (DateTime.now().difference(sessionDate!).inMinutes &gt; 30){
-    print(&quot;$debugHeader - $errorMessage :  Session was too old ${DateTime.now().difference(sessionDate!).inMinutes}&quot;);
+    logger(&quot;$debugHeader - $errorMessage :  Session was too old ${DateTime.now().difference(sessionDate!).inMinutes}&quot;);
     return false;
   }
   if (!secureStorage!.getSecureStorageStatus()){
-    print(&quot;$debugHeader - $errorMessage : Secure storage wasn&#39;t set properly&quot;);
-    print(&quot;$debugHeader - $errorMessage : Here is all the data ${secureStorage!.getSecureStorageStatus()}&quot;);
+    logger(&quot;$debugHeader - $errorMessage : Secure storage wasn&#39;t set properly&quot;);
+    logger(&quot;$debugHeader - $errorMessage : Here is all the data ${secureStorage!.getSecureStorageStatus()}&quot;);
     return false;
   }
   List&lt;cStore.Cookie&gt; cookiesJar = session.cookieStore.cookies;
@@ -102,7 +102,7 @@ Retourne vrai si la session a été sauvegardée correctement</p>
   for ((String,String) i in cookiesToSave){
     Iterable&lt;cStore.Cookie&gt; search =  cookiesJar.where((e) =&gt; e.name == i[0]);
     if (search.isEmpty){
-      print(&quot;$debugHeader - $errorMessage : Value researched wasn&#39;t found in the cookie&quot;);
+      logger(&quot;$debugHeader - $errorMessage : Value researched wasn&#39;t found in the cookie&quot;);
       return false;
     }
     secureStorage!.setValue(i[1], search.first.value);
@@ -138,7 +138,7 @@ Retourne vrai si la session a été sauvegardée correctement</p>
 <footer>
   <span class="no-break">
     celene_cli
-      1.0.1
+      1.0.2
   </span>
   
 </footer>

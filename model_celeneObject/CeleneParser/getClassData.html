@@ -76,24 +76,24 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Future&lt;List&lt;Course&gt;&gt; getClassData(cID,classID) async{
   List&lt;FileEntry&gt; downloadedCourse = files.containsKey(classID) ? files[classID]! : [];
-  print(files);
-  print(&quot;Loaded downloaded courses&quot;);
+  logger(files);
+  logger(&quot;Loaded downloaded courses&quot;);
   List&lt;Course&gt; courses = [];
   if (!loggedIn){
-    print(&quot;Not logged in, need to log in to Celene&quot;);
+    logger(&quot;Not logged in, need to log in to Celene&quot;);
     bool result = await loginToCelene();
     if (!result){
       throw Exception(&quot;ERROR WHILE CONNECTING TO CELENE&quot;);
     }
 
-    print(&quot;Successfully logged in to Celene&quot;);
+    logger(&quot;Successfully logged in to Celene&quot;);
   }
-  print(_casAuth?.session.cookieStore.cookies);
+  logger(_casAuth?.session.cookieStore.cookies);
   if (_casAuth != null){
     Uri classUrl = getClassUrl(cID);
-    print(&quot;Now retrieving class data : class url is ${classUrl}&quot;);
+    logger(&quot;Now retrieving class data : class url is ${classUrl}&quot;);
     &#47;&#47;casAuth!.prepareRequest();
-    print(&quot;CAS AUTH HEADERS&quot;);
+    logger(&quot;CAS AUTH HEADERS&quot;);
     Response classData;
     try{
       classData = await _casAuth!.session.get(classUrl, headers: _casAuth!.headers);
@@ -101,33 +101,38 @@
     on ClientException{
       classData = await _casAuth!.session.get(classUrl, headers: _casAuth!.headers);
     }
-    print(&quot;Get response finished&quot;);
+    logger(&quot;Get response finished&quot;);
     if (classData.statusCode == 200){
-      print(&quot;GET RESPONSE 200 -&gt; Now parsing the page&quot;);
+      logger(&quot;GET RESPONSE 200 -&gt; Now parsing the page&quot;);
       &#47;&#47;casAuth!.session.updateCookies(classData);
       &#47;&#47;casAuth!.prepareRequest();
       BeautifulSoup soup = BeautifulSoup(classData.body);
-      &#47;&#47;print(soup.prettify());
-      List&lt;Bs4Element&gt; li_elements = soup.findAll(&quot;li&quot;, class_:&quot;activity activity-wrapper&quot;);
-      print(&quot;Found ${li_elements.length} li_elements&quot;);
-      for (Bs4Element i in li_elements){
-        Course? newCourse = Course.constructFromCeleneInfo(i);
-        if (newCourse != null){
-          FileEntry? associatedFile = downloadedCourse.where((e) =&gt; e.entryName == newCourse.name).toList().firstOrNull;
-          print(associatedFile);
-          newCourse.downloaded = associatedFile != null;
-          newCourse.associatedFile = associatedFile;
-          if (newCourse.type == &quot;Dossier&quot; &amp;&amp; newCourse.downloaded){
-            print(&quot;The folder is downloaded so we have to add all files in this folder&quot;);
-            for (FileEntry j in (newCourse.associatedFile!.children)!){
-              print(&quot;Adding subCourse&quot;);
-              Course subCourse = Course.constructFromFileInfo(j);
-              subCourse.setFile(j);
-              courses.add(subCourse);
+      &#47;&#47;logger(soup.prettify());
+      Bs4Element? topic = soup.find(&#39;ul&#39;, class_: &#39;topics&#39;);
+      List&lt;Bs4Element&gt; sections = soup.findAll(&quot;li&quot;, class_: &quot;section course-section main&quot;);
+      for (Bs4Element i in sections){
+        logger(&quot;SectionName&quot;);
+        String? topic = i.find(&quot;h3&quot;, class_: &quot;sectionname&quot;)?.text.trim();
+        List&lt;Bs4Element&gt; li_elements = i.findAll(&quot;li&quot;, class_:&quot;activity activity-wrapper&quot;);
+        logger(&quot;Found ${li_elements.length} li_elements&quot;);
+        for (Bs4Element i in li_elements){
+          Course? newCourse = Course.constructFromCeleneInfo(i,parent: topic);
+          if (newCourse != null){
+            FileEntry? associatedFile = downloadedCourse.where((e) =&gt; e.entryName == newCourse.name).toList().firstOrNull;
+            newCourse.downloaded = associatedFile != null;
+            newCourse.associatedFile = associatedFile;
+            if (newCourse.type == &quot;Dossier&quot; &amp;&amp; newCourse.downloaded){
+              logger(&quot;The folder is downloaded so we have to add all files in this folder&quot;);
+              for (FileEntry j in (newCourse.associatedFile!.children)!){
+                logger(&quot;Adding subCourse&quot;);
+                Course subCourse = Course.constructFromFileInfo(j,parent: topic);
+                subCourse.setFile(j);
+                courses.add(subCourse);
+              }
             }
-          }
-          else{
-            courses.add(newCourse);
+            else{
+              courses.add(newCourse);
+            }
           }
         }
       }
@@ -163,7 +168,7 @@
 <footer>
   <span class="no-break">
     celene_cli
-      1.0.1
+      1.0.2
   </span>
   
 </footer>

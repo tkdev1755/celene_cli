@@ -77,7 +77,7 @@
 
   bool saveResult = await _casAuth!.saveCASSession([(&quot;MoodleSession&quot;,&quot;moodleSession&quot;),(&quot;MOODLEID1_&quot;,&quot;moodleID&quot;)]);
   &#47;*if (casAuth !=null){
-    print(&quot;Saving session NOW !&quot;);
+    logger(&quot;Saving session NOW !&quot;);
     if (casAuth!.secureStorage.get(&quot;casCookies&quot;) != null){
      casAuth!.secureStorage.clear();
     }
@@ -97,7 +97,7 @@
       };
     }
     casAuth!.secureStorage.write(saveData, &quot;casCookies&quot;);
-    print(casAuth!.secureStorage.get(&quot;casCookies&quot;)?.value);
+    logger(casAuth!.secureStorage.get(&quot;casCookies&quot;)?.value);
   }*&#47;
   return saveResult;
 }</code></pre>
@@ -128,7 +128,7 @@
 <footer>
   <span class="no-break">
     celene_cli
-      1.0.1
+      1.0.2
   </span>
   
 </footer>

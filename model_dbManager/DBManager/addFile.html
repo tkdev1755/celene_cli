@@ -96,7 +96,7 @@
   _data[&quot;files&quot;][courseID].add(serializedFile);
   int lastcourse = _data[&quot;files&quot;][courseID].length;
   if (file.type == &quot;Dossier&quot;){
-    print(&quot;The following file is a folder, so we are obligated to unzip it&quot;);
+    logger(&quot;The following file is a folder, so we are obligated to unzip it&quot;);
     String folderPath = &quot;$BASEDIR$courseID&#47;${filename.substring(0, (filename.length-4))}&quot;;
     final bytes = File((&quot;$BASEDIR$courseID&#47;$filename&quot;)).readAsBytesSync();
     Archive archive = ZipDecoder().decodeBytes(bytes);
@@ -150,7 +150,7 @@
 <footer>
   <span class="no-break">
     celene_cli
-      1.0.1
+      1.0.2
   </span>
   
 </footer>

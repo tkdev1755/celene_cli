@@ -76,7 +76,7 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">void setValue(String key, String value){
   if (_secureStorageReadStatus &amp;&amp; _secureStorageStatus){
-    print(&quot;$secStorageInitDebugHeader - setValue : setting key $key on value $value&quot;);
+    logger(&quot;$secStorageInitDebugHeader - setValue : setting key $key on value $value&quot;);
     _data[key] = value;
   }
   else{
@@ -110,7 +110,7 @@
 <footer>
   <span class="no-break">
     celene_cli
-      1.0.1
+      1.0.2
   </span>
   
 </footer>

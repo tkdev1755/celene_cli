@@ -74,7 +74,7 @@
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Future&lt;String&gt; getSecureEntry({String prompt = &#39;&gt; &#39;}) async {
-  &#47;&#47; Dumb function to cover dart lack of secure keyboard entry capabilities (doesn&#39;t print stdin to the screen when the secure entry is written by the user)
+  &#47;&#47; Dumb function to cover dart lack of secure keyboard entry capabilities (doesn&#39;t logger stdin to the screen when the secure entry is written by the user)
   &#47;&#47; Doesn&#39;t work on windows for some weird reason
   if (!Platform.isWindows){
     stdin.echoMode = false;
@@ -117,7 +117,7 @@
 <footer>
   <span class="no-break">
     celene_cli
-      1.0.1
+      1.0.2
   </span>
   
 </footer>

@@ -79,7 +79,6 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">@override
 getData() async {
-  print(&quot;COURSE ID is ${selectedClass.courseID}&quot;);
   courses = await celene.getClassData(selectedClass.celeneID, selectedClass.courseID);
   return courses;
 }</code></pre>
@@ -110,7 +109,7 @@ getData() async {
 <footer>
   <span class="no-break">
     celene_cli
-      1.0.1
+      1.0.2
   </span>
   
 </footer>

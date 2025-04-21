@@ -81,7 +81,7 @@ String service : Service vers lequel effectuer la redirection</p>
   <pre class="language-dart"><code class="language-dart">Future&lt;int&gt; loginToCas(String login,String password, String service) async {
   DateTime startDate = DateTime.now();
   if (!casServiceENUM.containsKey(service)){
-    print(&quot;Service passed in parameters isn&#39;t supported or doesn&#39;t exists&quot;);
+    logger(&quot;Service passed in parameters isn&#39;t supported or doesn&#39;t exists&quot;);
     return -1;
   }
   String casServiceEndpoint = casEndpoint + SERVICE_PARAM + casServiceENUM[service]!;
@@ -91,14 +91,14 @@ String service : Service vers lequel effectuer la redirection</p>
     headers: headers
   );
   if (loginPage.statusCode != 200){
-    print(&quot;Failed to recieve CAS Login page&quot;);
+    logger(&quot;Failed to recieve CAS Login page&quot;);
     return -1;
   }
   BeautifulSoup soup = BeautifulSoup(loginPage.body);
   Bs4Element? exec_field = soup.find(&#39;input&#39;, attrs: {&quot;name&quot;: &#39;execution&#39;});
   Bs4Element? event_id_field = soup.find(&#39;input&#39;, attrs: {&quot;name&quot;: &#39;_eventId&#39;});
   if (exec_field == null || event_id_field == null){
-    print(&quot;Failed finding required form field&quot;);
+    logger(&quot;Failed finding required form field&quot;);
     return -1;
   }
   String execution = exec_field[&quot;value&quot;]!;
@@ -119,18 +119,18 @@ String service : Service vers lequel effectuer la redirection</p>
   &#47;&#47;prepareRequest();
   if (response.statusCode == 301 || response.statusCode == 303 || response.statusCode == 302){
     http.Response sd = await followRedirects(response);
-    print(&quot;Redirected&quot;);
+    logger(&quot;Redirected&quot;);
     if (sd.statusCode == 200){
       _sessionStatus = true;
-      print(&quot;Conn sucessfull&quot;);
+      logger(&quot;Conn sucessfull&quot;);
     }
   }
   else{
-    print(&quot;Not redirected&quot;);
+    logger(&quot;Not redirected&quot;);
     return -1;
   }
-  print(session.cookieStore.cookies);
-  print(&quot;Delta between now and last conn request ${DateTime.now().difference(startDate).inSeconds} secondes&quot;);
+  logger(session.cookieStore.cookies);
+  logger(&quot;Delta between now and last conn request ${DateTime.now().difference(startDate).inSeconds} secondes&quot;);
 
   return 1;
 }</code></pre>
@@ -161,7 +161,7 @@ String service : Service vers lequel effectuer la redirection</p>
 <footer>
   <span class="no-break">
     celene_cli
-      1.0.1
+      1.0.2
   </span>
   
 </footer>
