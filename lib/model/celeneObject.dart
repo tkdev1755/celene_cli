@@ -49,7 +49,14 @@ class CeleneParser{
     }
     return int.parse(params["id"]!);
   }
-
+  
+  static int getIDFromProfileUrl(String url){
+    Map<String,String> params  = Uri.parse(url).queryParameters;
+    if (!params.containsKey("course")){
+      return -1;
+    }
+    return int.parse(params["course"]!);
+  }
   /// Initialise l'attribut credentials à la valeur passée en paramètre
   void setCredentials((String,String) credentials){
     _credentials = credentials;
@@ -87,6 +94,7 @@ class CeleneParser{
     await saveCeleneSession();
     return true;
   }
+
   /// Sauvegarde la session Celene si la persistance de session est activée
   Future<bool> saveCeleneSession() async {
     _casAuth ??= CASAuth();
@@ -119,6 +127,7 @@ class CeleneParser{
   }
 
   /// Charge la session celene si la persistance de session à été activée
+  ///
   /// Retourne vrai si la session a été chargée correctement, faux autrement
   bool loadCeleneSession(){
     _casAuth ??= CASAuth();
@@ -186,26 +195,31 @@ class CeleneParser{
         //casAuth!.prepareRequest();
         BeautifulSoup soup = BeautifulSoup(classData.body);
         //print(soup.prettify());
-        List<Bs4Element> li_elements = soup.findAll("li", class_:"activity activity-wrapper");
-        print("Found ${li_elements.length} li_elements");
-        for (Bs4Element i in li_elements){
-          Course? newCourse = Course.constructFromCeleneInfo(i);
-          if (newCourse != null){
-            FileEntry? associatedFile = downloadedCourse.where((e) => e.entryName == newCourse.name).toList().firstOrNull;
-            print(associatedFile);
-            newCourse.downloaded = associatedFile != null;
-            newCourse.associatedFile = associatedFile;
-            if (newCourse.type == "Dossier" && newCourse.downloaded){
-              print("The folder is downloaded so we have to add all files in this folder");
-              for (FileEntry j in (newCourse.associatedFile!.children)!){
-                print("Adding subCourse");
-                Course subCourse = Course.constructFromFileInfo(j);
-                subCourse.setFile(j);
-                courses.add(subCourse);
+        Bs4Element? topic = soup.find('ul', class_: 'topics');
+        List<Bs4Element> sections = soup.findAll("li", class_: "section course-section main");
+        for (Bs4Element i in sections){
+          print("SectionName");
+          String? topic = i.find("h3", class_: "sectionname")?.text.trim();
+          List<Bs4Element> li_elements = i.findAll("li", class_:"activity activity-wrapper");
+          print("Found ${li_elements.length} li_elements");
+          for (Bs4Element i in li_elements){
+            Course? newCourse = Course.constructFromCeleneInfo(i,parent: topic);
+            if (newCourse != null){
+              FileEntry? associatedFile = downloadedCourse.where((e) => e.entryName == newCourse.name).toList().firstOrNull;
+              newCourse.downloaded = associatedFile != null;
+              newCourse.associatedFile = associatedFile;
+              if (newCourse.type == "Dossier" && newCourse.downloaded){
+                print("The folder is downloaded so we have to add all files in this folder");
+                for (FileEntry j in (newCourse.associatedFile!.children)!){
+                  print("Adding subCourse");
+                  Course subCourse = Course.constructFromFileInfo(j,parent: topic);
+                  subCourse.setFile(j);
+                  courses.add(subCourse);
+                }
               }
-            }
-            else{
-              courses.add(newCourse);
+              else{
+                courses.add(newCourse);
+              }
             }
           }
         }
@@ -213,6 +227,53 @@ class CeleneParser{
       return courses;
     }
     return courses;
+  }
+  /// Fonction récupérant les cours rejoint par l'utilisateur sur Celene
+  Future<List<Classes>> getUserJoinedClasses() async{
+    List<Classes> joinedClasses = [];
+    // Need to go to this weird endpoint to see the courses of the user
+    Uri joinedClassesURI = Uri.parse("https://celene.insa-cvl.fr/user/profile.php?showallcourses=1");
+    if (!loggedIn){
+      print("Not logged in, need to log in to Celene");
+      bool result = await loginToCelene();
+      if (!result){
+        throw Exception("ERROR WHILE CONNECTING TO CELENE");
+      }
+      print("Successfully logged in to Celene");
+    }
+    if (_casAuth != null) {
+      //casAuth!.prepareRequest();
+      print("CAS AUTH HEADERS");
+      Response classData;
+      try {
+        classData =
+        await _casAuth!.session.get(joinedClassesURI, headers: _casAuth!.headers);
+      }
+      on ClientException {
+        classData =
+        await _casAuth!.session.get(joinedClassesURI, headers: _casAuth!.headers);
+      }
+      if (classData.statusCode == 200){
+        print("Got all data from class !");
+        BeautifulSoup soup = BeautifulSoup(classData.body);
+        List<Bs4Element> classesDiv = soup.findAll("li",class_: "contentnode");
+        Bs4Element? coursesDL = classesDiv.where((e) => e.find("dt", string: r"Profils de cours") != null).firstOrNull;
+        if (coursesDL == null){
+          print("Found no div and no UL ");
+          return [];
+        }
+        List<Bs4Element> li_elements = coursesDL.findAll("li");
+        print("Found ${li_elements.length} li_elements");
+        for (Bs4Element i in li_elements){
+          Classes? newClass = Classes.constructFromCeleneInfo(i);
+          if (newClass != null){
+            joinedClasses.add(newClass);
+          }
+        }
+        return joinedClasses;
+      }
+    }
+    return joinedClasses;
   }
 
   /// Téléchage un fichier disponible sur celene
@@ -309,6 +370,7 @@ class CeleneParser{
     await FileEntry.openLink(link);
     return "downloading";
   }
+
   /// Fonction faisant appel aux fonctions de téléchargement en fonction du type de fichier passé en paramètre
   Future<String> downloadElement(link, eltType, savePath) async{
     Map<String,Function(String,String)> functionMap = _bindParser(this);
@@ -344,7 +406,30 @@ class Classes{
   void setSavePath(String savePath){
     this.savePath = savePath;
   }
+  static Classes? constructFromCeleneInfo(Bs4Element data){
+    Bs4Element? classURL = data.find("a");
+    if (classURL == null){
+      print("No a containing info Found");
+      return null;
+    }
+    String? courseURL = classURL.getAttrValue("href");
+    String? courseName = classURL.text.trim();
+    if (courseURL == null){
+      print("No courseURL");
+      return null;
+    }
+    if (courseName == ""){
+      print("CourseName not found");
+      return null;
+    }
+    int celeneID = CeleneParser.getIDFromProfileUrl(courseURL);
+    return Classes(courseName, "$celeneID");
+  }
 
+  @override
+  String toString() {
+    return name;
+  }
 
 }
 
@@ -356,12 +441,13 @@ class Course{
   bool downloaded = false;
   bool fromFolder = false;
   FileEntry? associatedFile = null;
-
-  Course(this.name,this.link,this.type);
+  String? topic;
+  Course(this.name,this.link,this.type, {this.topic});
 
   /// Transforme un élément html depuis la page celene vers une cours
-  static Course? constructFromCeleneInfo(Bs4Element data){
+  static Course? constructFromCeleneInfo(Bs4Element data,{String? parent}){
     Bs4Element? courseAtag = data.find("a",class_: "aalink stretched-link");
+    print("Course topic ! ${parent}");
     if (courseAtag != null){
       String? courseLink = courseAtag.getAttrValue("href");
       Bs4Element? span = courseAtag.find("span", class_: "instancename");
@@ -371,7 +457,8 @@ class Course{
           String courseType = accessHide.getText(strip: true);
           accessHide.decompose();
           String courseName = span.getText(strip: true);
-          return Course(courseName,courseLink, courseType);
+
+          return Course(courseName,courseLink, courseType,topic: parent);
         }
       }
     }
@@ -379,8 +466,8 @@ class Course{
   }
 
   /// Transforme un objet File en un objet Course, utile notamment pour les fichiers d'un dossier sur celene
-  static constructFromFileInfo(FileEntry courseFile){
-    Course subCourse = Course(courseFile.name, "https://celene.insa-cvl.fr", courseFile.type);
+  static constructFromFileInfo(FileEntry courseFile, {String? parent}){
+    Course subCourse = Course(courseFile.name, "https://celene.insa-cvl.fr", courseFile.type, topic: parent);
     subCourse.updateDownloadStatus();
     subCourse.fromFolder = true;
     return subCourse;
@@ -397,6 +484,6 @@ class Course{
   @override
   String toString() {
     // TODO: implement toString
-    return "Nom : ${name}    Type : ${type}";
+    return "Nom : ${name} ${topic != null ? "($topic)" : ""}    Type : ${type}";
   }
 }

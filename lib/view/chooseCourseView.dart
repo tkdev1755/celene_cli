@@ -42,7 +42,8 @@ class ChooseCourseView extends View{
     console.writeLine('─' * console.windowWidth); // ligne de séparation
 
     console.setForegroundColor(ConsoleColor.brightCyan);
-    console.writeLine('n : Ajouter un cours   |   e : Éditer les cours   |   r : Rechercher');
+    console.writeLine('n : Ajouter un cours   |   e : Éditer les cours   |   r : Rechercher \ni: Importer les cours depuis Celene | esc : Quitter');
+
     console.resetColorAttributes();
 
   }
@@ -80,7 +81,6 @@ class ChooseCourseView extends View{
       print("Detected other input than controlCharacter");
       switch(key.char){
         case 'n':
-
           print("Adding course");
           controller.handleInput("addCourse",null,parent: this);
           break;
@@ -90,6 +90,9 @@ class ChooseCourseView extends View{
         case 'r':
           controller.handleInput("searchCourse", null);
           break;
+        case 'i':
+          print("Importing courses");
+          controller.handleInput("importClasses", null, parent: this);
       }
     }
   }
