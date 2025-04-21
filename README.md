@@ -13,19 +13,19 @@
 
 ✅ - Ajout des cours sur Celene manuellement à travers les URL de ces derniers
 
+✅ - Import des cours automatiques à partir du profil utilisateur Celene
+
 ✅ - Téléchargement des fichier/dossiers présents sur la page Celene d'un cours et ouverture des fichiers si déjà téléchargés
 
 ✅ - Persistance des sessions d'une instance du programme à l'autre (limitée dans le temps)
 
 ✅ - Portabilité de l'outil (fonctionne sur GNU/Linux, MacOS et Windows)
 
+✅ - Affichage correct de pages avec énormément de ressources
+
 ## Fonctionnalité à venir
 
 > Ces fonctionnalité sont classées par ordre de priorité (🟥 : Important, implémentation prochaine, 🟨: Moyennement important, implémentation une fois les fct importantes implémentées)
-
-🟥 - Import des cours automatiques à partir du profil utilisateur Celene
-
-🟥 - Affichage correct de pages avec énormément de ressources
 
 🟥 - Recherche dans une page cours
 

@@ -1,7 +1,7 @@
 name: celene_cli
 description: App to access celene (Moodle E-Learning platform) from the terminal. Comes with file management, session persistance and other features
-version: 1.0.1
-# repository: https://github.com/my_org/my_repo
+version: 1.0.2
+repository: https://github.com/tkdev1755/celene_cli
 
 environment:
   sdk: ^3.5.3
