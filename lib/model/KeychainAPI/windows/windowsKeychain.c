@@ -53,7 +53,7 @@ EXPORT bool read_password(const wchar_t* targetName, wchar_t* outPassword, int m
     //bool result = set_password(L"appDartCli", L"userName", L"PASWOOOOOOOOOOORD");
     /*if (result){
         printf("Password set succesfully");
-    }*/
+    }
     wchar_t password[2048];
     // bzero(password);
     bool result2 = read_password(L"celene202", password, 2048);
