@@ -40,7 +40,7 @@ class SecureStorage{
 
   /// Fonction permettant le chargement et déchiffrement du SecureStorage
   bool loadSecureStorage(){
-    print("$secStorageInitDebugHeader - SecureStorage was set");
+    logger("$secStorageInitDebugHeader - SecureStorage was set");
     if (_secureStorageKey == null || _secureStorageIV == null){
       // TODO - Add better error handling
       throw Exception("Secure storage was marked as set but no marks of it on the host system");
@@ -50,7 +50,7 @@ class SecureStorage{
       _encrypter = Encrypter(AES(_encryptedSecureStorageKey!));
       File storageFile = File(SECURE_STORAGE_PATH);
       if (!storageFile.existsSync()){
-        print("$secStorageInitDebugHeader -  key file does not exist, creating it");
+        logger("$secStorageInitDebugHeader -  key file does not exist, creating it");
         storageFile.createSync();
         _data = {};
         return true;
@@ -66,7 +66,7 @@ class SecureStorage{
         Map<String,dynamic> res = jsonDecode(data);
         _secureStorageReadStatus  = true;
         _data = res.cast();
-        print("$secStorageInitDebugHeader - Data resssemble to this ${_data}");
+        logger("$secStorageInitDebugHeader - Data resssemble to this ${_data}");
         return true;
       }
     }
@@ -74,12 +74,12 @@ class SecureStorage{
   /// Fonction permettant de chiffrer le SecureStorage et d'écrire le fichier chiffré sur le disque
   Future<bool> dump() async{
     if (!_secureStorageReadStatus){
-      print("$dumpDebugHeader - FALSE RETURN : SecureStorage was correctly initialized but data from file wasn't correctly parsed");
+      logger("$dumpDebugHeader - FALSE RETURN : SecureStorage was correctly initialized but data from file wasn't correctly parsed");
       return false;
     }
     if (_secureStorageIV == null || _secureStorageKey == null || _encrypter == null || _encryptedSecureStorageKey == null){
-      print("$dumpDebugHeader - FALSE RETURN : Either _secureStorageIV || _secureStorageKey || _encrypter || _encryptedSecureStorageKey was null, here is the result");
-      print("$dumpDebugHeader - FALSE RETURN : $_secureStorageIV || $_secureStorageKey || $_encrypter || $_encryptedSecureStorageKey");
+      logger("$dumpDebugHeader - FALSE RETURN : Either _secureStorageIV || _secureStorageKey || _encrypter || _encryptedSecureStorageKey was null, here is the result");
+      logger("$dumpDebugHeader - FALSE RETURN : $_secureStorageIV || $_secureStorageKey || $_encrypter || $_encryptedSecureStorageKey");
       return false;
     }
     Encrypted encrypted = _encrypter!.encrypt(jsonEncode(_data), iv: _secureStorageIV);
@@ -113,7 +113,7 @@ class SecureStorage{
   /// Fonction permettant d'attribuer une valeur à une clé au sein du SecureStorage
   void setValue(String key, String value){
     if (_secureStorageReadStatus && _secureStorageStatus){
-      print("$secStorageInitDebugHeader - setValue : setting key $key on value $value");
+      logger("$secStorageInitDebugHeader - setValue : setting key $key on value $value");
       _data[key] = value;
     }
     else{

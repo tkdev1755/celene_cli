@@ -62,7 +62,7 @@ class MacOSKeychainBindings extends KeyringBase{
     final passwordPtr = password.toNativeUtf8();
 
     final result = _addPassword(accountPtr, servicePtr, passwordPtr);
-    print("Added password with result : $result");
+    logger("Added password with result : $result");
     malloc.free(accountPtr);
     malloc.free(servicePtr);
     malloc.free(passwordPtr);
@@ -78,7 +78,7 @@ class MacOSKeychainBindings extends KeyringBase{
     final ptr = _readPassword(acc, srv);
     malloc.free(acc);
     malloc.free(srv);
-    print("ptr is ${ptr}");
+    logger("ptr is ${ptr}");
     if (ptr.address == 0) return null;
     final result = ptr.toDartString();
     _freePassword(ptr);

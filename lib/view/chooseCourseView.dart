@@ -2,6 +2,8 @@
 import 'package:celene_cli/view/view.dart';
 import 'package:dart_console/dart_console.dart';
 
+import '../model/extensions.dart';
+
 
 
 
@@ -78,10 +80,10 @@ class ChooseCourseView extends View{
       }
     }
     else{
-      print("Detected other input than controlCharacter");
+      logger("Detected other input than controlCharacter");
       switch(key.char){
         case 'n':
-          print("Adding course");
+          logger("Adding course");
           controller.handleInput("addCourse",null,parent: this);
           break;
         case 'e':
@@ -91,7 +93,7 @@ class ChooseCourseView extends View{
           controller.handleInput("searchCourse", null);
           break;
         case 'i':
-          print("Importing courses");
+          logger("Importing courses");
           controller.handleInput("importClasses", null, parent: this);
       }
     }

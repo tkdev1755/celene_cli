@@ -36,7 +36,7 @@ class ImportClassesController extends Controller{
       case "renameCourse":
         return renameCourse(data.$1, data.$2);
       case "removeCourse":
-        print("");
+        logger("");
         return removeCourse(data);
       case "saveChanges":
         return saveCourses();

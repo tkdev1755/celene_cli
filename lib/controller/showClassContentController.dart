@@ -29,7 +29,6 @@ class ShowClassContentController extends Controller{
 
   @override
   getData() async {
-    print("COURSE ID is ${selectedClass.courseID}");
     courses = await celene.getClassData(selectedClass.celeneID, selectedClass.courseID);
     return courses;
   }

@@ -13,7 +13,7 @@
 
 ✅ - Ajout des cours sur Celene manuellement à travers les URL de ces derniers
 
-✅ - Import des cours automatiques à partir du profil utilisateur Celene
+✅ - Import des cours automatique à partir du profil utilisateur Celene
 
 ✅ - Téléchargement des fichier/dossiers présents sur la page Celene d'un cours et ouverture des fichiers si déjà téléchargés
 

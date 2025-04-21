@@ -72,14 +72,14 @@ class SecretManager{
     _login = username;
     _password = password;
     _credentialLoaded = true;
-    print(_password);
+    logger(_password);
     if (saveToKeyring){
       if (username.length > 2048){
-        print("Username too big, aborting");
+        logger("Username too big, aborting");
         throw ArgumentError.value(username.length, "Username too long, not saving it for security purposes");
       }
       if (password.length > 2048){
-        print("Password too long, aborting");
+        logger("Password too long, aborting");
         throw ArgumentError.value("password too long, not saving it for security purposes");
       }
       int result = _keyring.setPassword(_SERVICE_NAME, _login!, _password!);
@@ -173,20 +173,20 @@ class SecretManager{
     console.write('Activer les sessions persistantes (Session CAS gardée d\'un lancement de programme à l\'autre) ?');
     String stringActivateSecureStorage = stdin.readLineSync() ?? "n";
     bool activateSecureStorage = (stringSaveCredentials.toUpperCase() == "Y" || stringSaveCredentials.toUpperCase() == "YES" || stringSaveCredentials.toUpperCase() == "OUI");
-    print("Saving credentials ? :$saveCredentials");
+    logger("Saving credentials ? :$saveCredentials");
     bool credResult = setCredentials(userName, password, saveToKeyring: saveCredentials);
     bool secureStorageResult = false;
     if (activateSecureStorage){
       secureStorageResult = setSecureStorage();
     }
-    print("Credential save result :$credResult");
-    print("Secure storage save result $secureStorageResult");
+    logger("Credential save result :$credResult");
+    logger("Secure storage save result $secureStorageResult");
     return (credResult && saveCredentials, userName);
   }
 
   /// Fonction permettant de cacher le résultat de l'entrée standard à l'écran, utilisé lorsqu'un mot de passe est demandé ?
   Future<String> getSecureEntry({String prompt = '> '}) async {
-    // Dumb function to cover dart lack of secure keyboard entry capabilities (doesn't print stdin to the screen when the secure entry is written by the user)
+    // Dumb function to cover dart lack of secure keyboard entry capabilities (doesn't logger stdin to the screen when the secure entry is written by the user)
     // Doesn't work on windows for some weird reason
     if (!Platform.isWindows){
       stdin.echoMode = false;

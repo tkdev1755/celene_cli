@@ -69,17 +69,17 @@ class CeleneParser{
   /// Fonction pour se connecter à celene et créer une session
   Future<bool> loginToCelene() async{
     if (_credentials == null){
-      print("CREDENTIAL NULL SO DOING NOTHING");
+      logger("CREDENTIAL NULL SO DOING NOTHING");
       throw Exception("Credentials didn't exist at the time of creation");
     }
-    print("creds are $_credentials");
+    logger("creds are $_credentials");
     _casAuth ??= CASAuth();
 
     try{
 
     }
     on Exception{
-      print("Exception while connecting to CAS");
+      logger("Exception while connecting to CAS");
       loggedIn = false;
       return false;
     }
@@ -101,7 +101,7 @@ class CeleneParser{
 
     bool saveResult = await _casAuth!.saveCASSession([("MoodleSession","moodleSession"),("MOODLEID1_","moodleID")]);
     /*if (casAuth !=null){
-      print("Saving session NOW !");
+      logger("Saving session NOW !");
       if (casAuth!.secureStorage.get("casCookies") != null){
        casAuth!.secureStorage.clear();
       }
@@ -121,7 +121,7 @@ class CeleneParser{
         };
       }
       casAuth!.secureStorage.write(saveData, "casCookies");
-      print(casAuth!.secureStorage.get("casCookies")?.value);
+      logger(casAuth!.secureStorage.get("casCookies")?.value);
     }*/
     return saveResult;
   }
@@ -136,16 +136,16 @@ class CeleneParser{
     bool result = _casAuth!.loadCASSession([("moodleID","MOODLEID1_","https://celene.insa-cvl.fr/"), ("moodleSession","MoodleSession","https://celene.insa-cvl.fr")]);
     loggedIn = result;
     /*if (sessionValue == null){
-      print("Nothing to load h ere");
+      logger("Nothing to load h ere");
       return false;
     }
-    print("We do have a value");
+    logger("We do have a value");
     Map<String,dynamic> cookies = sessionValue.value;
-    print("Here is the value -> $cookies");
+    logger("Here is the value -> $cookies");
     DateTime sessionDate = DateFormat("dd-MM-yyyy/HH:mm:ss").parse(cookies["sessionDate"]);
-    print("Sessions delta is ${DateTime.now().difference(sessionDate).inMinutes}");
+    logger("Sessions delta is ${DateTime.now().difference(sessionDate).inMinutes}");
     if (DateTime.now().difference(sessionDate).inMinutes > 30){
-      print("Session too old, creating a new session");
+      logger("Session too old, creating a new session");
       return false;
     }
     cookies.forEach((k,v){
@@ -157,30 +157,30 @@ class CeleneParser{
       newCookie.path = v["path"]!;
       casAuth!.session.cookieStore.cookies.add(newCookie);
     });
-    print("Added successfully ${cookies.length}");*/
+    logger("Added successfully ${cookies.length}");*/
     return result;
   }
   /// Récupère et lit la page d'un cours sur celene, retourne la liste des ressources disponibles sur cette page
   Future<List<Course>> getClassData(cID,classID) async{
     List<FileEntry> downloadedCourse = files.containsKey(classID) ? files[classID]! : [];
-    print(files);
-    print("Loaded downloaded courses");
+    logger(files);
+    logger("Loaded downloaded courses");
     List<Course> courses = [];
     if (!loggedIn){
-      print("Not logged in, need to log in to Celene");
+      logger("Not logged in, need to log in to Celene");
       bool result = await loginToCelene();
       if (!result){
         throw Exception("ERROR WHILE CONNECTING TO CELENE");
       }
 
-      print("Successfully logged in to Celene");
+      logger("Successfully logged in to Celene");
     }
-    print(_casAuth?.session.cookieStore.cookies);
+    logger(_casAuth?.session.cookieStore.cookies);
     if (_casAuth != null){
       Uri classUrl = getClassUrl(cID);
-      print("Now retrieving class data : class url is ${classUrl}");
+      logger("Now retrieving class data : class url is ${classUrl}");
       //casAuth!.prepareRequest();
-      print("CAS AUTH HEADERS");
+      logger("CAS AUTH HEADERS");
       Response classData;
       try{
         classData = await _casAuth!.session.get(classUrl, headers: _casAuth!.headers);
@@ -188,20 +188,20 @@ class CeleneParser{
       on ClientException{
         classData = await _casAuth!.session.get(classUrl, headers: _casAuth!.headers);
       }
-      print("Get response finished");
+      logger("Get response finished");
       if (classData.statusCode == 200){
-        print("GET RESPONSE 200 -> Now parsing the page");
+        logger("GET RESPONSE 200 -> Now parsing the page");
         //casAuth!.session.updateCookies(classData);
         //casAuth!.prepareRequest();
         BeautifulSoup soup = BeautifulSoup(classData.body);
-        //print(soup.prettify());
+        //logger(soup.prettify());
         Bs4Element? topic = soup.find('ul', class_: 'topics');
         List<Bs4Element> sections = soup.findAll("li", class_: "section course-section main");
         for (Bs4Element i in sections){
-          print("SectionName");
+          logger("SectionName");
           String? topic = i.find("h3", class_: "sectionname")?.text.trim();
           List<Bs4Element> li_elements = i.findAll("li", class_:"activity activity-wrapper");
-          print("Found ${li_elements.length} li_elements");
+          logger("Found ${li_elements.length} li_elements");
           for (Bs4Element i in li_elements){
             Course? newCourse = Course.constructFromCeleneInfo(i,parent: topic);
             if (newCourse != null){
@@ -209,9 +209,9 @@ class CeleneParser{
               newCourse.downloaded = associatedFile != null;
               newCourse.associatedFile = associatedFile;
               if (newCourse.type == "Dossier" && newCourse.downloaded){
-                print("The folder is downloaded so we have to add all files in this folder");
+                logger("The folder is downloaded so we have to add all files in this folder");
                 for (FileEntry j in (newCourse.associatedFile!.children)!){
-                  print("Adding subCourse");
+                  logger("Adding subCourse");
                   Course subCourse = Course.constructFromFileInfo(j,parent: topic);
                   subCourse.setFile(j);
                   courses.add(subCourse);
@@ -234,16 +234,16 @@ class CeleneParser{
     // Need to go to this weird endpoint to see the courses of the user
     Uri joinedClassesURI = Uri.parse("https://celene.insa-cvl.fr/user/profile.php?showallcourses=1");
     if (!loggedIn){
-      print("Not logged in, need to log in to Celene");
+      logger("Not logged in, need to log in to Celene");
       bool result = await loginToCelene();
       if (!result){
         throw Exception("ERROR WHILE CONNECTING TO CELENE");
       }
-      print("Successfully logged in to Celene");
+      logger("Successfully logged in to Celene");
     }
     if (_casAuth != null) {
       //casAuth!.prepareRequest();
-      print("CAS AUTH HEADERS");
+      logger("CAS AUTH HEADERS");
       Response classData;
       try {
         classData =
@@ -254,16 +254,16 @@ class CeleneParser{
         await _casAuth!.session.get(joinedClassesURI, headers: _casAuth!.headers);
       }
       if (classData.statusCode == 200){
-        print("Got all data from class !");
+        logger("Got all data from class !");
         BeautifulSoup soup = BeautifulSoup(classData.body);
         List<Bs4Element> classesDiv = soup.findAll("li",class_: "contentnode");
         Bs4Element? coursesDL = classesDiv.where((e) => e.find("dt", string: r"Profils de cours") != null).firstOrNull;
         if (coursesDL == null){
-          print("Found no div and no UL ");
+          logger("Found no div and no UL ");
           return [];
         }
         List<Bs4Element> li_elements = coursesDL.findAll("li");
-        print("Found ${li_elements.length} li_elements");
+        logger("Found ${li_elements.length} li_elements");
         for (Bs4Element i in li_elements){
           Classes? newClass = Classes.constructFromCeleneInfo(i);
           if (newClass != null){
@@ -281,9 +281,9 @@ class CeleneParser{
     if (!loggedIn){
       loginToCelene();
     }
-    print("Now Downloading file");
+    logger("Now Downloading file");
     Uri uri = Uri.parse(link);
-    print("Sending GET to ${uri}");
+    logger("Sending GET to ${uri}");
     int tries = 0;
     Response downloadResponse;
     try {
@@ -294,21 +294,21 @@ class CeleneParser{
       tries++;
     }
     if (downloadResponse.statusCode == 200){
-      print("Successfully downloaded the file");
+      logger("Successfully downloaded the file");
       String filename = "unknownFile";
-      print(downloadResponse.headers);
+      logger(downloadResponse.headers);
       String? contentDisposition = downloadResponse.headers["content-disposition"];
       if (contentDisposition !=  null){
-        print("Content disposition is not null so we may have a filename");
+        logger("Content disposition is not null so we may have a filename");
         String filename = contentDisposition.split(";")[1];
-        print("filename length ${filename.length}");
+        logger("filename length ${filename.length}");
         filename = filename.substring(11, filename.length-1);
         filename = utf8.decode(latin1.encode(filename));
-        print("Filename is $filename");
+        logger("Filename is $filename");
         File downloadedFile = File("$BASEDIR$savePath/$filename");
         downloadedFile.createSync(recursive: true);
         await downloadedFile.writeAsBytes(downloadResponse.bodyBytes);
-        print("File downloaded and saved on disk");
+        logger("File downloaded and saved on disk");
         return filename;
       }
       else{
@@ -318,21 +318,21 @@ class CeleneParser{
 
     }
     else{
-      print("Error while trying to download the file, ${downloadResponse.statusCode} |${downloadResponse.reasonPhrase}");
-      print("${downloadResponse.body} \n ${downloadResponse.headers}");
+      logger("Error while trying to download the file, ${downloadResponse.statusCode} |${downloadResponse.reasonPhrase}");
+      logger("${downloadResponse.body} \n ${downloadResponse.headers}");
       return "";
     }
   }
 
   /// Télécharge un dossier disponible sur celene
   Future<String> _downloadFolder(String link,String savePath) async {
-    print("Downloading folder");
+    logger("Downloading folder");
     int objID = getIDFromUrl(link);
     Uri dlLink = getFolderDownloadLink(objID);
     if (!loggedIn){
       loginToCelene();
     }
-    print("Now sending data");
+    logger("Now sending data");
     Response dlResponse;
     try {
       dlResponse = await _casAuth!.session.get(dlLink, headers: _casAuth!.headers);
@@ -340,22 +340,22 @@ class CeleneParser{
     on ClientException{
       dlResponse = await _casAuth!.session.get(dlLink, headers: _casAuth!.headers);
     }
-    print("Recieved data");
+    logger("Recieved data");
     if (dlResponse.statusCode == 200){
-      print("File Download successful");
+      logger("File Download successful");
       String filename = "UnknownFile";
       String? contentDisposition = dlResponse.headers["content-disposition"];
       if (contentDisposition !=  null){
         String filename = contentDisposition.split(";")[1];
-        print(filename);
+        logger(filename);
         filename = filename.substring(18);
         filename.replaceAll('"', '');
         filename = utf8.decode(latin1.encode(filename));
-        print("Filename is ${filename}");
+        logger("Filename is ${filename}");
         File downloadedFile = File("$BASEDIR${savePath}/${filename}");
         downloadedFile.createSync(recursive: true);
         await downloadedFile.writeAsBytes(dlResponse.bodyBytes);
-        print("File downloaded and saved on disk");
+        logger("File downloaded and saved on disk");
         return filename;
       }
       else{
@@ -409,17 +409,17 @@ class Classes{
   static Classes? constructFromCeleneInfo(Bs4Element data){
     Bs4Element? classURL = data.find("a");
     if (classURL == null){
-      print("No a containing info Found");
+      logger("No a containing info Found");
       return null;
     }
     String? courseURL = classURL.getAttrValue("href");
     String? courseName = classURL.text.trim();
     if (courseURL == null){
-      print("No courseURL");
+      logger("No courseURL");
       return null;
     }
     if (courseName == ""){
-      print("CourseName not found");
+      logger("CourseName not found");
       return null;
     }
     int celeneID = CeleneParser.getIDFromProfileUrl(courseURL);
@@ -447,7 +447,7 @@ class Course{
   /// Transforme un élément html depuis la page celene vers une cours
   static Course? constructFromCeleneInfo(Bs4Element data,{String? parent}){
     Bs4Element? courseAtag = data.find("a",class_: "aalink stretched-link");
-    print("Course topic ! ${parent}");
+    logger("Course topic ! ${parent}");
     if (courseAtag != null){
       String? courseLink = courseAtag.getAttrValue("href");
       Bs4Element? span = courseAtag.find("span", class_: "instancename");

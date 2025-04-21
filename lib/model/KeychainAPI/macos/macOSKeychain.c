@@ -2,8 +2,6 @@
 #include <CoreFoundation/CoreFoundation.h>
 #include <string.h>
 #include <stdlib.h>
-#include <stdio.h>
-#include <stdlib.h>
 
 int add_password(const char* account, const char* service, const char* password) {
     CFStringRef accountStr = CFStringCreateWithCString(NULL, account, kCFStringEncodingUTF8);

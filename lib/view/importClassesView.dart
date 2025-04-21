@@ -5,6 +5,8 @@ import 'package:celene_cli/model/celeneObject.dart';
 import 'package:celene_cli/view/view.dart';
 import 'package:dart_console/dart_console.dart';
 
+import '../model/extensions.dart';
+
 class ImportClassesView extends View{
   List<Classes> options = [];
   int selectedIndex = 0;
@@ -109,20 +111,20 @@ class ImportClassesView extends View{
     else{
       switch (key.char){
         case 'r':
-          print("Renommer");
+          logger("Renommer");
           String newName = askToRename();
           controller.handleInput("renameCourse", (newName, selectedIndex));
           break;
         case 's':
-          print("Sauvegarder les changement");
+          logger("Sauvegarder les changement");
           controller.handleInput("saveChanges", null);
           break;
         case 'e':
-          print("Effacer le cours");
+          logger("Effacer le cours");
           controller.handleInput("removeCourse", selectedIndex);
           break;
         case 'o':
-          print("Ouvrir le cours");
+          logger("Ouvrir le cours");
           await controller.handleInput("openCourse", selectedIndex);
       }
     }
@@ -135,7 +137,7 @@ class ImportClassesView extends View{
     optionLength = options.length;
     MAX_DISPLAY_LINES = ((realTerminalHeight/2).floor())-5 > 5 ? ((realTerminalHeight/2).floor())-5 : 5 ;
     maxSublists = (optionLength / MAX_DISPLAY_LINES).ceil();
-    print("Finished getting options");
+    logger("Finished getting options");
     initializingState = false;
     initializedState = true;
   }

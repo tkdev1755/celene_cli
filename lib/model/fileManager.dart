@@ -35,7 +35,6 @@ class FileEntry{
   static Future<void> openFile(FileEntry file, {folder=false}) async {
     if (!Platform.isWindows){
       if (folder){
-        print("Path is ${file.courseID}/${file.parent}/${file.name}");
         await Process.run("open", ["${BASEDIR}${file.courseID}/${file.parent}/${file.name}"]);
       }
       else{

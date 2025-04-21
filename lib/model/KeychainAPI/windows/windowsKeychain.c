@@ -29,27 +29,27 @@ EXPORT bool set_password(const wchar_t* targetName, const wchar_t* username, con
 // Fonction FFI : Lire un mot de passe (résultat écrit dans le buffer passé en argument)
 EXPORT bool read_password(const wchar_t* targetName, wchar_t* outPassword, int maxLen) {
     PCREDENTIALW pCredential = NULL;
-    printf("Credential are %c", targetName);
+    //printf("Credential are %c", targetName);
     if (CredReadW(targetName, CRED_TYPE_GENERIC, 0, &pCredential)) {
         int len = pCredential->CredentialBlobSize / sizeof(wchar_t);
 
         if (len >= maxLen) {
-            printf("Password is longer than the original");
+            //printf("Password is longer than the original");
             CredFree(pCredential);
-            return false; // Buffer insuffisant
+            return false;
         }
         wcsncpy(outPassword, (const wchar_t*)pCredential->CredentialBlob, len);
-        outPassword[len] = L'\0'; // Sécurité null-terminée
+        outPassword[len] = L'\0';
         CredFree(pCredential);
-        printf("Password found !");
+        //printf("Password found !");
         return true;
     }
-    printf("Password not found");
+    //printf("Password not found");
     return false;
 }
 
 
-int main(int argc, char *argv[]) {
+/*int main(int argc, char *argv[]) {
     //bool result = set_password(L"appDartCli", L"userName", L"PASWOOOOOOOOOOORD");
     /*if (result){
         printf("Password set succesfully");
@@ -57,6 +57,6 @@ int main(int argc, char *argv[]) {
     wchar_t password[2048];
     // bzero(password);
     bool result2 = read_password(L"celene202", password, 2048);
-    printf("Password is %s", password);
+    //printf("Password is %s", password);
     return EXIT_SUCCESS;
-}
+}*/

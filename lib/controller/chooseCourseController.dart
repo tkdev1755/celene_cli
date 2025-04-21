@@ -79,7 +79,6 @@ class ChooseCourseController extends Controller{
       throw ArgumentError.value(data);
     }
     if (!celene.loggedIn){
-      print("Before adding sending to the new page, logging in is necessary");
 
     }
     Classes selectedClass = celene.courses[data];

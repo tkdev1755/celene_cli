@@ -21,7 +21,7 @@ class DBManager{
   DBManager(){
     File storageFile = File(DB_PATH);
     if (!storageFile.existsSync()){
-      print("dbFile does not exist, creating it");
+      logger("dbFile does not exist, creating it");
       storageFile.createSync();
       _data = {};
     }
@@ -82,7 +82,7 @@ class DBManager{
             fileIndex[k] = [];
           }
           for (dynamic i in v){
-            print(i);
+            logger(i);
             String? parent = i.containsKey("parent") ? i["parent"] : null;
             FileEntry newFile = FileEntry(i["name"], i["entryName"], i["type"], k, i["latest"],parent: parent);
             fileIndex[k]!.add(newFile);
@@ -145,7 +145,7 @@ class DBManager{
     _data["files"][courseID].add(serializedFile);
     int lastcourse = _data["files"][courseID].length;
     if (file.type == "Dossier"){
-      print("The following file is a folder, so we are obligated to unzip it");
+      logger("The following file is a folder, so we are obligated to unzip it");
       String folderPath = "$BASEDIR$courseID/${filename.substring(0, (filename.length-4))}";
       final bytes = File(("$BASEDIR$courseID/$filename")).readAsBytesSync();
       Archive archive = ZipDecoder().decodeBytes(bytes);
@@ -187,11 +187,11 @@ class DBManager{
 
   /// Fonction écrivant les changements effectués sur la "base de donnée" sur le disque
   Future<void> dumpChanges() async{
-    print("Dumping changes to file");
+    logger("Dumping changes to file");
     File dbFile = File(DB_PATH);
     if (dbFile.existsSync()){
       dbFile.writeAsStringSync(jsonEncode(_data));
-      print("Dumped changes to file");
+      logger("Dumped changes to file");
     }
   }
 }

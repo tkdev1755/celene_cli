@@ -1,8 +1,7 @@
 #include "linuxKeychain.h"
 #include <libsecret/secret.h>
-#include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
+
 #define SCHEMA_NAME "com.celeneManager.userInfo"
 #define ATTRIBUTE_KEY "celeneManager UserInfo"
 
@@ -53,8 +52,8 @@ void free_password(char *password) {
     free(password);
 }
 
-int main(int argc, char *argv[]) {
+/*int main(int argc, char *argv[]) {
     char* pwd = get_password("taka");
     printf("PWD is %s",pwd);
     return EXIT_SUCCESS;
-}
+}*/

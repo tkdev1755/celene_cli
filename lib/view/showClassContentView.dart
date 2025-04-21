@@ -115,7 +115,6 @@ class ShowClassContentView extends View {
     optionLength = options.length;
     MAX_DISPLAY_LINES = ((console.windowHeight/2).floor())-5 > 5 ? ((console.windowHeight/2).floor())-5 : 5 ;
     maxSublists = (optionLength / MAX_DISPLAY_LINES).ceil();
-    print("Finished getting options");
     initializingState = false;
     initializedState = true;
     // TODO: implement initState

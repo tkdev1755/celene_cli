@@ -75,12 +75,12 @@ class WindowsKeychainBindings extends KeyringBase{
 
     String? password;
     if (success) {
-      print("successfully got the password");
+      logger("successfully got the password");
       password = outBuffer.cast<Utf16>().toDartString();
-      print("Password is ${password}");
+      logger("Password is ${password}");
     }
     else{
-      print("No password found");
+      logger("No password found");
     }
 
     calloc.free(targetPtr);

@@ -75,7 +75,7 @@ Future<int> main() async{
     }
   }
 
-  print("Logged in sucessuflly");
+  print("Logged in to celene sucessuflly");
   // Initialisons de la page de sélection de cours (initialisation du controlleur et de la vue)
   ChooseCourseController ccController = ChooseCourseController(celene,db);
   ChooseCourseView ccView = ChooseCourseView(ccController);
