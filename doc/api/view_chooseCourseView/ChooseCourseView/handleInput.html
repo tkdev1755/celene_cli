@@ -107,11 +107,10 @@ Future&lt;void&gt; handleInput() async {
     }
   }
   else{
-    print(&quot;Detected other input than controlCharacter&quot;);
+    logger(&quot;Detected other input than controlCharacter&quot;);
     switch(key.char){
       case &#39;n&#39;:
-
-        print(&quot;Adding course&quot;);
+        logger(&quot;Adding course&quot;);
         controller.handleInput(&quot;addCourse&quot;,null,parent: this);
         break;
       case &#39;e&#39;:
@@ -120,6 +119,9 @@ Future&lt;void&gt; handleInput() async {
       case &#39;r&#39;:
         controller.handleInput(&quot;searchCourse&quot;, null);
         break;
+      case &#39;i&#39;:
+        logger(&quot;Importing courses&quot;);
+        controller.handleInput(&quot;importClasses&quot;, null, parent: this);
     }
   }
 }</code></pre>
@@ -150,7 +152,7 @@ Future&lt;void&gt; handleInput() async {
 <footer>
   <span class="no-break">
     celene_cli
-      1.0.1
+      1.0.2
   </span>
   
 </footer>

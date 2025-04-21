@@ -82,7 +82,7 @@
           fileIndex[k] = [];
         }
         for (dynamic i in v){
-          print(i);
+          logger(i);
           String? parent = i.containsKey(&quot;parent&quot;) ? i[&quot;parent&quot;] : null;
           FileEntry newFile = FileEntry(i[&quot;name&quot;], i[&quot;entryName&quot;], i[&quot;type&quot;], k, i[&quot;latest&quot;],parent: parent);
           fileIndex[k]!.add(newFile);
@@ -127,7 +127,7 @@
 <footer>
   <span class="no-break">
     celene_cli
-      1.0.1
+      1.0.2
   </span>
   
 </footer>

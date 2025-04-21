@@ -81,7 +81,9 @@
 Future&lt;void&gt; initState() async{
   initializingState = true;
   options = await super.controller.getData() as List&lt;Course&gt;;
-  print(&quot;Finished getting options&quot;);
+  optionLength = options.length;
+  MAX_DISPLAY_LINES = ((console.windowHeight&#47;2).floor())-5 &gt; 5 ? ((console.windowHeight&#47;2).floor())-5 : 5 ;
+  maxSublists = (optionLength &#47; MAX_DISPLAY_LINES).ceil();
   initializingState = false;
   initializedState = true;
   &#47;&#47; TODO: implement initState
@@ -113,7 +115,7 @@ Future&lt;void&gt; initState() async{
 <footer>
   <span class="no-break">
     celene_cli
-      1.0.1
+      1.0.2
   </span>
   
 </footer>

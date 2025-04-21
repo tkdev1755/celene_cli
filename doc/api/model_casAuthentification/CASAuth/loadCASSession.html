@@ -79,22 +79,22 @@ Retourne vrai si session chargée correctement, faux sinon</p>
   String debugHeader = loadCasSessionDebugHeader;
   String errorMessage = &quot;FALSE RETURN&quot;;
   if (secureStorage == null){
-    print(&quot;$debugHeader - $errorMessage : secure storage wasn&#39;t set&quot;);
+    logger(&quot;$debugHeader - $errorMessage : secure storage wasn&#39;t set&quot;);
     return false;
   }
   if (!secureStorage!.getSecureStorageStatus()){
-    print(&quot;$debugHeader - $errorMessage : secure storage exists but something hasn&#39;t loaded correctly&quot;);
+    logger(&quot;$debugHeader - $errorMessage : secure storage exists but something hasn&#39;t loaded correctly&quot;);
     return false;
   }
   String? stringSessionDate = secureStorage!.getValue(&quot;sessionDate&quot;);
   if (stringSessionDate == null){
-    print(&quot;$debugHeader - $errorMessage : Session date value was non-existent in secure storage&quot;);
+    logger(&quot;$debugHeader - $errorMessage : Session date value was non-existent in secure storage&quot;);
     return false;
   }
   else{
     DateTime sessionDate = DateFormat(&quot;dd&#47;MM&#47;yyyy-HH:mm&quot;).parse(stringSessionDate!);
     if (DateTime.now().difference(sessionDate).inMinutes &gt; 30){
-      print(&quot;$debugHeader - $errorMessage : Session date was too old&quot;);
+      logger(&quot;$debugHeader - $errorMessage : Session date was too old&quot;);
       return false;
     }
   }
@@ -102,7 +102,7 @@ Retourne vrai si session chargée correctement, faux sinon</p>
   for ((String,String,String) i in keysToGet){
     String? value = secureStorage!.getValue(i[0]);
     if (value == null){
-      print(&quot;$debugHeader - $errorMessage : searched cookie didn&#39;t exist in storage&quot;);
+      logger(&quot;$debugHeader - $errorMessage : searched cookie didn&#39;t exist in storage&quot;);
       return false;
     }
     cStore.Cookie newCookie = cStore.Cookie(
@@ -143,7 +143,7 @@ Retourne vrai si session chargée correctement, faux sinon</p>
 <footer>
   <span class="no-break">
     celene_cli
-      1.0.1
+      1.0.2
   </span>
   
 </footer>

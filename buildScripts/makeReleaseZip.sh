@@ -21,7 +21,7 @@ if [ "$TARGET" == "macos" ]; then
     BUILD_SCRIPT="$PROJECT_DIR/buildScripts/buildMacos.sh"
     BIN_DIR="${PROJECT_DIR}bin/celeneCli_macOS_$ARCH"
 elif [ "$TARGET" == "linux" ]; then
-    PROJECT_DIR="/celene_cli/"
+    PROJECT_DIR="/media/psf/StudioProjects/celene_cli/"
     BUILD_SCRIPT="$PROJECT_DIR/buildScripts/buildLinux.sh"
     BIN_DIR="$PROJECT_DIR/bin/celeneCli_linux_$ARCH"
 else

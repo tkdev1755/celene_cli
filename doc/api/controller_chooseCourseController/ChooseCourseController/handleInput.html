@@ -89,6 +89,10 @@ handleInput(String type, data, {View? parent}) {
       break;
     case &quot;addCourse&quot;:
       openAddCourseView(parent: parent);
+      break;
+    case &quot;importClasses&quot;:
+      openImportCourseView(parent: parent);
+      break;
     case &quot;exit&quot;:
       quitApp();
       break;
@@ -122,7 +126,7 @@ handleInput(String type, data, {View? parent}) {
 <footer>
   <span class="no-break">
     celene_cli
-      1.0.1
+      1.0.2
   </span>
   
 </footer>

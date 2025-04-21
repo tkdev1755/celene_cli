@@ -77,7 +77,6 @@
   <pre class="language-dart"><code class="language-dart">static Future&lt;void&gt; openFile(FileEntry file, {folder=false}) async {
   if (!Platform.isWindows){
     if (folder){
-      print(&quot;Path is ${file.courseID}&#47;${file.parent}&#47;${file.name}&quot;);
       await Process.run(&quot;open&quot;, [&quot;${BASEDIR}${file.courseID}&#47;${file.parent}&#47;${file.name}&quot;]);
     }
     else{
@@ -130,7 +129,7 @@
 <footer>
   <span class="no-break">
     celene_cli
-      1.0.1
+      1.0.2
   </span>
   
 </footer>

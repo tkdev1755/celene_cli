@@ -68,7 +68,7 @@
   <pre class="language-dart"><code class="language-dart">DBManager(){
   File storageFile = File(DB_PATH);
   if (!storageFile.existsSync()){
-    print(&quot;dbFile does not exist, creating it&quot;);
+    logger(&quot;dbFile does not exist, creating it&quot;);
     storageFile.createSync();
     _data = {};
   }
@@ -110,7 +110,7 @@
 <footer>
   <span class="no-break">
     celene_cli
-      1.0.1
+      1.0.2
   </span>
   
 </footer>

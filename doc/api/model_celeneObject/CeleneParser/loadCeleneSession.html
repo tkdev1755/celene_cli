@@ -65,8 +65,8 @@
     </section>
     
 <section class="desc markdown">
-  <p>Charge la session celene si la persistance de session à été activée
-Retourne vrai si la session a été chargée correctement, faux autrement</p>
+  <p>Charge la session celene si la persistance de session à été activée</p>
+<p>Retourne vrai si la session a été chargée correctement, faux autrement</p>
 </section>
 
 
@@ -80,16 +80,16 @@ Retourne vrai si la session a été chargée correctement, faux autrement</p>
   bool result = _casAuth!.loadCASSession([(&quot;moodleID&quot;,&quot;MOODLEID1_&quot;,&quot;https:&#47;&#47;celene.insa-cvl.fr&#47;&quot;), (&quot;moodleSession&quot;,&quot;MoodleSession&quot;,&quot;https:&#47;&#47;celene.insa-cvl.fr&quot;)]);
   loggedIn = result;
   &#47;*if (sessionValue == null){
-    print(&quot;Nothing to load h ere&quot;);
+    logger(&quot;Nothing to load h ere&quot;);
     return false;
   }
-  print(&quot;We do have a value&quot;);
+  logger(&quot;We do have a value&quot;);
   Map&lt;String,dynamic&gt; cookies = sessionValue.value;
-  print(&quot;Here is the value -&gt; $cookies&quot;);
+  logger(&quot;Here is the value -&gt; $cookies&quot;);
   DateTime sessionDate = DateFormat(&quot;dd-MM-yyyy&#47;HH:mm:ss&quot;).parse(cookies[&quot;sessionDate&quot;]);
-  print(&quot;Sessions delta is ${DateTime.now().difference(sessionDate).inMinutes}&quot;);
+  logger(&quot;Sessions delta is ${DateTime.now().difference(sessionDate).inMinutes}&quot;);
   if (DateTime.now().difference(sessionDate).inMinutes &gt; 30){
-    print(&quot;Session too old, creating a new session&quot;);
+    logger(&quot;Session too old, creating a new session&quot;);
     return false;
   }
   cookies.forEach((k,v){
@@ -101,7 +101,7 @@ Retourne vrai si la session a été chargée correctement, faux autrement</p>
     newCookie.path = v[&quot;path&quot;]!;
     casAuth!.session.cookieStore.cookies.add(newCookie);
   });
-  print(&quot;Added successfully ${cookies.length}&quot;);*&#47;
+  logger(&quot;Added successfully ${cookies.length}&quot;);*&#47;
   return result;
 }</code></pre>
 </section>
@@ -131,7 +131,7 @@ Retourne vrai si la session a été chargée correctement, faux autrement</p>
 <footer>
   <span class="no-break">
     celene_cli
-      1.0.1
+      1.0.2
   </span>
   
 </footer>
