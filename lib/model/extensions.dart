@@ -32,7 +32,7 @@ extension RecordIndexing2<T1, T2,T3> on (T1, T2,T3) {
 
 String BASEDIR = !Platform.isWindows ? "${Platform.environment['HOME']}/celeneCLI/" : "${Platform.environment['USERPROFILE']}/celeneCLI/";
 String WIN_BASEDIR = Platform.isWindows ? "${Platform.environment['USERPROFILE']}\\celeneCLI\\" : "";
-bool DEBUG = false;
+bool DEBUG = true;
 
 void logger(dynamic content){
   if (DEBUG){

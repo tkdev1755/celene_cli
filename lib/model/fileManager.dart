@@ -60,6 +60,45 @@ class FileEntry{
       }
     }
   }
+  static openFileInFExplorer(FileEntry file, {bool folder = false}) async{
+    if (Platform.isLinux){
+      logger("Unable point  to a specific file, so opening the actual folder instead");
+      if (!folder){
+        await Process.run('open', ["$BASEDIR${file.courseID}/"]);
+      }
+      else{
+        await Process.run('open', ["$BASEDIR${file.courseID}/${file.parent}"]);
+      }
+    }
+    else if (Platform.isMacOS){
+      if (!folder){
+        await Process.run('open', ["-R","$BASEDIR${file.courseID}/${file.name}"]);
+      }
+      else{
+        await Process.run('open', ["-R","$BASEDIR${file.courseID}/${file.parent}/${file.name}"]);
+      }
+
+    }
+    else if (Platform.isWindows){
+      if (folder){
+        await Process.start(
+          'cmd',
+          ['/c', 'explorer', '', "$WIN_BASEDIR${file.courseID}\\${file.parent}\\${file.name}"],
+          runInShell: true,
+        );
+      }
+      else{
+        await Process.start(
+          'cmd',
+          ['/c', 'explorer', '', "$WIN_BASEDIR${file.courseID}\\${file.name}"],
+          runInShell: true,
+        );
+      }
+    }
+    else{
+      throw Exception("Unsupported platform atm");
+    }
+  }
 
   /// Fonction ouvrant un lien
   static Future<void> openLink(String link)async {

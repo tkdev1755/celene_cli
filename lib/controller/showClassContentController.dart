@@ -40,6 +40,8 @@ class ShowClassContentController extends Controller{
       case "openCourse":
         await handleCourse(courses[data]);
         break;
+      case "openCourseFE":
+        await openCourseFE(courses[data]);
       case "return":
         getToPreviousPage();
         break;
@@ -105,6 +107,14 @@ class ShowClassContentController extends Controller{
   setData(dynamic data) {
     // TODO: implement setData
     throw UnimplementedError();
+  }
+
+  openCourseFE(Course course) async {
+    if (!course.downloaded){
+      return -1;
+    }
+    await FileEntry.openFileInFExplorer(course.associatedFile!, folder: course.fromFolder);
+    return 0;
   }
 
 }

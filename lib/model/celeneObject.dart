@@ -1,6 +1,7 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'package:archive/archive.dart';
 import 'package:beautiful_soup_dart/beautiful_soup.dart';
 import 'package:celene_cli/model/casAuthentification.dart';
 import 'package:celene_cli/model/fileManager.dart';
@@ -212,7 +213,7 @@ class CeleneParser{
                 logger("The folder is downloaded so we have to add all files in this folder");
                 for (FileEntry j in (newCourse.associatedFile!.children)!){
                   logger("Adding subCourse");
-                  Course subCourse = Course.constructFromFileInfo(j,parent: topic);
+                  Course subCourse = Course.constructFromFileInfo(j,topic: topic,parentFolder: newCourse.name);
                   subCourse.setFile(j);
                   courses.add(subCourse);
                 }
@@ -442,6 +443,7 @@ class Course{
   bool fromFolder = false;
   FileEntry? associatedFile = null;
   String? topic;
+  String? parentFolder;
   Course(this.name,this.link,this.type, {this.topic});
 
   /// Transforme un élément html depuis la page celene vers une cours
@@ -466,10 +468,11 @@ class Course{
   }
 
   /// Transforme un objet File en un objet Course, utile notamment pour les fichiers d'un dossier sur celene
-  static constructFromFileInfo(FileEntry courseFile, {String? parent}){
-    Course subCourse = Course(courseFile.name, "https://celene.insa-cvl.fr", courseFile.type, topic: parent);
+  static constructFromFileInfo(FileEntry courseFile, {String? topic, String? parentFolder}){
+    Course subCourse = Course(courseFile.name, "https://celene.insa-cvl.fr", courseFile.type, topic: topic);
     subCourse.updateDownloadStatus();
     subCourse.fromFolder = true;
+    subCourse.parentFolder = parentFolder;
     return subCourse;
   }
   /// Met à jour le statut de téléchargement d'une ressource
@@ -480,10 +483,11 @@ class Course{
   void setFile(FileEntry file){
     associatedFile = file;
   }
+
   /// Fonctions d'affichage
   @override
   String toString() {
     // TODO: implement toString
-    return "Nom : ${name} ${topic != null ? "($topic)" : ""}    Type : ${type}";
+    return "Nom : ${name} ${topic != null ? "($topic${parentFolder != null ? "-$parentFolder" : ""})" : ""}    Type : ${type}";
   }
 }

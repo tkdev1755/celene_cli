@@ -1,7 +1,9 @@
 
 
 import 'dart:io';
+import 'dart:math';
 
+import 'package:celene_cli/model/extensions.dart';
 import 'package:celene_cli/view/view.dart';
 
 import '../model/celeneObject.dart';
@@ -14,8 +16,11 @@ class ShowClassContentView extends View {
   int displayedSubList = 0;
   int maxSublists = 0;
   int optionLength = 0;
+  int realTerminalHeight = 0;
   static int MAX_DISPLAY_LINES = 5;
-  ShowClassContentView(super.controller,{super.parent});
+  ShowClassContentView(super.controller,{super.parent}){
+    realTerminalHeight = console.windowHeight - 4;
+  }
 
   @override
   void draw() {
@@ -45,6 +50,16 @@ class ShowClassContentView extends View {
         console.write("\n");
       }
     }
+
+    final linesToFill = realTerminalHeight - (MAX_DISPLAY_LINES*2)-2; // -2 pour marge et footer
+    for (int i = 0; i < linesToFill; i++) {
+      console.writeLine('');
+    }
+    console.setForegroundColor(ConsoleColor.brightCyan);
+    console.writeLine('─' * console.windowWidth); // ligne de séparation
+
+    console.setForegroundColor(ConsoleColor.brightCyan);
+    console.writeLine('⏎ : Télécharger/Ouvrir la ressource   |   o : Ouvrir le dossier de la ressource  \nr : Rechercher  |   esc : Quitter | ⌫ : Retour en arrière');
   }
   void drawLoadingScreen(){
     console.clearScreen();
@@ -86,6 +101,15 @@ class ShowClassContentView extends View {
         default:
         // Ignorer les autres touches
           break;
+      }
+    }
+    else{
+      switch (key.char){
+        case 'o':
+          logger("Opening course in file explorer");
+          await controller.handleInput("openCourseFE", selectedIndex, parent: this);
+        case 'r':
+          logger("Research !");
       }
     }
 
