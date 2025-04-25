@@ -63,6 +63,9 @@ class CeleneParser{
     _credentials = credentials;
   }
 
+  void clearCredentials(){
+    _credentials = null;
+  }
   /// Initialise l'attribut casAuth à la valeur passée en paramètre
   void setCAS(CASAuth cas){
     _casAuth = cas;

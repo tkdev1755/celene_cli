@@ -39,7 +39,11 @@
 
 🟥 - Implémentation d'une ouverture du "dernier" cours téléchargé en fonction du cours
 
+🟥 - Pouvoir supprimer un fichier téléchargé depuis celene
+
+
 🟨 - Optimisations au niveau de l'usage de la ram (C'est pas très fameux en ce moment)
+
 
 N’hésitez pas à proposer des fonctionnalités si vous avez des idées, et même contribuer en faisant des pull requests
 

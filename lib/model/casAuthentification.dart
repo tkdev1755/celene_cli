@@ -131,7 +131,7 @@ class CASAuth{
 
       response = await session.get(Uri.parse(newUrl), headers: headers);
       redirectCount++;
-      sleep(Duration(milliseconds: 20));
+      sleep(Duration(milliseconds: 10));
     }
 
     if (redirectCount >= 10) {
