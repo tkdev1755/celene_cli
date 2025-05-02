@@ -30,6 +30,13 @@ extension RecordIndexing2<T1, T2,T3> on (T1, T2,T3) {
 
 }
 
+extension ObjectLines on Object{
+  int getLineUsed(int width){
+    double lineUsed = (this.toString().length/width);
+    return lineUsed <= 1 ? 1 : (lineUsed.ceil());
+  }
+}
+
 String BASEDIR = !Platform.isWindows ? "${Platform.environment['HOME']}/celeneCLI/" : "${Platform.environment['USERPROFILE']}/celeneCLI/";
 String WIN_BASEDIR = Platform.isWindows ? "${Platform.environment['USERPROFILE']}\\celeneCLI\\" : "";
 bool DEBUG = true;

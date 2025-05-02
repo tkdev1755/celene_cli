@@ -1,7 +1,6 @@
 
 
 import 'package:celene_cli/controller/controller.dart';
-import 'package:celene_cli/view/chooseCourseView.dart';
 import 'package:dart_console/dart_console.dart';
 
 /// Classe abstraite représentant une vue affichée à l'écran
@@ -29,8 +28,9 @@ abstract class View{
   /// Fonction chargée de l'affichage sur le terminal
   void draw();
 
+
   // Function to call if data was updated and changes have to be displayed on the parent page when going back to it
-  /// Fonction permettant de mettre à jour l'affichage si des changements sont à déployer
+  /// Fonction permettant de mettre à jour l'affichage sur la page parente si des changements sont à déployer
   void updateData(){
     initializedState = false;
   }

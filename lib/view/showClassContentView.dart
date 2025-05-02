@@ -1,11 +1,5 @@
-
-
-import 'dart:io';
-import 'dart:math';
-
 import 'package:celene_cli/model/extensions.dart';
 import 'package:celene_cli/view/view.dart';
-
 import '../model/celeneObject.dart';
 import 'package:dart_console/dart_console.dart';
 
@@ -16,60 +10,78 @@ class ShowClassContentView extends View {
   int displayedSubList = 0;
   int maxSublists = 0;
   int optionLength = 0;
-  int realTerminalHeight = 0;
+  int displayedElements = 0;
   static int MAX_DISPLAY_LINES = 5;
-  ShowClassContentView(super.controller,{super.parent}){
-    realTerminalHeight = console.windowHeight - 4;
-  }
+  ShowClassContentView(super.controller,{super.parent});
+
 
   @override
   void draw() {
+    displayedElements = 0;
+    int width = console.windowWidth;
+    int availableLines = console.windowHeight;
+
     if (controller.getFlag("downloadCourse")){
       return;
     }
-    MAX_DISPLAY_LINES = ((console.windowHeight/2).floor())-5 > 5 ? ((console.windowHeight/2).floor())-5 : 5 ;
+    MAX_DISPLAY_LINES = ((console.windowHeight/2).floor())-10 > 5 ? ((console.windowHeight/2).floor())-10 : 5 ;
     maxSublists = (optionLength / MAX_DISPLAY_LINES).ceil();
     int startIndex = (displayedSubList)*MAX_DISPLAY_LINES;
     int endIndex = (displayedSubList+1)*(MAX_DISPLAY_LINES);
     int displayEndIndex = endIndex < options.length ? endIndex : options.length;
     console.clearScreen();
     console.setForegroundColor(ConsoleColor.cyan);
-    console.writeLine('=== Selectionne le fichier à télécharger/ouvrir ===');
+    String selectText = '=== Selectionne le fichier à télécharger/ouvrir ===';
+    String optionsText = '⏎ : Télécharger/Ouvrir la ressource   |   o : Ouvrir le dossier de la ressource  \nr : Rechercher  |   esc : Quitter | ⌫ : Retour en arrière';
+    console.writeLine(selectText);
+    availableLines -= (selectText.getLineUsed(width) + optionsText.getLineUsed(width) +5);
     console.resetColorAttributes();
     for (int i = startIndex; i < displayEndIndex; i++) {
       String textToWrite = options[i].downloaded ? '${options[i]} (Téléchargé)' : '${options[i]}';
+      String textToDisplay = i == selectedIndex ? '>$textToWrite' : ' $textToWrite';
       if (i == selectedIndex) {
         ConsoleColor dLSelectedColor = options[i].downloaded ? ConsoleColor.green : ConsoleColor.yellow;
         console.setForegroundColor(ConsoleColor.black);
         console.setBackgroundColor(dLSelectedColor);
-        console.writeLine('> $textToWrite');
+        console.writeLine(textToDisplay);
         console.resetColorAttributes();
         console.write("\n");
       } else {
-        console.writeLine('  $textToWrite');
+        console.writeLine(textToDisplay);
         console.write("\n");
       }
+      availableLines -= textToDisplay.getLineUsed(console.windowWidth) + 1;
+      displayedElements++;
+      if (availableLines == 0){
+        // No more lines available to display text on terminal, so change displayEndIndex to this one
+        displayEndIndex = i;
+      }
     }
-
-    final linesToFill = realTerminalHeight - (MAX_DISPLAY_LINES*2)-2; // -2 pour marge et footer
-    for (int i = 0; i < linesToFill; i++) {
+    //final linesToFill = realTerminalHeight - (MAX_DISPLAY_LINES*2)-2; // -2 pour marge et footer
+    for (int i = 0; i < availableLines; i++) {
       console.writeLine('');
     }
     console.setForegroundColor(ConsoleColor.brightCyan);
     console.writeLine('─' * console.windowWidth); // ligne de séparation
-
     console.setForegroundColor(ConsoleColor.brightCyan);
-    console.writeLine('⏎ : Télécharger/Ouvrir la ressource   |   o : Ouvrir le dossier de la ressource  \nr : Rechercher  |   esc : Quitter | ⌫ : Retour en arrière');
+    console.writeLine(optionsText);
   }
+
   void drawLoadingScreen(){
     console.clearScreen();
     console.writeLine("----- Chargement du Cours -----");
     console.resetColorAttributes();
   }
+
   @override
   Future<void> handleInput() async {
-    int startIndex = (displayedSubList)*MAX_DISPLAY_LINES;
-    int endIndex = (displayedSubList+1)*(MAX_DISPLAY_LINES);
+
+    int startIndex = (displayedSubList)*displayedElements;
+    int endIndex = (displayedSubList+1)*(displayedElements);
+    if (displayedSubList == maxSublists-1){
+      startIndex = optionLength - displayedElements;
+      endIndex = optionLength;
+    }
     int displayEndIndex = endIndex < options.length ? endIndex : options.length;
     var key = await console.readKey();
     if (key.isControl) {
@@ -128,8 +140,6 @@ class ShowClassContentView extends View {
       draw();
       await handleInput();
     }
-
-    // TODO: implement run
   }
 
   @override
