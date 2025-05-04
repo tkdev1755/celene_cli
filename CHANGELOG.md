@@ -7,3 +7,6 @@
 
 ## 1.0.2 
 - Fixed some rendering bugs on the terminal and added minor fixes (Classes auto-import from celene, topic for each displayed resource on a celene page)
+
+## 1.1.0
+- Fixed rendering bugs on the terminal

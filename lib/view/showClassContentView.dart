@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:celene_cli/model/extensions.dart';
 import 'package:celene_cli/view/view.dart';
 import '../model/celeneObject.dart';
@@ -10,7 +12,9 @@ class ShowClassContentView extends View {
   int displayedSubList = 0;
   int maxSublists = 0;
   int optionLength = 0;
+  int predDisplayedElement = 0;
   int displayedElements = 0;
+  int sublistStartIndex = 0;
   static int MAX_DISPLAY_LINES = 5;
   ShowClassContentView(super.controller,{super.parent});
 
@@ -24,18 +28,18 @@ class ShowClassContentView extends View {
     if (controller.getFlag("downloadCourse")){
       return;
     }
-    MAX_DISPLAY_LINES = ((console.windowHeight/2).floor())-10 > 5 ? ((console.windowHeight/2).floor())-10 : 5 ;
-    maxSublists = (optionLength / MAX_DISPLAY_LINES).ceil();
-    int startIndex = (displayedSubList)*MAX_DISPLAY_LINES;
-    int endIndex = (displayedSubList+1)*(MAX_DISPLAY_LINES);
-    int displayEndIndex = endIndex < options.length ? endIndex : options.length;
+
+    int startIndex = sublistStartIndex;
+    int displayEndIndex = optionLength;
+
     console.clearScreen();
     console.setForegroundColor(ConsoleColor.cyan);
     String selectText = '=== Selectionne le fichier à télécharger/ouvrir ===';
     String optionsText = '⏎ : Télécharger/Ouvrir la ressource   |   o : Ouvrir le dossier de la ressource  \nr : Rechercher  |   esc : Quitter | ⌫ : Retour en arrière';
     console.writeLine(selectText);
-    availableLines -= (selectText.getLineUsed(width) + optionsText.getLineUsed(width) +5);
+    availableLines -= (selectText.getLineUsed(width) + optionsText.getLineUsed(width) +5); // +5 lines for debugging purposes
     console.resetColorAttributes();
+    //logger("dslist : $displayedSubList, maxSlist = $maxSublists, sStartIndex = $sublistStartIndex,startIndex = $startIndex, endindex = $displayEndIndex, selectedIndex = $selectedIndex,predDisplayedElement = $predDisplayedElement, displayedElements = $displayedElements"); lines used for debugging
     for (int i = startIndex; i < displayEndIndex; i++) {
       String textToWrite = options[i].downloaded ? '${options[i]} (Téléchargé)' : '${options[i]}';
       String textToDisplay = i == selectedIndex ? '>$textToWrite' : ' $textToWrite';
@@ -48,11 +52,12 @@ class ShowClassContentView extends View {
         console.write("\n");
       } else {
         console.writeLine(textToDisplay);
+        console.resetColorAttributes();
         console.write("\n");
       }
       availableLines -= textToDisplay.getLineUsed(console.windowWidth) + 1;
       displayedElements++;
-      if (availableLines == 0){
+      if (availableLines <= 1){
         // No more lines available to display text on terminal, so change displayEndIndex to this one
         displayEndIndex = i;
       }
@@ -82,19 +87,34 @@ class ShowClassContentView extends View {
       startIndex = optionLength - displayedElements;
       endIndex = optionLength;
     }
+    sublistStartIndex = startIndex;
     int displayEndIndex = endIndex < options.length ? endIndex : options.length;
+    // logger("dslist : $displayedSubList, maxSlist = $maxSublists, sStartIndex = $sublistStartIndex,startIndex = $startIndex, endindex = $displayEndIndex, predDisplayedElement = $predDisplayedElement, displayedElements = $displayedElements"); Lines used for debugging
     var key = await console.readKey();
     if (key.isControl) {
       switch (key.controlChar) {
         case ControlCharacter.arrowUp:
           if (selectedIndex == startIndex){
             displayedSubList = (displayedSubList -1) % maxSublists;
+            if (selectedIndex == 0){
+              sublistStartIndex = optionLength - predDisplayedElement;
+            }
+            else{
+              sublistStartIndex = (startIndex - predDisplayedElement);
+            }
+            predDisplayedElement = displayedElements;
           }
           selectedIndex = (selectedIndex - 1) % options.length;
           break;
         case ControlCharacter.arrowDown:
           if (selectedIndex+1 == displayEndIndex){
             displayedSubList = (displayedSubList +1) % maxSublists;
+            sublistStartIndex = endIndex;
+            if (selectedIndex == optionLength-1){
+              sublistStartIndex = 0;
+            }
+            predDisplayedElement = displayedElements;
+
           }
           selectedIndex = (selectedIndex + 1) % options.length;
           break;

@@ -11,6 +11,11 @@ class ChooseCourseView extends View{
 
   List<String> options = [];
   int selectedIndex = 0;
+  int displayedSubList = 0;
+  int maxSublists = 0;
+  int optionLength = 0;
+  int displayedElements = 0;
+  static int MAX_DISPLAY_LINES = 5;
 
   ChooseCourseView(super.controller,{super.parent});
 
@@ -18,50 +23,74 @@ class ChooseCourseView extends View{
 
   @override
   void draw() {
+    displayedElements = 0;
+    int width = console.windowWidth;
+    int availableLines = console.windowHeight;
+
+    int startIndex = (displayedSubList)*MAX_DISPLAY_LINES;
+    int endIndex = (displayedSubList+1)*(MAX_DISPLAY_LINES);
+    int displayEndIndex = endIndex < options.length ? endIndex : options.length;
     console.clearScreen();
     console.setForegroundColor(ConsoleColor.cyan);
-    console.writeLine('=== Menu Principal ===');
+    String titleText = '=== Menu Principal ===';
+    String footerText = 'n : Ajouter un cours   |   e : Éditer les cours   |   r : Rechercher \ni: Importer les cours depuis Celene | esc : Quitter';
+    console.writeLine(titleText);
+    availableLines -= (titleText.getLineUsed(width) + footerText.getLineUsed(width) +2);
     console.resetColorAttributes();
-    for (int i = 0; i < options.length; i++) {
+    for (int i = startIndex; i < displayEndIndex; i++) {
+      String lineText = i == selectedIndex ? '> ${options[i]}': '  ${options[i]}';
       if (i == selectedIndex) {
         console.setForegroundColor(ConsoleColor.black);
         console.setBackgroundColor(ConsoleColor.yellow);
-        console.writeLine('> ${options[i]}');
+        console.writeLine(lineText);
         console.resetColorAttributes();
       } else {
-        console.writeLine('  ${options[i]}');
+        console.writeLine(lineText);
+      }
+      availableLines -= lineText.getLineUsed(width);
+      displayedElements++;
+      if (availableLines == 0){
+        // No more lines available to display text on terminal, so change displayEndIndex to the last line printed on screen to finish the loop
+        displayEndIndex = i;
       }
     }
-    final terminalHeight = console.windowHeight;
-    final currentLinesUsed = options.length + 1; // +1 pour le titre
-    final linesToFill = terminalHeight - currentLinesUsed - 4; // -2 pour marge et footer
-
-    for (int i = 0; i < linesToFill; i++) {
+    for (int i = 0; i < availableLines; i++) {
       console.writeLine('');
     }
 
     console.setForegroundColor(ConsoleColor.brightCyan);
     console.writeLine('─' * console.windowWidth); // ligne de séparation
-
     console.setForegroundColor(ConsoleColor.brightCyan);
-    console.writeLine('n : Ajouter un cours   |   e : Éditer les cours   |   r : Rechercher \ni: Importer les cours depuis Celene | esc : Quitter');
-
+    console.writeLine(footerText);
     console.resetColorAttributes();
 
   }
 
   @override
   Future<void> handleInput() async {
+    int startIndex = (displayedSubList)*displayedElements;
+    int endIndex = (displayedSubList+1)*(displayedElements);
+    if (displayedSubList == maxSublists-1){
+      startIndex = optionLength - displayedElements;
+      endIndex = optionLength;
+    }
+    int displayEndIndex = endIndex < options.length ? endIndex : options.length;
     var key = await console.readKey();
     if (key.isControl) {
       switch (key.controlChar) {
         case ControlCharacter.arrowUp:
           if (options.isNotEmpty){
+            if (selectedIndex == startIndex){
+              displayedSubList = (displayedSubList -1) % maxSublists;
+            }
             selectedIndex = (selectedIndex - 1) % options.length;
           }
           break;
         case ControlCharacter.arrowDown:
           if (options.isNotEmpty){
+            if (selectedIndex+1 == displayEndIndex){
+              displayedSubList = (displayedSubList +1) % maxSublists;
+            }
             selectedIndex = (selectedIndex + 1) % options.length;
           }
           break;
@@ -93,7 +122,6 @@ class ChooseCourseView extends View{
           controller.handleInput("searchCourse", null);
           break;
         case 'i':
-          logger("Importing courses");
           controller.handleInput("importClasses", null, parent: this);
       }
     }
@@ -112,6 +140,9 @@ class ChooseCourseView extends View{
   @override
   Future<void> initState() async {
     options = super.controller.getData() as List<String>;
+    optionLength = options.length;
+    MAX_DISPLAY_LINES = console.windowHeight-10 > 5 ? console.windowHeight-10 : 5 ;
+    maxSublists = (optionLength / MAX_DISPLAY_LINES).ceil();
     initializedState = true;
     // TODO: implement initState
   }

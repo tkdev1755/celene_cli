@@ -23,6 +23,8 @@
 
 ✅ - Affichage correct de pages avec énormément de ressources
 
+✅ - Affichage des catégorie parente des ressources d'une page celene
+
 ## Fonctionnalité à venir
 
 > Ces fonctionnalité sont classées par ordre de priorité (🟥 : Important, implémentation prochaine, 🟨: Moyennement important, implémentation une fois les fct importantes implémentées)
@@ -33,14 +35,11 @@
 
 🟥 - Recherche dans une page cours
 
-🟥 - Affichage des catégorie parente des ressources d'une page celene
-
 🟥 - Implémentation des raccourcis pour les cours → par exemple donner au cours Ingénieurie u Web le raccourcis "webEng" pour y accéder rapidement
 
 🟥 - Implémentation d'une ouverture du "dernier" cours téléchargé en fonction du cours
 
 🟥 - Pouvoir supprimer un fichier téléchargé depuis celene
-
 
 🟨 - Optimisations au niveau de l'usage de la ram (C'est pas très fameux en ce moment)
 

@@ -30,6 +30,7 @@ extension RecordIndexing2<T1, T2,T3> on (T1, T2,T3) {
 
 }
 
+/// Extension permettant d'obtenir le nombre de lignes utilisées par la représentation String d'un objet sur un terminal
 extension ObjectLines on Object{
   int getLineUsed(int width){
     double lineUsed = (this.toString().length/width);
