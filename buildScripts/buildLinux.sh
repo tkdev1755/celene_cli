@@ -2,7 +2,7 @@
 
 C_BIN=libkeychain.so
 DART_BIN=celene_cli
-WORK_DIR=/media/psf/StudioProjects/celene_cli
+WORK_DIR=/celene_cli
 LIB_DIR=lib/model/KeychainAPI/linux
 BIN_DIR=bin/celeneCli_linux_x64
 

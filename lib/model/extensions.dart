@@ -40,7 +40,7 @@ extension ObjectLines on Object{
 
 String BASEDIR = !Platform.isWindows ? "${Platform.environment['HOME']}/celeneCLI/" : "${Platform.environment['USERPROFILE']}/celeneCLI/";
 String WIN_BASEDIR = Platform.isWindows ? "${Platform.environment['USERPROFILE']}\\celeneCLI\\" : "";
-bool DEBUG = true;
+bool DEBUG = false;
 
 void logger(dynamic content){
   if (DEBUG){
