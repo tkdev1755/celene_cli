@@ -61,10 +61,8 @@ class DBManager{
       if (_data.containsKey("courses")){
         for (Map<String,dynamic> i in _data["courses"]){
           Classes newClass = Classes(i["name"], i["cID"]);
-          newClass.courseID = i["id"];
           newClass.updateSavePath();
           classes.add(newClass);
-
         }
         return classes;
       }
@@ -82,7 +80,6 @@ class DBManager{
             fileIndex[k] = [];
           }
           for (dynamic i in v){
-            logger(i);
             String? parent = i.containsKey("parent") ? i["parent"] : null;
             FileEntry newFile = FileEntry(i["name"], i["entryName"], i["type"], k, i["latest"],parent: parent);
             fileIndex[k]!.add(newFile);
@@ -136,6 +133,10 @@ class DBManager{
   int clearDB(){
     _data.clear();
     return 0;
+  }
+  // For debugging purposes
+  int getDataLength(String key){
+    return _data[key].length;
   }
   /// Fonction ajoutant un fichier téléchargé à l'index des fichiers téléchargé
   void addFile(Course file,String filename, String courseID){
@@ -194,7 +195,7 @@ class DBManager{
     Map<String,dynamic> serializedClass = {
       "name" : classes.name,
       "cID" : classes.celeneID,
-      "id" : classes.courseID
+      "id" : classes.celeneID
     };
     _data["courses"].add(serializedClass);
   }

@@ -134,10 +134,10 @@ class OptionsController extends Controller{
       }
       print("Suppression des cours téléchargés");
       for (Classes i in celene.courses){
-        Directory courseDir = Directory("$BASEDIR/${i.courseID}");
-        print("Deleting ${i.name} |${i.courseID}");
+        Directory courseDir = Directory("$BASEDIR/${i.celeneID}");
+        print("Deleting ${i.name} |${i.celeneID}");
         await courseDir.delete(recursive: true);
-        print("Deleted ${i.name} |${i.courseID}");
+        print("Deleted ${i.name} |${i.celeneID}");
 
       }
       celene.courses.clear();

@@ -69,6 +69,13 @@ class CeleneParser{
   void setCAS(CASAuth cas){
     _casAuth = cas;
   }
+
+  void addFileToDownloadedFiles(FileEntry entry, String cID){
+    if (!files.containsKey(cID)){
+      files[cID] = [];
+    }
+    files[cID]!.add(entry);
+  }
   /// Fonction pour se connecter à celene et créer une session
   Future<bool> loginToCelene() async{
     if (_credentials == null){
@@ -163,9 +170,10 @@ class CeleneParser{
     logger("Added successfully ${cookies.length}");*/
     return result;
   }
+
   /// Récupère et lit la page d'un cours sur celene, retourne la liste des ressources disponibles sur cette page
-  Future<List<Course>> getClassData(cID,classID) async{
-    List<FileEntry> downloadedCourse = files.containsKey(classID) ? files[classID]! : [];
+  Future<List<Course>> getClassData(cID) async{
+    List<FileEntry> downloadedCourse = files.containsKey(cID) ? files[cID]! : [];
     logger(files);
     logger("Loaded downloaded courses");
     List<Course> courses = [];
@@ -175,7 +183,6 @@ class CeleneParser{
       if (!result){
         throw Exception("ERROR WHILE CONNECTING TO CELENE");
       }
-
       logger("Successfully logged in to Celene");
     }
     logger(_casAuth?.session.cookieStore.cookies);
@@ -208,6 +215,7 @@ class CeleneParser{
           for (Bs4Element i in li_elements){
             Course? newCourse = Course.constructFromCeleneInfo(i,parent: topic);
             if (newCourse != null){
+              print("DOWNLOADED COURSES ARE ${downloadedCourse}");
               FileEntry? associatedFile = downloadedCourse.where((e) => e.entryName == newCourse.name).toList().firstOrNull;
               newCourse.downloaded = associatedFile != null;
               newCourse.associatedFile = associatedFile;
@@ -394,21 +402,20 @@ class CeleneParser{
 /// Classe représentant un cours disponible sur celene
 class Classes{
   String name;
-  String courseID = "";
   String celeneID;
   String savePath = "";
 
   Classes(this.name, this.celeneID){
-    this.courseID = Uuid().v1().substring(0,5);
-    this.savePath = courseID;
+    this.savePath = celeneID;
   }
   /// mettre à jour le chemin de sauvgarde si non initialisé
   void updateSavePath(){
-    savePath = courseID;
+    savePath = celeneID;
   }
   void setSavePath(String savePath){
     this.savePath = savePath;
   }
+
   static Classes? constructFromCeleneInfo(Bs4Element data){
     Bs4Element? classURL = data.find("a");
     if (classURL == null){

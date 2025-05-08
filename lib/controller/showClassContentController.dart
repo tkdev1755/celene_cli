@@ -5,6 +5,7 @@ import 'dart:math';
 
 import 'package:celene_cli/celeneCLI.dart';
 import 'package:celene_cli/controller/controller.dart';
+import 'package:celene_cli/model/extensions.dart';
 import 'package:celene_cli/model/fileManager.dart';
 
 import '../model/DBManager.dart';
@@ -29,7 +30,7 @@ class ShowClassContentController extends Controller{
 
   @override
   getData() async {
-    courses = await celene.getClassData(selectedClass.celeneID, selectedClass.courseID);
+    courses = await celene.getClassData(selectedClass.celeneID);
     return courses;
   }
 
@@ -51,7 +52,6 @@ class ShowClassContentController extends Controller{
     // Expects a
   }
 
-
   handleCourse(data) async{
     Course selectedCourse = data as Course;
     if (selectedCourse.downloaded){
@@ -62,10 +62,14 @@ class ShowClassContentController extends Controller{
       setFlag("downloadCourse");
       String filename = await celene.downloadElement(selectedCourse.link, selectedCourse.type, selectedClass.savePath);
       if (selectedCourse.type != 'URL'){
-        selectedCourse.associatedFile = FileEntry(filename, selectedCourse.name, selectedCourse.type, selectedClass.courseID, true);
+        selectedCourse.associatedFile = FileEntry(filename, selectedCourse.name, selectedCourse.type, selectedClass.celeneID, true);
+        if (selectedCourse.type != 'Dossier'){
+          celene.addFileToDownloadedFiles(selectedCourse.associatedFile!, selectedClass.celeneID);
+        }
         selectedCourse.updateDownloadStatus();
       }
-      db.addFile(data, filename, selectedClass.courseID);
+      db.addFile(data, filename, selectedClass.celeneID);
+      logger(db.getDataLength("files"));
       print("Finished downloading");
       setFlag("downloadCourse");
     }
