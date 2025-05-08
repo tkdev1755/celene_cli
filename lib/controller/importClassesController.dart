@@ -5,7 +5,6 @@ import 'package:celene_cli/controller/controller.dart';
 import 'package:celene_cli/controller/navigator.dart';
 import 'package:celene_cli/model/fileManager.dart';
 import 'package:celene_cli/view/view.dart';
-import 'package:celene_cli/model/extensions.dart';
 import '../model/DBManager.dart';
 import '../model/celeneObject.dart';
 
@@ -36,7 +35,6 @@ class ImportClassesController extends Controller{
       case "renameCourse":
         return renameCourse(data.$1, data.$2);
       case "removeCourse":
-        logger("");
         return removeCourse(data);
       case "saveChanges":
         return saveCourses();

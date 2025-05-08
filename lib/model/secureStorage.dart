@@ -121,4 +121,19 @@ class SecureStorage{
     }
   }
 
+
+  Future<int> clearSecureStorage() async {
+    File secStorageFile = File(SECURE_STORAGE_PATH);
+    if (secStorageFile.existsSync()){
+      await secStorageFile.delete();
+
+    }
+    _secureStorageReadStatus = false;
+    _secureStorageStatus = false;
+    _secureStorageKey = null;
+    _secureStorageIV = null;
+    _encryptedSecureStorageKey = null;
+    return 0;
+  }
+
 }

@@ -48,6 +48,9 @@ EXPORT bool read_password(const wchar_t* targetName, wchar_t* outPassword, int m
     return false;
 }
 
+EXPORT bool delete_password(const wchar_t* targetName) {
+    return CredDeleteW(targetName, CRED_TYPE_GENERIC, 0);
+}
 
 /*int main(int argc, char *argv[]) {
     //bool result = set_password(L"appDartCli", L"userName", L"PASWOOOOOOOOOOORD");

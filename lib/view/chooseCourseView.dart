@@ -33,7 +33,7 @@ class ChooseCourseView extends View{
     console.clearScreen();
     console.setForegroundColor(ConsoleColor.cyan);
     String titleText = '=== Menu Principal ===';
-    String footerText = 'n : Ajouter un cours   |   e : Éditer les cours   |   r : Rechercher \ni: Importer les cours depuis Celene | esc : Quitter';
+    String footerText = 'n : Ajouter un cours   |   e : Éditer les cours   |   r : Rechercher \ni: Importer les cours depuis Celene | o : Options | esc : Quitter';
     console.writeLine(titleText);
     availableLines -= (titleText.getLineUsed(width) + footerText.getLineUsed(width) +2);
     console.resetColorAttributes();
@@ -57,13 +57,11 @@ class ChooseCourseView extends View{
     for (int i = 0; i < availableLines; i++) {
       console.writeLine('');
     }
-
     console.setForegroundColor(ConsoleColor.brightCyan);
     console.writeLine('─' * console.windowWidth); // ligne de séparation
     console.setForegroundColor(ConsoleColor.brightCyan);
     console.writeLine(footerText);
     console.resetColorAttributes();
-
   }
 
   @override
@@ -121,8 +119,12 @@ class ChooseCourseView extends View{
         case 'r':
           controller.handleInput("searchCourse", null);
           break;
+        case 'o':
+          controller.handleInput("openOptions",null,parent: this);
+          break;
         case 'i':
           controller.handleInput("importClasses", null, parent: this);
+          break;
       }
     }
   }
@@ -130,11 +132,11 @@ class ChooseCourseView extends View{
   @override
   Future<void> run() async {
     if (!initializedState){
+      logger("INIT STATE OBLIGATORY");
       initState();
     }
     draw();
     await handleInput();
-    // TODO: implement run
   }
 
   @override

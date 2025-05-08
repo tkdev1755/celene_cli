@@ -5,11 +5,13 @@ import 'package:celene_cli/controller/addCourseController.dart';
 import 'package:celene_cli/controller/controller.dart';
 import 'package:celene_cli/controller/importClassesController.dart';
 import 'package:celene_cli/controller/navigator.dart';
+import 'package:celene_cli/controller/optionsController.dart';
 import 'package:celene_cli/controller/showClassContentController.dart';
 import 'package:celene_cli/model/DBManager.dart';
 import 'package:celene_cli/model/celeneObject.dart';
 import 'package:celene_cli/view/addCourseView.dart';
 import 'package:celene_cli/view/importClassesView.dart';
+import 'package:celene_cli/view/optionsView.dart';
 import 'package:celene_cli/view/showClassContentView.dart';
 
 import '../view/view.dart';
@@ -45,7 +47,6 @@ class ChooseCourseController extends Controller{
   // TODO: implement flags
   ChooseCourseController(this.celene,this.db,){
     super.flags = {
-
     };
   }
 
@@ -67,6 +68,9 @@ class ChooseCourseController extends Controller{
       case "importClasses":
         openImportCourseView(parent: parent);
         break;
+      case "openOptions":
+        openOptionsView(parent: parent);
+        break;
       case "exit":
         quitApp();
         break;
@@ -84,7 +88,6 @@ class ChooseCourseController extends Controller{
     Classes selectedClass = celene.courses[data];
     navigator.push(ShowClassContentView(ShowClassContentController(celene,db,selectedClass),parent: parent));
 
-
   }
 
   openAddCourseView({View? parent}){
@@ -93,6 +96,10 @@ class ChooseCourseController extends Controller{
 
   openImportCourseView({View? parent}){
     navigator.push(ImportClassesView(ImportClassesController(celene,db),parent : parent));
+  }
+
+  openOptionsView({View? parent}){
+    navigator.push(OptionsView(OptionsController(celene,db), parent: parent));
   }
 
   @override

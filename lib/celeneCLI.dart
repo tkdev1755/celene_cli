@@ -5,25 +5,22 @@ import 'package:celene_cli/model/DBManager.dart';
 import 'package:celene_cli/model/celeneObject.dart';
 import 'package:celene_cli/model/secureStorage.dart';
 import 'package:celene_cli/view/chooseCourseView.dart';
-import 'package:encrypt/encrypt.dart';
 
 import '../model/casAuthentification.dart';
 import '../model/secretManager.dart';
 import 'controller/navigator.dart';
+import 'model/extensions.dart';
 
 Navigator navigator = Navigator();
 Future<int> main() async{
   // Initialisation de la classe DBManager pour récupérer les préférences utilisateur
   DBManager db = DBManager();
-
   // Reconstructions des attributs utilisés par l'objet CeleneParser et SecretManager pour les passer après aux classes concernées
   Map<String,dynamic> dbData = db.reconstruct();
-
   // Création de l'objet SecretManager
   // dbData["secureStorageStatus"] -> Indique si l'utilisateur à activé la persistance de session
   // dbData["credentialSaved"] -> Indique si l'utilisateur à enregistré ses logins CAS dans le trousseau
   SecretManager secrets = SecretManager(dbData["secureStorageStatus"],dbData["credentialSaved"], dbData["username"]);
-
   // Si SecretsManager ne trouve pas de login lors de la phase d'initialisation
   if (!secrets.getCredentialStatus()){
     // Alors on demande à l'utilisateur de donner ses identifiants
@@ -39,8 +36,8 @@ Future<int> main() async{
 
   // Si l'utilisateur à activé la persistance de session
   if (dbData["secureStorageStatus"]){
+    logger("Session persistance enabled");
     // Alors on crée/lit le stockage sécurisé
-
     // Création de l'objet SecureStorage en passant la clé de chiffrement en paramètre (secrets.getSecureStorageKey())
     secureStorage = SecureStorage(dbData["secureStorageStatus"], secrets.getSecureStorageKey(), secrets.getSecureStorageIV());
 
@@ -49,7 +46,7 @@ Future<int> main() async{
     cas.setSecureStorage(secureStorage);
   }
 
-  // Création de la classe CeleneParser en lui passant en paramètre les cours enregistré par l'utilisateur
+  // Création de la classe CeleneParser en lui passant en paramètre les cours enregistrés par l'utilisateur
   CeleneParser celene = CeleneParser(dbData["courses"]);
   // On passe les logins CAS à la classe pour se connecter à Celene ensuite
   celene.setCredentials(secrets.getCredentials());
@@ -60,7 +57,7 @@ Future<int> main() async{
   // On passe les fichiers téléchargés par l'utilisateur à la classe CeleneParser
   celene.files = dbData["files"];
 
-  // Si aucune session n'as pu être chargée (soit pas de session, soit session trop vieille)
+  // Si aucune session n'as pu être chargée (soit pas de session existante, soit session trop vieille)
   if (!celene.loadCeleneSession()){
     // Alors on se connecte à celene
     print("No session detected, need to log in");
@@ -76,7 +73,7 @@ Future<int> main() async{
   }
 
   print("Logged in to celene sucessuflly");
-  // Initialisons de la page de sélection de cours (initialisation du controlleur et de la vue)
+  // Initialison de la page de sélection de cours (initialisation du controlleur et de la vue)
   ChooseCourseController ccController = ChooseCourseController(celene,db);
   ChooseCourseView ccView = ChooseCourseView(ccController);
   // On fixe la vue à afficher à celle de sélection de cours (ccView)

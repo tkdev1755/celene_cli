@@ -1,7 +1,7 @@
 #include "linuxKeychain.h"
 #include <libsecret/secret.h>
 #include <string.h>
-
+#include <stdio.h>
 #define SCHEMA_NAME "com.celeneManager.userInfo"
 #define ATTRIBUTE_KEY "celeneManager UserInfo"
 
@@ -46,6 +46,24 @@ char *get_password(const char *key) {
     char *result = strdup(retrieved);
     secret_password_free(retrieved);
     return result;
+}
+
+int delete_password(const char *key) {
+    GError *error = NULL;
+    gboolean res = secret_password_clear_sync(
+            get_schema(),
+            NULL,  // GCancellable
+            &error,  // GError**
+            ATTRIBUTE_KEY, key,
+            NULL
+    );
+    if (error != NULL){
+        printf("Unable to delete password: %s\n", error->message);
+        g_error_free(error);
+    }
+    if (res) {return 0;}
+    else{ return -1;}
+
 }
 
 void free_password(char *password) {

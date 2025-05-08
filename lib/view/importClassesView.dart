@@ -9,16 +9,22 @@ import '../model/extensions.dart';
 
 class ImportClassesView extends View{
   List<Classes> options = [];
+  List<int> sublistIndex= [];
   int selectedIndex = 0;
   int displayedSubList = 0;
-  int maxSublists = 0;
   int optionLength = 0;
   bool loadingMessageDrawn = false;
-  int realTerminalHeight = 0;
+  int displayedElements = 0;
   static int MAX_DISPLAY_LINES = 5;
-
+  static String footerText = 'r : Renommer le cours   |   e : Effacer le cours   |   s : Sauvegarder les cours   |   o: Ouvrir le cours   |   esc : Quitter   |   ⌫ : Retour en arrière';
+  static String headerText = '=== Vérifie les cours qui ont été importés ===';
+  static String separator = '';
+  int width = 0;
+  int height = 0;
   ImportClassesView(super.controller, {super.parent}){
-   realTerminalHeight = console.windowHeight - 4;
+    width = console.windowWidth;
+    height = console.windowHeight;
+    separator = '─'*width;
   }
 
   String askToRename(){
@@ -40,58 +46,84 @@ class ImportClassesView extends View{
   }
   @override
   void draw() {
-    MAX_DISPLAY_LINES = ((realTerminalHeight/2).floor())-5 > 5 ? ((realTerminalHeight/2).floor())-5 : 5 ;
-    maxSublists = (optionLength / MAX_DISPLAY_LINES).ceil();
-    int startIndex = (displayedSubList)*MAX_DISPLAY_LINES;
-    int endIndex = (displayedSubList+1)*(MAX_DISPLAY_LINES);
-    int displayEndIndex = endIndex < options.length ? endIndex : options.length;
+    if (console.windowHeight != height || console.windowWidth != width) {
+      height = console.windowHeight;
+      width  = console.windowWidth;
+      separator = '─'*width;
+      _computeSublist();
+    }
+    displayedElements = 0;
+    int availableLines = height;
+
+
+
     console.clearScreen();
     console.setForegroundColor(ConsoleColor.cyan);
-    console.writeLine('=== Vérifie les cours qui ont été récupérés ===');
+    console.writeLine(headerText);
+    availableLines -= (headerText.getLineUsed(width) + footerText.getLineUsed(width) + separator.getLineUsed(width));
     console.resetColorAttributes();
-    for (int i = startIndex; i < displayEndIndex; i++) {
+    int startIndex = sublistIndex[displayedSubList];
+    int endIndex = displayedSubList == (sublistIndex.length)-1 ? optionLength: sublistIndex[displayedSubList+1];
+    for (int i = startIndex; i < endIndex; i++) {
       String textToWrite = '${options[i]}';
+      String textToDisplay = i == selectedIndex ? '> $textToWrite' : '  $textToWrite';
+
       if (i == selectedIndex) {
         console.setForegroundColor(ConsoleColor.black);
         console.setBackgroundColor(ConsoleColor.yellow);
-        console.writeLine('> $textToWrite');
+        console.writeLine(textToDisplay);
         console.resetColorAttributes();
         console.write("\n");
       } else {
-        console.writeLine('  $textToWrite');
+        console.writeLine(textToDisplay);
         console.write("\n");
+      }
+      availableLines -= textToDisplay.getLineUsed(console.windowWidth) + 1;
+      displayedElements++;
+      if (availableLines < 5){
+        endIndex = i;
+        // No more lines available to display text on terminal, so change displayEndIndex to this one
       }
     }
 
-    final linesToFill = realTerminalHeight - (MAX_DISPLAY_LINES*2)-2; // -2 pour marge et footer
-    for (int i = 0; i < linesToFill; i++) {
+    for (int i = 0; i < availableLines-1; i++) {
       console.writeLine('');
     }
     console.setForegroundColor(ConsoleColor.brightCyan);
-    console.writeLine('─' * console.windowWidth); // ligne de séparation
+    console.writeLine(separator); // ligne de séparation
 
     console.setForegroundColor(ConsoleColor.brightCyan);
-    console.writeLine('r : Renommer le cours   |   e : Effacer le cours   |   s : Sauvegarder les cours\no: Ouvrir le cours   |   esc : Quitter | ⌫ : Retour en arrière');
+    console.writeLine(footerText);
 
   }
 
   @override
   Future<void> handleInput() async {
-    int startIndex = (displayedSubList)*MAX_DISPLAY_LINES;
-    int endIndex = (displayedSubList+1)*(MAX_DISPLAY_LINES);
+    int startIndex = sublistIndex[displayedSubList];
+    int endIndex = (sublistIndex[displayedSubList]+displayedElements)-1;
     int displayEndIndex = endIndex < options.length ? endIndex : options.length;
     var key = await console.readKey();
     if (key.isControl) {
       switch (key.controlChar) {
         case ControlCharacter.arrowUp:
           if (selectedIndex == startIndex){
-            displayedSubList = (displayedSubList -1) % maxSublists;
+            if (selectedIndex == 0){
+              displayedSubList = (sublistIndex.length-1);
+            }
+            else{
+              displayedSubList--;
+            }
           }
           selectedIndex = (selectedIndex - 1) % options.length;
           break;
         case ControlCharacter.arrowDown:
-          if (selectedIndex+1 == displayEndIndex){
-            displayedSubList = (displayedSubList +1) % maxSublists;
+          if (selectedIndex == displayEndIndex){
+            if (displayedSubList == (sublistIndex.length-1)){
+              displayedSubList = 0;
+            }
+            else{
+              displayedSubList += 1;
+            }
           }
           selectedIndex = (selectedIndex + 1) % options.length;
           break;
@@ -135,9 +167,7 @@ class ImportClassesView extends View{
     initializingState = true;
     options = await controller.getData();
     optionLength = options.length;
-    MAX_DISPLAY_LINES = ((realTerminalHeight/2).floor())-5 > 5 ? ((realTerminalHeight/2).floor())-5 : 5 ;
-    maxSublists = (optionLength / MAX_DISPLAY_LINES).ceil();
-    logger("Finished getting options");
+    _computeSublist();
     initializingState = false;
     initializedState = true;
   }
@@ -154,6 +184,26 @@ class ImportClassesView extends View{
     else if (initializedState){
       draw();
       await handleInput();
+    }
+  }
+
+  void _computeSublist(){
+    sublistIndex.clear();
+    int availableLines = height;
+    int defaultTextLines = (headerText.getLineUsed(width)+footerText.getLineUsed(width)+separator.getLineUsed(width));
+    availableLines -= defaultTextLines;
+    sublistIndex.add(0);
+    for (int i = 0; i<optionLength; i++){
+
+      String textToWrite = '${options[i]}';
+      String textToDisplay = i == selectedIndex ? '> $textToWrite' : '  $textToWrite';
+      availableLines -= (textToDisplay.getLineUsed(width)+1);
+      if (availableLines < 5){
+        if (i < optionLength-1){
+          sublistIndex.add(i+1);
+        }
+        availableLines = console.windowHeight-defaultTextLines;
+      }
     }
   }
 

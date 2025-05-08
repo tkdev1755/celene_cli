@@ -33,18 +33,18 @@
 
 🟥 - Implémentations des fonctionnalités de modification et de suppressions des credentials au niveau des trousseaux systèmes (expliqué plus bas)
 
+🟥 - Pouvoir s'inscrire sur un cours en le cherchant depuis le CLI
+
 🟥 - Recherche dans une page cours
 
-🟥 - Implémentation des raccourcis pour les cours → par exemple donner au cours Ingénieurie u Web le raccourcis "webEng" pour y accéder rapidement
+🟥 - Implémentation des raccourcis pour les cours → par exemple donner au cours Ingénieurie du Web le raccourcis "webEng" pour y accéder rapidement
 
 🟥 - Implémentation d'une ouverture du "dernier" cours téléchargé en fonction du cours
 
-🟥 - Pouvoir supprimer un fichier téléchargé depuis celene
-
 🟨 - Optimisations au niveau de l'usage de la ram (C'est pas très fameux en ce moment)
 
-
 N’hésitez pas à proposer des fonctionnalités si vous avez des idées, et même contribuer en faisant des pull requests
+
 
 # Comment utiliser celene_cli
 

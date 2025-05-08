@@ -118,11 +118,25 @@ class DBManager{
       _data["username"] = preferences[1];
     }
   }
+  bool getUserCredentialPreferences(){
+    return _data.containsKey("credentialSaved") ? _data["credentialSaved"] : false;
+  }
   /// Fonction sauvegardant les préférences de l'utilisateur vis à vis de la persistance de session
   saveUserSecureStoragePreferences(bool preferences){
     _data["secureStorageStatus"] = preferences;
   }
 
+  bool getSecureStorageStatus(){
+    return _data.containsKey("secureStorageStatus") ? _data["secureStorageStatus"] : false;
+  }
+  String? getUsername(){
+    return _data["username"];
+  }
+
+  int clearDB(){
+    _data.clear();
+    return 0;
+  }
   /// Fonction ajoutant un fichier téléchargé à l'index des fichiers téléchargé
   void addFile(Course file,String filename, String courseID){
     if (!_data.containsKey("files")){

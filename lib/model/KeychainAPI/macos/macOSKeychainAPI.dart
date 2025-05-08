@@ -5,6 +5,28 @@ import 'package:celene_cli/model/extensions.dart';
 import 'package:ffi/ffi.dart';
 import 'package:path/path.dart' as path;
 
+typedef CUpdatePassword = Int32 Function(
+    Pointer<Utf8> account,
+    Pointer<Utf8> service,
+    Pointer<Utf8> newPassword
+    );
+
+typedef DartUpdatePassword = int Function(
+    Pointer<Utf8> account,
+    Pointer<Utf8> service,
+    Pointer<Utf8> newPassword
+    );
+
+typedef CDeletePassword = Int32 Function(
+    Pointer<Utf8> account,
+    Pointer<Utf8> service
+    );
+
+typedef DartDeletePassword = int Function(
+    Pointer<Utf8> account,
+    Pointer<Utf8> service
+    );
+
 typedef CAddPassword = Int32 Function(
     Pointer<Utf8> account,
     Pointer<Utf8> service,
@@ -36,7 +58,8 @@ class MacOSKeychainBindings extends KeyringBase{
   late final DartAddPassword _addPassword;
   late final DartReadPassword _readPassword;
   late final DartFreePassword _freePassword;
-
+  late final DartUpdatePassword _updatePassword;
+  late final DartDeletePassword _deletePassword;
   MacOSKeychainBindings() {
     final libPath = Platform.isMacOS ? path.join(BASEDIR,'libkeychain.dylib')
     : throw UnsupportedError("macOS only");
@@ -49,7 +72,13 @@ class MacOSKeychainBindings extends KeyringBase{
     _readPassword = _lib
         .lookup<NativeFunction<CReadPassword>>('read_password')
         .asFunction();
+    _updatePassword = _lib
+        .lookup<NativeFunction<CUpdatePassword>>('update_password')
+        .asFunction();
 
+    _deletePassword = _lib
+        .lookup<NativeFunction<CDeletePassword>>('delete_password')
+        .asFunction();
     _freePassword = _lib
         .lookup<NativeFunction<CFreePassword>>('free_password')
         .asFunction();
@@ -84,5 +113,35 @@ class MacOSKeychainBindings extends KeyringBase{
     _freePassword(ptr);
 
     return result;
+  }
+
+  @override
+  int deletePassword(String account, String service) {
+
+    final acc = account.toNativeUtf8();
+    final srv = service.toNativeUtf8();
+
+    final result = _deletePassword(acc, srv);
+    malloc.free(acc);
+    malloc.free(srv);
+
+    return result;
+  }
+
+  @override
+  int updatePassword(String account, String service, String password) {
+    final accountPtr = account.toNativeUtf8();
+    final servicePtr = service.toNativeUtf8();
+    final passwordPtr = password.toNativeUtf8();
+    final res1 = _deletePassword(accountPtr,servicePtr);
+
+    final result = _addPassword(accountPtr, servicePtr, passwordPtr);
+    logger("Added password with result : $result");
+    malloc.free(accountPtr);
+    malloc.free(servicePtr);
+    malloc.free(passwordPtr);
+
+    return result;
+
   }
 }

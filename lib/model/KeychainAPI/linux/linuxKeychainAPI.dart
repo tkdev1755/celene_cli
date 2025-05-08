@@ -12,12 +12,15 @@ typedef DartStorePassword = int Function(Pointer<Utf8>, Pointer<Utf8>);
 typedef DartGetPassword = Pointer<Utf8> Function(Pointer<Utf8>);
 typedef DartFreePassword = void Function(Pointer<Utf8>);
 
+typedef CDeletePassword = Int32 Function(Pointer<Utf8>);
+typedef DartDeletePassword = int Function(Pointer<Utf8>);
 /// {@category SAFETY}
 /// Interface FFI (Foreign Function Interface) permettant d'intéragir avec une librairie dynamique C (Ici le GNOME-SECRET de GNU/Linux)
 class LinuxKeychainBindings extends KeyringBase {
   late final DartStorePassword _storePassword;
   late final DartGetPassword _getPassword;
   late final DartFreePassword _freePassword;
+  late final DartDeletePassword _deletePassword;
 
   LinuxKeychainBindings() {
     final _lib = DynamicLibrary.open(path.join('${BASEDIR}libkeychain.so'));
@@ -28,6 +31,10 @@ class LinuxKeychainBindings extends KeyringBase {
 
     _getPassword = _lib
         .lookup<NativeFunction<CGetPassword>>('get_password')
+        .asFunction();
+
+    _deletePassword = _lib
+        .lookup<NativeFunction<CDeletePassword>>('delete_password')
         .asFunction();
 
     _freePassword = _lib
@@ -60,5 +67,20 @@ class LinuxKeychainBindings extends KeyringBase {
     final result = resultPtr.toDartString();
     _freePassword(resultPtr);
     return result;
+  }
+
+  @override
+  int deletePassword(String account, String service) {
+    final keyPtr = account.toNativeUtf8();
+    final result = _deletePassword(keyPtr);
+    malloc.free(keyPtr);
+    return result;
+  }
+
+  // Same as windows, Linux doesn't need to 'update' the password if it already exists in the keychain, so just calling the addpassword function
+  @override
+  int updatePassword(String account, String service, String password) {
+    int res = addPassword(account, service, password);
+    return res;
   }
 }

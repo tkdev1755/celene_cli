@@ -1,7 +1,6 @@
 
 import 'dart:convert';
 import 'dart:io';
-import 'package:archive/archive.dart';
 import 'package:beautiful_soup_dart/beautiful_soup.dart';
 import 'package:celene_cli/model/casAuthentification.dart';
 import 'package:celene_cli/model/fileManager.dart';
@@ -426,6 +425,7 @@ class Classes{
       logger("CourseName not found");
       return null;
     }
+    courseName = courseName.replaceAll("\t", " ");
     int celeneID = CeleneParser.getIDFromProfileUrl(courseURL);
     return Classes(courseName, "$celeneID");
   }

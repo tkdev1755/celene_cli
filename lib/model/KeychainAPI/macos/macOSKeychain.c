@@ -3,6 +3,53 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include <CoreFoundation/CoreFoundation.h>
+#include <Security/Security.h>
+
+OSStatus update_password(const char* accountC, const char* serviceC, const char* newPasswordC) {
+    CFStringRef account = CFStringCreateWithCString(NULL, accountC, kCFStringEncodingUTF8);
+    CFStringRef service = CFStringCreateWithCString(NULL, serviceC, kCFStringEncodingUTF8);
+    CFDataRef newPasswordData = CFDataCreate(NULL, (const UInt8*)newPasswordC, strlen(newPasswordC));
+
+    const void* queryKeys[] = { kSecClass, kSecAttrAccount, kSecAttrService };
+    const void* queryValues[] = { kSecClassGenericPassword, account, service };
+
+    CFDictionaryRef query = CFDictionaryCreate(NULL, queryKeys, queryValues, 3, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+
+    const void* updateKeys[] = { kSecValueData };
+    const void* updateValues[] = { newPasswordData };
+
+    CFDictionaryRef attributesToUpdate = CFDictionaryCreate(NULL, updateKeys, updateValues, 1, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+
+    OSStatus status = SecItemUpdate(query, attributesToUpdate);
+
+    CFRelease(account);
+    CFRelease(service);
+    CFRelease(newPasswordData);
+    CFRelease(query);
+    CFRelease(attributesToUpdate);
+
+    return status;
+}
+
+OSStatus delete_password(const char* accountC, const char* serviceC) {
+    CFStringRef account = CFStringCreateWithCString(NULL, accountC, kCFStringEncodingUTF8);
+    CFStringRef service = CFStringCreateWithCString(NULL, serviceC, kCFStringEncodingUTF8);
+
+    const void* queryKeys[] = { kSecClass, kSecAttrAccount, kSecAttrService };
+    const void* queryValues[] = { kSecClassGenericPassword, account, service };
+
+    CFDictionaryRef query = CFDictionaryCreate(NULL, queryKeys, queryValues, 3, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+
+    OSStatus status = SecItemDelete(query);
+
+    CFRelease(account);
+    CFRelease(service);
+    CFRelease(query);
+
+    return status;
+}
+
 int add_password(const char* account, const char* service, const char* password) {
     CFStringRef accountStr = CFStringCreateWithCString(NULL, account, kCFStringEncodingUTF8);
     CFStringRef serviceStr = CFStringCreateWithCString(NULL, service, kCFStringEncodingUTF8);

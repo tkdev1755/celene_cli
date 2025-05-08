@@ -1,6 +1,6 @@
 
 import 'dart:async';
-import 'dart:ffi';
+
 import 'dart:io';
 
 import 'package:celene_cli/model/KeychainAPI/keyring.dart';
@@ -8,7 +8,6 @@ import 'package:dart_console/dart_console.dart';
 import 'package:encrypt/encrypt.dart';
 import 'package:uuid/uuid.dart';
 import 'extensions.dart';
-
 /// {@category SAFETY}
 /// Classe stockant les informations confidentielles de l'utilisateur
 class SecretManager{
@@ -126,6 +125,7 @@ class SecretManager{
     bool secureStorageKeyStatus = setSecureStorageKey();
     bool secureStorageIVStatus = setSecureStorageIV();
     _secureStorageSet = secureStorageIVStatus && secureStorageKeyStatus;
+    _secureStorageLoaded = true;
     return _secureStorageSet;
   }
 
@@ -153,6 +153,74 @@ class SecretManager{
     return result == 0;
   }
 
+  bool deleteSecureStorageCredentials(){
+    if (!_secureStorageSet){
+      return false;
+    }
+    else{
+      int result = _keyring.deletePassword(_SECURE_SERVICE_NAME, _SECURE_SERVICE_USERNAME);
+      int result2 = _keyring.deletePassword(_SECURE_SERVICE_IVNAME, _SECURE_SERVICE_IVUSERNAME);
+      logger("Result 1 from deleteSSCREds ${result} - ");
+      _secureStorageSet = !(result == 0);
+      _secureStorageLoaded = !(result == 0);
+      return result == 0;
+    }
+  }
+
+  bool deleteUserCredentials(){
+    if (!_credentialLoaded){
+      return false;
+    }
+    else{
+      int result = _keyring.deletePassword(_SERVICE_NAME, _login ?? "");
+      _credentialLoaded = !(result == 0);
+      _credentialSaved = !(result == 0);
+      return result == 0;
+    }
+  }
+
+  updateUserCredentials(String newUsername, String newPassword ,{bool saveToKeyring = false} ){
+    _login = newUsername;
+    _password = newPassword;
+    _credentialLoaded = true;
+    logger(_password);
+    if (saveToKeyring){
+      if (newUsername.length > 2048){
+        logger("Username too big, aborting");
+        throw ArgumentError.value(newUsername.length, "Username too long, not saving it for security purposes");
+      }
+      if (newPassword.length > 2048){
+        logger("Password too long, aborting");
+        throw ArgumentError.value("password too long, not saving it for security purposes");
+      }
+      int result = _keyring.updatePassword(_SERVICE_NAME, _login!, _password!);
+
+      return result == 0;
+    }
+  }
+
+  updateUserCredentialsView() async {
+    final Console console = Console();
+    String userName = "";
+    String password = "";
+    console.writeLine('=== Entrez vos identifiants CAS ===\n');
+    console.write("Nom d'utilisateur : ");
+    userName = stdin.readLineSync() ?? "";
+    console.write('\n');
+    console.write('Mot de passe : ');
+    password = await getSecureEntry();
+    console.write('\n');
+    console.write("Mot de passe iiiiiis $password\n");
+    console.write('Sauvergarder pour la prochaine fois ? (Y(es)/n) : ');
+    String stringSaveCredentials = stdin.readLineSync() ?? "n";
+    console.write('\n');
+    bool saveCredentials = (stringSaveCredentials.toUpperCase() == "Y" || stringSaveCredentials.toUpperCase() == "YES" || stringSaveCredentials.toUpperCase() == "OUI");
+    logger("Saving credentials ? :$saveCredentials");
+    bool credResult = updateUserCredentials(userName,password, saveToKeyring: saveCredentials);
+    logger("Credential save result :$credResult");
+    return (credResult && saveCredentials, userName);
+
+  }
   /// Vue permettant de demander à l'utilisateur d'entrer ses informations de connexion
   Future<(bool,String)> setCredentialsView() async {
     final Console console = Console();
@@ -172,7 +240,7 @@ class SecretManager{
     bool saveCredentials = (stringSaveCredentials.toUpperCase() == "Y" || stringSaveCredentials.toUpperCase() == "YES" || stringSaveCredentials.toUpperCase() == "OUI");
     console.write('Activer les sessions persistantes (Session CAS gardée d\'un lancement de programme à l\'autre) ?');
     String stringActivateSecureStorage = stdin.readLineSync() ?? "n";
-    bool activateSecureStorage = (stringSaveCredentials.toUpperCase() == "Y" || stringSaveCredentials.toUpperCase() == "YES" || stringSaveCredentials.toUpperCase() == "OUI");
+    bool activateSecureStorage = (stringActivateSecureStorage.toUpperCase() == "Y" || stringSaveCredentials.toUpperCase() == "YES" || stringSaveCredentials.toUpperCase() == "OUI");
     logger("Saving credentials ? :$saveCredentials");
     bool credResult = setCredentials(userName, password, saveToKeyring: saveCredentials);
     bool secureStorageResult = false;
@@ -184,17 +252,17 @@ class SecretManager{
     return (credResult && saveCredentials, userName);
   }
 
+
+
   /// Fonction permettant de cacher le résultat de l'entrée standard à l'écran, utilisé lorsqu'un mot de passe est demandé ?
   Future<String> getSecureEntry({String prompt = '> '}) async {
-    // Dumb function to cover dart lack of secure keyboard entry capabilities (doesn't logger stdin to the screen when the secure entry is written by the user)
+    // Dumb function to cover dart lack of secure keyboard entry capabilities (doesn't print stdin to the screen when the secure entry is written by the user)
     // Doesn't work on windows for some weird reason
     if (!Platform.isWindows){
       stdin.echoMode = false;
       stdin.lineMode = false;
     }
     stdout.write(prompt);
-    final buffer = <int>[];
-    final completer = Completer<String>();
     String pass = stdin.readLineSync() ?? "";
     if (!Platform.isWindows){
       stdin.echoMode = true;

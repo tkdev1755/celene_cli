@@ -9,6 +9,10 @@ abstract class KeyringBase{
 
   int addPassword(String account, String service, String password);
 
+  int updatePassword(String account, String service, String password);
+
+  int deletePassword(String account, String service);
+
   String? readPassword(String account, String service);
 }
 
@@ -31,8 +35,10 @@ class Keyring {
   }
 
   /// Fonction récupèrant un mot de passe donné depuis le trousseau de clé.
+  ///
   /// Prends un nom de service et un nom d'utilisateur.
-  /// retourne une String si le mot de passe est trouvé, null autrement.
+  ///
+  /// Retourne une String si le mot de passe est trouvé, null autrement.
   String? getPassword(String service, String username){
     if (base == null){
       print("Base isn't initialized");
@@ -55,4 +61,21 @@ class Keyring {
     return result ?? -1;
   }
 
+  int updatePassword(String serviceName, String username, String password){
+    if (base == null){
+      print("KeyringBase isn't initialized properly");
+      return -1;
+    }
+    int? result = base?.updatePassword(username, serviceName, password);
+    return result ?? -1;
+  }
+  
+  int deletePassword(String service, String username){
+    if (base == null){
+      return -1;
+    }
+    int? result =  base?.deletePassword(username,service);
+    return result ?? -1;
+  }
+  
 }

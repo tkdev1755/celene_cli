@@ -7,6 +7,7 @@ extern "C" {
 
 int store_password(const char *key, const char *password);
 char *get_password(const char *key);
+int delete_password(const char *key);
 void free_password(char *password);
 
 #ifdef __cplusplus
