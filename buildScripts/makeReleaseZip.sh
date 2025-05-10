@@ -12,16 +12,15 @@ TARGET="$1"
 ARCH="$2"
 VERSION="$3"
 # Chemins
-PROJECT_DIR="$HOME/StudioProjects/celene_cli/"
+PROJECT_DIR=$CELENE_CLI_PROJROOT
 BIN_DIR="$PROJECT_DIR/bin/"
 BUILD_SCRIPT="$PROJECT_DIR/buildScripts/"
 
 # Définir les chemins selon le paramètre
 if [ "$TARGET" == "macos" ]; then
     BUILD_SCRIPT="$PROJECT_DIR/buildScripts/buildMacos.sh"
-    BIN_DIR="${PROJECT_DIR}bin/celeneCli_macOS_$ARCH"
+    BIN_DIR="${PROJECT_DIR}/bin/celeneCli_macOS_$ARCH"
 elif [ "$TARGET" == "linux" ]; then
-    PROJECT_DIR="/media/psf/StudioProjects/celene_cli/"
     BUILD_SCRIPT="$PROJECT_DIR/buildScripts/buildLinux.sh"
     BIN_DIR="$PROJECT_DIR/bin/celeneCli_linux_$ARCH"
 else
@@ -46,15 +45,15 @@ fi
 cp "$PROJECT_DIR/install.sh" "$BIN_DIR/"
 # Création du zip
 
-if [ ! -d "${PROJECT_DIR}releases/" ]; then
-    mkdir "${PROJECT_DIR}releases"
+if [ ! -d "${PROJECT_DIR}/releases/" ]; then
+    mkdir "${PROJECT_DIR}/releases"
 fi
 
-if [ ! -d "${PROJECT_DIR}releases/version_$VERSION" ]; then
-    mkdir "${PROJECT_DIR}releases/version_$VERSION"
+if [ ! -d "${PROJECT_DIR}/releases/version_$VERSION" ]; then
+    mkdir "${PROJECT_DIR}/releases/version_$VERSION"
 fi
 
-ZIP_FILE="${PROJECT_DIR}releases/version_$VERSION/celeneCLI_${TARGET}_${ARCH}.zip"
+ZIP_FILE="${PROJECT_DIR}/releases/version_$VERSION/celeneCLI_${TARGET}_${ARCH}.zip"
 
 echo "📦 Compression du contenu de $BIN_DIR dans $ZIP_FILE ..."
 cd "$BIN_DIR"

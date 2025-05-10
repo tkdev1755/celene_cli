@@ -2,12 +2,12 @@
 
 C_BIN=libkeychain.so
 DART_BIN=celene_cli
-WORK_DIR=/celene_cli
+WORK_DIR=$CELENE_CLI_PROJROOT
 LIB_DIR=lib/model/KeychainAPI/linux
 BIN_DIR=bin/celeneCli_linux_x64
 
 
-if [ -d $WORK_DIR ]; then
+if [ -d "$WORK_DIR" ]; then
       cd "$WORK_DIR" || { echo "Erreur : Impossible d'accéder au dossier $WORK_DIR."; exit 1; }
 fi
 echo "Compilation du binaire DART";
@@ -26,11 +26,15 @@ if [ $? -ne 0 ]; then
   echo "Error while compiling the C BIN"
   exit 1
 fi
+
+cd "$WORK_DIR" || { echo "Erreur : Impossible d'accéder au dossier $WORK_DIR."; exit 1; }
 if [ -d $BIN_DIR ]
 then
-      cp "$C_BIN" "$BIN_DIR/" || { echo "Erreur : Impossible de copier le binaire C depuis $LIB_DIR."; exit 1; }
-      cp "$WORK_DIR/bin/$DART_BIN" BIN_DIR/ || { echo "Erreur : Impossible de copier le binaire dart depuis bin."; exit 1; }
+      echo "Bin folder exists"
+      cp "$LIB_DIR/$C_BIN" "$BIN_DIR/" || { echo "Erreur : Impossible de copier le binaire C depuis $LIB_DIR."; exit 1; }
+      cp "$WORK_DIR/bin/$DART_BIN" $BIN_DIR/ || { echo "Erreur : Impossible de copier le binaire dart depuis bin."; exit 1; }
 else
+    echo "Bin folder doesn't exists"
     cd "$WORK_DIR" || { echo "Erreur : Impossible d'accéder au dossier $WORK_DIR."; exit 1; }
     mkdir "$BIN_DIR"
     cd "$LIB_DIR" || { echo "Erreur : Impossible d'accéder au dossier $LIB_DIR."; exit 1; }
