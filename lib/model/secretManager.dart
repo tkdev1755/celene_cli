@@ -2,11 +2,11 @@
 import 'dart:async';
 
 import 'dart:io';
+import 'dart:math';
 
 import 'package:celene_cli/model/KeychainAPI/keyring.dart';
 import 'package:dart_console/dart_console.dart';
 import 'package:encrypt/encrypt.dart';
-import 'package:uuid/uuid.dart';
 import 'extensions.dart';
 /// {@category SAFETY}
 /// Classe stockant les informations confidentielles de l'utilisateur
@@ -56,6 +56,13 @@ class SecretManager{
       _secureStorageLoaded = _secureStorageKey != null && _secureStorageIV != null;
     }
   }
+
+  String _getRandomString(int length) {
+    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    final rand = Random.secure();
+    return List.generate(length, (index) => chars[rand.nextInt(chars.length)]).join();
+  }
+
   /// Fonction permettant de récupérer les informations de connexion CAS
   (String,String) getCredentials(){
     if (_credentialLoaded){
@@ -136,7 +143,7 @@ class SecretManager{
 
   /// Fonction créant la clé de chiffrement aléatoire du SecureStorage
   bool setSecureStorageKey(){
-    String key = Uuid().v4().substring(0,16);
+    String key = _getRandomString(16);
     int result = _keyring.setPassword(_SECURE_SERVICE_NAME, _SECURE_SERVICE_USERNAME, key);
     if (result == 0){
       _secureStorageKey = key;

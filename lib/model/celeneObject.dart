@@ -6,7 +6,6 @@ import 'package:celene_cli/model/casAuthentification.dart';
 import 'package:celene_cli/model/fileManager.dart';
 import 'package:http/http.dart';
 import 'extensions.dart';
-import 'package:uuid/uuid.dart';
 
 /// {@category API-WEB}
 /// /// {@subCategory API Celene}
