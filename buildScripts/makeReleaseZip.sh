@@ -18,7 +18,7 @@ BUILD_SCRIPT="$PROJECT_DIR/buildScripts/"
 
 # Définir les chemins selon le paramètre
 if [ "$TARGET" == "macos" ]; then
-    BUILD_SCRIPT="$PROJECT_DIR/buildScripts/buildMacos.sh"
+    BUILD_SCRIPT="$PROJECT_DIR/buildScripts/buildMacOS.sh"
     BIN_DIR="${PROJECT_DIR}/bin/celeneCli_macOS_$ARCH"
 elif [ "$TARGET" == "linux" ]; then
     BUILD_SCRIPT="$PROJECT_DIR/buildScripts/buildLinux.sh"
