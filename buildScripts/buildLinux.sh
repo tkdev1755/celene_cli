@@ -1,10 +1,14 @@
 #!/bin/bash
-
+if [ "$#" -ne 1 ]; then
+    echo "❌ Utilisation : $0 <ARCH>"
+    exit 1
+fi
+ARCH=$1
 C_BIN=libkeychain.so
 DART_BIN=celene_cli
 WORK_DIR=$CELENE_CLI_PROJROOT
 LIB_DIR=lib/model/KeychainAPI/linux
-BIN_DIR=bin/celeneCli_linux_x64
+BIN_DIR=bin/celeneCli_linux_$ARCH
 
 
 if [ -d "$WORK_DIR" ]; then
