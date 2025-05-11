@@ -12,7 +12,7 @@ $arch = $args[1]
 $version = $args[2]
 
 # Définition des chemins
-$projectDir = "$env:USERPROFILE\celene_cli"
+$projectDir = "$env:CELENE_CLI_PROJROOT"
 $binDir = ""
 $buildScript = ""
 $installScriptPath = "$projectDir\install.bat"

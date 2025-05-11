@@ -7,7 +7,7 @@ if ($args.Count -ne 1) {
 }
 
 $ARCH = $args[0]
-$projectRoot = "$env:USERPROFILE\celene_cli"
+$projectRoot = "$env:CELENE_CLI_PROJROOT"
 $apiWindowsPath = "$projectRoot\lib\model\KeychainAPI\windows"
 $outputPath = "$projectRoot\bin\celeneCLI_windows_$ARCH"
 
