@@ -29,22 +29,21 @@ Une fois les cours importés, vous pouvez sélectionner un cours et télécharge
 
 ✅ - Affichage des catégorie parente des ressources d'une page celene
 
+✅ - Pouvoir réinitialiser depuis le CLI les préférences utilisateur
+
+✅ - Implémentations des fonctionnalités de modification et de suppressions des credentials au niveau des trousseaux systèmes (expliqué plus bas)
+
 ## Fonctionnalité à venir
 
 > Ces fonctionnalité sont classées par ordre de priorité (🟥 : Important, implémentation prochaine, 🟨: Moyennement important, implémentation une fois les fct importantes implémentées)
-
-🟥 - Pouvoir réinitialiser depuis le CLI les préférences utilisateur
-
-🟥 - Implémentations des fonctionnalités de modification et de suppressions des credentials au niveau des trousseaux systèmes (expliqué plus bas)
 
 🟥 - Pouvoir s'inscrire sur un cours en le cherchant depuis le CLI
 
 🟥 - Recherche dans une page cours
 
-
 🟥 - Implémentation des raccourcis pour les cours → par exemple donner au cours Ingénieurie du Web le raccourcis "webEng" pour y accéder rapidement
 
-🟥 - Implémentation d'une ouverture du "dernier" cours téléchargé en fonction du cours
+🟥 - Implémentation d'une ouverture du "dernier" fichier téléchargé en fonction du cours
 
 🟨 - Optimisations au niveau de l'usage de la ram (C'est pas très fameux en ce moment)
 
@@ -67,7 +66,7 @@ N’hésitez pas à proposer des fonctionnalités si vous avez des idées, et m�
 
 > Si cela n’est pas assez sécurisé à votre goût, vous pouvez toujours ne pas enregistrer vos informations de connexion et ne pas enregistrer vos données de sessions en répondant « no » ou « n » lorsqu’on vous pose la question au démarrage du programme
 
-> J’ai essayé de prendre toutes les précautions possibles lorsqu’il s’agit de "sécuriser" ces données sensibles, cependant, de par mon manque d’expérience, je ne pense pas avoir la meilleure implémentation et suis à l’écoute de tout conseil visant à améliorer la sécurisation de ces données
+> J’ai essayé de prendre toutes les précautions possibles lorsqu’il s’agit de "sécuriser" ces données sensibles, cependant, je ne pense pas avoir la meilleure implémentation et suis à l’écoute de tout conseil visant à améliorer la sécurisation de ces données
 
 # Questions fréquentes
 
@@ -78,5 +77,5 @@ N’hésitez pas à proposer des fonctionnalités si vous avez des idées, et m�
 
 - > Pourquoi avoir développé en Dart et pas en python ?
   - En majeure partie parce que c’est le langage que je maitrise le mieux et puis que je le trouvais le plus approprié pour développer ce genre d’outil. Cependant je peux comprendre pourquoi python peut être plus intéressant sur certains points (plus de librairies disponibles, connu de tous, et performances correctes)
-  - Également cela m’as permis de réutiliser le code développé intégralement dans le GUI que j’ai développé à l’aide du framework Flutter au lieu de devoir réécrire toute la logique de connexion pour le GUI
+  - Également cela m’as permis de réutiliser le code développé intégralement dans le GUI que j’ai développé à l’aide du framework Flutter au lieu de devoir réécrire toute la logique de connexion
 
