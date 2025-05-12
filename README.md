@@ -1,10 +1,14 @@
 # Celene_CLI
+![Capture d’écran 2025-05-12 à 02 13 09](https://github.com/user-attachments/assets/ba0c4911-c825-4297-b8b5-d196507ff6df)
 
-# Quel est le but de cette app ?
+# Quel est le but de ce programme ?
 
 - Permettre d’accéder à la plateforme de E-Learning celene sans passer par le site web.
 - Gérer les différentes ressources téléchargées sur cette plateforme et éviter d’à chaque fois re-télécharger des fichiers parce qu’on ne sait plus où ils sont
+# Comment utiliser celene_cli
+Une fois vos identifiants entrés, vous pouvez importer vos cours Celene en appuyant sur la touche `I`de votre clavier, et supprimer les cours que vous ne voulez pas garder. Appuyez sur S pour enregistrer vos changements et redémarrez le programme
 
+Une fois les cours importés, vous pouvez sélectionner un cours et télécharger ses ressources
 # Quelles fonctionnalités ?
 
 ## Fonctionnalités implémentée
@@ -37,6 +41,7 @@
 
 🟥 - Recherche dans une page cours
 
+
 🟥 - Implémentation des raccourcis pour les cours → par exemple donner au cours Ingénieurie du Web le raccourcis "webEng" pour y accéder rapidement
 
 🟥 - Implémentation d'une ouverture du "dernier" cours téléchargé en fonction du cours
@@ -46,7 +51,6 @@
 N’hésitez pas à proposer des fonctionnalités si vous avez des idées, et même contribuer en faisant des pull requests
 
 
-# Comment utiliser celene_cli
 
 ## Installation
 
