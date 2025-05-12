@@ -217,7 +217,7 @@ class SecretManager{
     console.write('Mot de passe : ');
     password = await getSecureEntry();
     console.write('\n');
-    console.write("Mot de passe iiiiiis $password\n");
+    //console.write("Mot de passe iiiiiis $password\n");
     console.write('Sauvergarder pour la prochaine fois ? (Y(es)/n) : ');
     String stringSaveCredentials = stdin.readLineSync() ?? "n";
     console.write('\n');
