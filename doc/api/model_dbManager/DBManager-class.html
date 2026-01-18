@@ -25,24 +25,21 @@
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../index.html">celene_cli</a></li>
-    <li><a href="../model_DBManager">model&#47;DBManager.dart</a></li>
+    <li><a href="../model_DBManager/">model&#47;DBManager.dart</a></li>
     <li class="self-crumb">DBManager class</li>
   </ol>
   <div class="self-name">DBManager</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
-  <div class="toggle" id="theme-button" title="Toggle brightness">
-    <label for="theme">
-      <input type="checkbox" id="theme" value="light-theme">
-      <span id="dark-theme-button" class="material-symbols-outlined">
-        dark_mode
-      </span>
-      <span id="light-theme-button" class="material-symbols-outlined">
-        light_mode
-      </span>
-    </label>
-  </div>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
 </header>
 <main>
 <div
@@ -66,8 +63,8 @@
   <section class="summary offset-anchor" id="constructors">
     <h2>Constructors</h2>
     <dl class="constructor-summary-list">
-        <dt id="DBManager" class="callable">
-          <span class="name"><a href="../model_DBManager/DBManager/DBManager.html">DBManager</a></span><span class="signature">()</span>
+        <dt id="DBManager.new" class="callable">
+          <span class="name"><a href="../model_DBManager/DBManager/DBManager.html">DBManager.new</a></span><span class="signature">()</span>
         </dt>
         <dd>
           
@@ -82,7 +79,7 @@
     <dl class="properties">
         <dt id="DB_PATH" class="property">
   <span class="name"><a href="../model_DBManager/DBManager/DB_PATH.html">DB_PATH</a></span>
-  <span class="signature">&#8596; <a href="https://api.dart.dev/stable/3.7.2/dart-core/String-class.html">String</a></span>
+  <span class="signature">&#8596; <a href="https://api.dart.dev/stable/3.8.1/dart-core/String-class.html">String</a></span>
   
 
 </dt>
@@ -93,8 +90,8 @@
 </dd>
 
         <dt id="hashCode" class="property inherited">
-  <span class="name"><a href="https://api.dart.dev/stable/3.7.2/dart-core/Object/hashCode.html">hashCode</a></span>
-  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.7.2/dart-core/int-class.html">int</a></span>
+  <span class="name"><a href="https://api.dart.dev/stable/3.8.1/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.8.1/dart-core/int-class.html">int</a></span>
   
 
 </dt>
@@ -105,8 +102,8 @@
 </dd>
 
         <dt id="runtimeType" class="property inherited">
-  <span class="name"><a href="https://api.dart.dev/stable/3.7.2/dart-core/Object/runtimeType.html">runtimeType</a></span>
-  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.7.2/dart-core/Type-class.html">Type</a></span>
+  <span class="name"><a href="https://api.dart.dev/stable/3.8.1/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.8.1/dart-core/Type-class.html">Type</a></span>
   
 
 </dt>
@@ -139,7 +136,7 @@
 </dd>
 
         <dt id="addData" class="callable">
-  <span class="name"><a href="../model_DBManager/DBManager/addData.html">addData</a></span><span class="signature">(<wbr><span class="parameter" id="addData-param-key"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.7.2/dart-core/String-class.html">String</a></span> <span class="parameter-name">key</span>, </span><span class="parameter" id="addData-param-value"><span class="type-annotation">dynamic</span> <span class="parameter-name">value</span></span>)
+  <span class="name"><a href="../model_DBManager/DBManager/addData.html">addData</a></span><span class="signature">(<wbr><span class="parameter" id="addData-param-key"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.1/dart-core/String-class.html">String</a></span> <span class="parameter-name">key</span>, </span><span class="parameter" id="addData-param-value"><span class="type-annotation">dynamic</span> <span class="parameter-name">value</span></span>)
     <span class="returntype parameter">&#8594; dynamic</span>
   </span>
   
@@ -152,7 +149,7 @@
 </dd>
 
         <dt id="addFile" class="callable">
-  <span class="name"><a href="../model_DBManager/DBManager/addFile.html">addFile</a></span><span class="signature">(<wbr><span class="parameter" id="addFile-param-file"><span class="type-annotation"><a href="../model_celeneObject/Course-class.html">Course</a></span> <span class="parameter-name">file</span>, </span><span class="parameter" id="addFile-param-filename"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.7.2/dart-core/String-class.html">String</a></span> <span class="parameter-name">filename</span>, </span><span class="parameter" id="addFile-param-courseID"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.7.2/dart-core/String-class.html">String</a></span> <span class="parameter-name">courseID</span></span>)
+  <span class="name"><a href="../model_DBManager/DBManager/addFile.html">addFile</a></span><span class="signature">(<wbr><span class="parameter" id="addFile-param-file"><span class="type-annotation"><a href="../model_celeneObject/Course-class.html">Course</a></span> <span class="parameter-name">file</span>, </span><span class="parameter" id="addFile-param-filename"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.1/dart-core/String-class.html">String</a></span> <span class="parameter-name">filename</span>, </span><span class="parameter" id="addFile-param-courseID"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.1/dart-core/String-class.html">String</a></span> <span class="parameter-name">courseID</span></span>)
     <span class="returntype parameter">&#8594; void</span>
   </span>
   
@@ -164,9 +161,22 @@
 
 </dd>
 
+        <dt id="clearDB" class="callable">
+  <span class="name"><a href="../model_DBManager/DBManager/clearDB.html">clearDB</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.8.1/dart-core/int-class.html">int</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
         <dt id="dumpChanges" class="callable">
   <span class="name"><a href="../model_DBManager/DBManager/dumpChanges.html">dumpChanges</a></span><span class="signature">(<wbr>)
-    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.7.2/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.8.1/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
   </span>
   
 
@@ -177,8 +187,60 @@
 
 </dd>
 
+        <dt id="getDataLength" class="callable">
+  <span class="name"><a href="../model_DBManager/DBManager/getDataLength.html">getDataLength</a></span><span class="signature">(<wbr><span class="parameter" id="getDataLength-param-key"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.1/dart-core/String-class.html">String</a></span> <span class="parameter-name">key</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.8.1/dart-core/int-class.html">int</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="getSecureStorageStatus" class="callable">
+  <span class="name"><a href="../model_DBManager/DBManager/getSecureStorageStatus.html">getSecureStorageStatus</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.8.1/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="getUserCredentialPreferences" class="callable">
+  <span class="name"><a href="../model_DBManager/DBManager/getUserCredentialPreferences.html">getUserCredentialPreferences</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.8.1/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="getUsername" class="callable">
+  <span class="name"><a href="../model_DBManager/DBManager/getUsername.html">getUsername</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.8.1/dart-core/String-class.html">String</a>?</span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
         <dt id="noSuchMethod" class="callable inherited">
-  <span class="name"><a href="https://api.dart.dev/stable/3.7.2/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.7.2/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+  <span class="name"><a href="https://api.dart.dev/stable/3.8.1/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.1/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
     <span class="returntype parameter">&#8594; dynamic</span>
   </span>
   
@@ -192,7 +254,7 @@
 
         <dt id="reconstruct" class="callable">
   <span class="name"><a href="../model_DBManager/DBManager/reconstruct.html">reconstruct</a></span><span class="signature">(<wbr>)
-    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.7.2/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/3.7.2/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.8.1/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/3.8.1/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>
   </span>
   
 
@@ -205,7 +267,7 @@
 
         <dt id="reconstructCourses" class="callable">
   <span class="name"><a href="../model_DBManager/DBManager/reconstructCourses.html">reconstructCourses</a></span><span class="signature">(<wbr>)
-    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.7.2/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../model_celeneObject/Classes-class.html">Classes</a></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.8.1/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../model_celeneObject/Classes-class.html">Classes</a></span>&gt;</span></span>
   </span>
   
 
@@ -218,7 +280,7 @@
 
         <dt id="reconstructFileIndex" class="callable">
   <span class="name"><a href="../model_DBManager/DBManager/reconstructFileIndex.html">reconstructFileIndex</a></span><span class="signature">(<wbr>)
-    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.7.2/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/3.7.2/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.dart.dev/stable/3.7.2/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../model_fileManager/FileEntry-class.html">FileEntry</a></span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.8.1/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/3.8.1/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.dart.dev/stable/3.8.1/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../model_fileManager/FileEntry-class.html">FileEntry</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -230,7 +292,7 @@
 </dd>
 
         <dt id="saveUserCredentialPreferences" class="callable">
-  <span class="name"><a href="../model_DBManager/DBManager/saveUserCredentialPreferences.html">saveUserCredentialPreferences</a></span><span class="signature">(<wbr><span class="parameter" id="saveUserCredentialPreferences-param-preferences"><span class="type-annotation">(<span class="field"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.7.2/dart-core/bool-class.html">bool</a></span>, </span><span class="field"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.7.2/dart-core/String-class.html">String</a></span></span>)</span> <span class="parameter-name">preferences</span></span>)
+  <span class="name"><a href="../model_DBManager/DBManager/saveUserCredentialPreferences.html">saveUserCredentialPreferences</a></span><span class="signature">(<wbr><span class="parameter" id="saveUserCredentialPreferences-param-preferences"><span class="type-annotation">(<span class="field"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.1/dart-core/bool-class.html">bool</a></span>, </span><span class="field"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.1/dart-core/String-class.html">String</a></span></span>)</span> <span class="parameter-name">preferences</span></span>)
     <span class="returntype parameter">&#8594; dynamic</span>
   </span>
   
@@ -243,7 +305,7 @@
 </dd>
 
         <dt id="saveUserSecureStoragePreferences" class="callable">
-  <span class="name"><a href="../model_DBManager/DBManager/saveUserSecureStoragePreferences.html">saveUserSecureStoragePreferences</a></span><span class="signature">(<wbr><span class="parameter" id="saveUserSecureStoragePreferences-param-preferences"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.7.2/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">preferences</span></span>)
+  <span class="name"><a href="../model_DBManager/DBManager/saveUserSecureStoragePreferences.html">saveUserSecureStoragePreferences</a></span><span class="signature">(<wbr><span class="parameter" id="saveUserSecureStoragePreferences-param-preferences"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.1/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">preferences</span></span>)
     <span class="returntype parameter">&#8594; dynamic</span>
   </span>
   
@@ -256,8 +318,8 @@
 </dd>
 
         <dt id="toString" class="callable inherited">
-  <span class="name"><a href="https://api.dart.dev/stable/3.7.2/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
-    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.7.2/dart-core/String-class.html">String</a></span>
+  <span class="name"><a href="https://api.dart.dev/stable/3.8.1/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.8.1/dart-core/String-class.html">String</a></span>
   </span>
   
 
@@ -277,8 +339,8 @@
     <h2>Operators</h2>
     <dl class="callables">
         <dt id="operator ==" class="callable inherited">
-  <span class="name"><a href="https://api.dart.dev/stable/3.7.2/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.7.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.7.2/dart-core/bool-class.html">bool</a></span>
+  <span class="name"><a href="https://api.dart.dev/stable/3.8.1/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.1/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.8.1/dart-core/bool-class.html">bool</a></span>
   </span>
   
 
@@ -305,7 +367,7 @@
 </header>
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../index.html">celene_cli</a></li>
-    <li><a href="../model_DBManager">DBManager</a></li>
+    <li><a href="../model_DBManager/">DBManager</a></li>
     <li class="self-crumb">DBManager class</li>
 </ol>
 

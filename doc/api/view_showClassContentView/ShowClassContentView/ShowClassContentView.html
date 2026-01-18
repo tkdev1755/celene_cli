@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the ShowClassContentView constructor from Class ShowClassContentView from the showClassContentView library, for the Dart programming language.">
-  <title>ShowClassContentView constructor - ShowClassContentView - showClassContentView library - Dart API</title>
+  <meta name="description" content="API docs for the ShowClassContentView.new constructor from Class ShowClassContentView from the showClassContentView library, for the Dart programming language.">
+  <title>ShowClassContentView.new constructor - ShowClassContentView - showClassContentView library - Dart API</title>
 
 
   
@@ -25,25 +25,22 @@
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../../index.html">celene_cli</a></li>
-    <li><a href="../../view_showClassContentView">view&#47;showClassContentView.dart</a></li>
+    <li><a href="../../view_showClassContentView/">view&#47;showClassContentView.dart</a></li>
     <li><a href="../../view_showClassContentView/ShowClassContentView-class.html">ShowClassContentView</a></li>
-    <li class="self-crumb">ShowClassContentView constructor</li>
+    <li class="self-crumb">ShowClassContentView.new constructor</li>
   </ol>
-  <div class="self-name">ShowClassContentView</div>
+  <div class="self-name">ShowClassContentView.new</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
-  <div class="toggle" id="theme-button" title="Toggle brightness">
-    <label for="theme">
-      <input type="checkbox" id="theme" value="light-theme">
-      <span id="dark-theme-button" class="material-symbols-outlined">
-        dark_mode
-      </span>
-      <span id="light-theme-button" class="material-symbols-outlined">
-        light_mode
-      </span>
-    </label>
-  </div>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
 </header>
 <main>
   <div
@@ -67,7 +64,11 @@
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">ShowClassContentView(super.controller,{super.parent});</code></pre>
+  <pre class="language-dart"><code class="language-dart">ShowClassContentView(super.controller,{super.parent}){
+  width = console.windowWidth;
+  height = console.windowHeight;
+  separator = &#39;─&#39;*width;
+}</code></pre>
 </section>
 
 
@@ -81,9 +82,9 @@
 </header>
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">celene_cli</a></li>
-    <li><a href="../../view_showClassContentView">showClassContentView</a></li>
+    <li><a href="../../view_showClassContentView/">showClassContentView</a></li>
     <li><a href="../../view_showClassContentView/ShowClassContentView-class.html">ShowClassContentView</a></li>
-    <li class="self-crumb">ShowClassContentView constructor</li>
+    <li class="self-crumb">ShowClassContentView.new constructor</li>
 </ol>
 
     <h5>ShowClassContentView class</h5>

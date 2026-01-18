@@ -121,7 +121,7 @@ class CASAuth{
       ..headers['cookie'] = headers["Cookie"]!;
     http.StreamedResponse resp = await client.send(request);*/
     int redirectCount = 0;
-    while ((response.statusCode == 302 || response.statusCode == 303) && redirectCount < 10) {
+    while ((response.statusCode == 302 || response.statusCode == 303) && redirectCount <= 10) {
       final location = response.headers['location'];
       if (location == null) break;
 
@@ -133,7 +133,6 @@ class CASAuth{
       redirectCount++;
       sleep(Duration(milliseconds: 10));
     }
-
     if (redirectCount >= 10) {
       throw Exception("Trop de redirections (boucle probable)");
     }

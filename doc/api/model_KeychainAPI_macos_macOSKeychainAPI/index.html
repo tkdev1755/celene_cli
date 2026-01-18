@@ -31,17 +31,14 @@
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
-  <div class="toggle" id="theme-button" title="Toggle brightness">
-    <label for="theme">
-      <input type="checkbox" id="theme" value="light-theme">
-      <span id="dark-theme-button" class="material-symbols-outlined">
-        dark_mode
-      </span>
-      <span id="light-theme-button" class="material-symbols-outlined">
-        light_mode
-      </span>
-    </label>
-  </div>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
 </header>
 <main>
 <div
@@ -91,7 +88,21 @@
           
   <dt id="CAddPassword" class="callable">
     <span class="name"><a href="../model_KeychainAPI_macos_macOSKeychainAPI/CAddPassword.html">CAddPassword</a></span><span class="signature">
-      <span class="returntype parameter">= <a href="https://api.dart.dev/stable/3.7.2/dart-ffi/Int32-class.html">Int32</a> Function<span class="signature">(<span class="parameter" id="param-account"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.7.2/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span></span> <span class="parameter-name">account</span>, </span><span class="parameter" id="param-service"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.7.2/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span></span> <span class="parameter-name">service</span>, </span><span class="parameter" id="param-password"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.7.2/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span></span> <span class="parameter-name">password</span></span>)</span></span>
+      <span class="returntype parameter">= <a href="https://api.dart.dev/stable/3.8.1/dart-ffi/Int32-class.html">Int32</a> Function<span class="signature">(<span class="parameter" id="param-account"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.1/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span></span> <span class="parameter-name">account</span>, </span><span class="parameter" id="param-service"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.1/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span></span> <span class="parameter-name">service</span>, </span><span class="parameter" id="param-password"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.1/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span></span> <span class="parameter-name">password</span></span>)</span></span>
+    </span>
+    
+
+  </dt>
+  <dd>
+    
+    
+
+  </dd>
+
+          
+  <dt id="CDeletePassword" class="callable">
+    <span class="name"><a href="../model_KeychainAPI_macos_macOSKeychainAPI/CDeletePassword.html">CDeletePassword</a></span><span class="signature">
+      <span class="returntype parameter">= <a href="https://api.dart.dev/stable/3.8.1/dart-ffi/Int32-class.html">Int32</a> Function<span class="signature">(<span class="parameter" id="param-account"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.1/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span></span> <span class="parameter-name">account</span>, </span><span class="parameter" id="param-service"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.1/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span></span> <span class="parameter-name">service</span></span>)</span></span>
     </span>
     
 
@@ -105,7 +116,7 @@
           
   <dt id="CFreePassword" class="callable">
     <span class="name"><a href="../model_KeychainAPI_macos_macOSKeychainAPI/CFreePassword.html">CFreePassword</a></span><span class="signature">
-      <span class="returntype parameter">= <a href="https://api.dart.dev/stable/3.7.2/dart-ffi/Void-class.html">Void</a> Function<span class="signature">(<span class="parameter" id="param-"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.7.2/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span></span></span>)</span></span>
+      <span class="returntype parameter">= <a href="https://api.dart.dev/stable/3.8.1/dart-ffi/Void-class.html">Void</a> Function<span class="signature">(<span class="parameter" id="param-"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.1/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span></span></span>)</span></span>
     </span>
     
 
@@ -119,7 +130,21 @@
           
   <dt id="CReadPassword" class="callable">
     <span class="name"><a href="../model_KeychainAPI_macos_macOSKeychainAPI/CReadPassword.html">CReadPassword</a></span><span class="signature">
-      <span class="returntype parameter">= <a href="https://api.dart.dev/stable/3.7.2/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span> Function<span class="signature">(<span class="parameter" id="param-account"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.7.2/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span></span> <span class="parameter-name">account</span>, </span><span class="parameter" id="param-service"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.7.2/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span></span> <span class="parameter-name">service</span></span>)</span></span>
+      <span class="returntype parameter">= <a href="https://api.dart.dev/stable/3.8.1/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span> Function<span class="signature">(<span class="parameter" id="param-account"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.1/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span></span> <span class="parameter-name">account</span>, </span><span class="parameter" id="param-service"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.1/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span></span> <span class="parameter-name">service</span></span>)</span></span>
+    </span>
+    
+
+  </dt>
+  <dd>
+    
+    
+
+  </dd>
+
+          
+  <dt id="CUpdatePassword" class="callable">
+    <span class="name"><a href="../model_KeychainAPI_macos_macOSKeychainAPI/CUpdatePassword.html">CUpdatePassword</a></span><span class="signature">
+      <span class="returntype parameter">= <a href="https://api.dart.dev/stable/3.8.1/dart-ffi/Int32-class.html">Int32</a> Function<span class="signature">(<span class="parameter" id="param-account"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.1/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span></span> <span class="parameter-name">account</span>, </span><span class="parameter" id="param-service"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.1/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span></span> <span class="parameter-name">service</span>, </span><span class="parameter" id="param-newPassword"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.1/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span></span> <span class="parameter-name">newPassword</span></span>)</span></span>
     </span>
     
 
@@ -133,7 +158,21 @@
           
   <dt id="DartAddPassword" class="callable">
     <span class="name"><a href="../model_KeychainAPI_macos_macOSKeychainAPI/DartAddPassword.html">DartAddPassword</a></span><span class="signature">
-      <span class="returntype parameter">= <a href="https://api.dart.dev/stable/3.7.2/dart-core/int-class.html">int</a> Function<span class="signature">(<span class="parameter" id="param-account"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.7.2/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span></span> <span class="parameter-name">account</span>, </span><span class="parameter" id="param-service"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.7.2/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span></span> <span class="parameter-name">service</span>, </span><span class="parameter" id="param-password"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.7.2/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span></span> <span class="parameter-name">password</span></span>)</span></span>
+      <span class="returntype parameter">= <a href="https://api.dart.dev/stable/3.8.1/dart-core/int-class.html">int</a> Function<span class="signature">(<span class="parameter" id="param-account"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.1/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span></span> <span class="parameter-name">account</span>, </span><span class="parameter" id="param-service"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.1/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span></span> <span class="parameter-name">service</span>, </span><span class="parameter" id="param-password"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.1/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span></span> <span class="parameter-name">password</span></span>)</span></span>
+    </span>
+    
+
+  </dt>
+  <dd>
+    
+    
+
+  </dd>
+
+          
+  <dt id="DartDeletePassword" class="callable">
+    <span class="name"><a href="../model_KeychainAPI_macos_macOSKeychainAPI/DartDeletePassword.html">DartDeletePassword</a></span><span class="signature">
+      <span class="returntype parameter">= <a href="https://api.dart.dev/stable/3.8.1/dart-core/int-class.html">int</a> Function<span class="signature">(<span class="parameter" id="param-account"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.1/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span></span> <span class="parameter-name">account</span>, </span><span class="parameter" id="param-service"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.1/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span></span> <span class="parameter-name">service</span></span>)</span></span>
     </span>
     
 
@@ -147,7 +186,7 @@
           
   <dt id="DartFreePassword" class="callable">
     <span class="name"><a href="../model_KeychainAPI_macos_macOSKeychainAPI/DartFreePassword.html">DartFreePassword</a></span><span class="signature">
-      <span class="returntype parameter">= void Function<span class="signature">(<span class="parameter" id="param-"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.7.2/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span></span></span>)</span></span>
+      <span class="returntype parameter">= void Function<span class="signature">(<span class="parameter" id="param-"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.1/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span></span></span>)</span></span>
     </span>
     
 
@@ -161,7 +200,21 @@
           
   <dt id="DartReadPassword" class="callable">
     <span class="name"><a href="../model_KeychainAPI_macos_macOSKeychainAPI/DartReadPassword.html">DartReadPassword</a></span><span class="signature">
-      <span class="returntype parameter">= <a href="https://api.dart.dev/stable/3.7.2/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span> Function<span class="signature">(<span class="parameter" id="param-account"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.7.2/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span></span> <span class="parameter-name">account</span>, </span><span class="parameter" id="param-service"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.7.2/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span></span> <span class="parameter-name">service</span></span>)</span></span>
+      <span class="returntype parameter">= <a href="https://api.dart.dev/stable/3.8.1/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span> Function<span class="signature">(<span class="parameter" id="param-account"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.1/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span></span> <span class="parameter-name">account</span>, </span><span class="parameter" id="param-service"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.1/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span></span> <span class="parameter-name">service</span></span>)</span></span>
+    </span>
+    
+
+  </dt>
+  <dd>
+    
+    
+
+  </dd>
+
+          
+  <dt id="DartUpdatePassword" class="callable">
+    <span class="name"><a href="../model_KeychainAPI_macos_macOSKeychainAPI/DartUpdatePassword.html">DartUpdatePassword</a></span><span class="signature">
+      <span class="returntype parameter">= <a href="https://api.dart.dev/stable/3.8.1/dart-core/int-class.html">int</a> Function<span class="signature">(<span class="parameter" id="param-account"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.1/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span></span> <span class="parameter-name">account</span>, </span><span class="parameter" id="param-service"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.1/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span></span> <span class="parameter-name">service</span>, </span><span class="parameter" id="param-newPassword"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.1/dart-ffi/Pointer-class.html">Pointer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/ffi/2.1.4/ffi/Utf8-class.html">Utf8</a></span>&gt;</span></span> <span class="parameter-name">newPassword</span></span>)</span></span>
     </span>
     
 
@@ -191,30 +244,32 @@
     <h5><span class="package-name">celene_cli</span> <span class="package-kind">package</span></h5>
     <ol>
       <li class="section-title">Libraries</li>
-      <li><a href="../celeneCLI">celeneCLI</a></li>
-      <li><a href="../controller_addCourseController">controller/addCourseController</a></li>
-      <li><a href="../controller_chooseCourseController">controller/chooseCourseController</a></li>
-      <li><a href="../controller_controller">controller/controller</a></li>
-      <li><a href="../controller_importClassesController">controller/importClassesController</a></li>
-      <li><a href="../controller_navigator">controller/navigator</a></li>
-      <li><a href="../controller_showClassContentController">controller/showClassContentController</a></li>
-      <li><a href="../model_casAuthentification">model/casAuthentification</a></li>
-      <li><a href="../model_celeneObject">model/celeneObject</a></li>
-      <li><a href="../model_DBManager">model/DBManager</a></li>
-      <li><a href="../model_dbManager">model/dbManager</a></li>
-      <li><a href="../model_extensions">model/extensions</a></li>
-      <li><a href="../model_fileManager">model/fileManager</a></li>
-      <li><a href="../model_KeychainAPI_keyring">model/KeychainAPI/keyring</a></li>
-      <li><a href="../model_KeychainAPI_linux_linuxKeychainAPI">model/KeychainAPI/linux/linuxKeychainAPI</a></li>
-      <li><a href="../model_KeychainAPI_macos_macOSKeychainAPI">model/KeychainAPI/macos/macOSKeychainAPI</a></li>
-      <li><a href="../model_KeychainAPI_windows_windowsKeychainAPI">model/KeychainAPI/windows/windowsKeychainAPI</a></li>
-      <li><a href="../model_secretManager">model/secretManager</a></li>
-      <li><a href="../model_secureStorage">model/secureStorage</a></li>
-      <li><a href="../view_addCourseView">view/addCourseView</a></li>
-      <li><a href="../view_chooseCourseView">view/chooseCourseView</a></li>
-      <li><a href="../view_importClassesView">view/importClassesView</a></li>
-      <li><a href="../view_showClassContentView">view/showClassContentView</a></li>
-      <li><a href="../view_view">view/view</a></li>
+      <li><a href="../celeneCLI/">celeneCLI</a></li>
+      <li><a href="../controller_addCourseController/">controller/addCourseController</a></li>
+      <li><a href="../controller_chooseCourseController/">controller/chooseCourseController</a></li>
+      <li><a href="../controller_controller/">controller/controller</a></li>
+      <li><a href="../controller_importClassesController/">controller/importClassesController</a></li>
+      <li><a href="../controller_navigator/">controller/navigator</a></li>
+      <li><a href="../controller_optionsController/">controller/optionsController</a></li>
+      <li><a href="../controller_showClassContentController/">controller/showClassContentController</a></li>
+      <li><a href="../model_casAuthentification/">model/casAuthentification</a></li>
+      <li><a href="../model_celeneObject/">model/celeneObject</a></li>
+      <li><a href="../model_DBManager/">model/DBManager</a></li>
+      <li><a href="../model_dbManager/">model/dbManager</a></li>
+      <li><a href="../model_extensions/">model/extensions</a></li>
+      <li><a href="../model_fileManager/">model/fileManager</a></li>
+      <li><a href="../model_KeychainAPI_keyring/">model/KeychainAPI/keyring</a></li>
+      <li><a href="../model_KeychainAPI_linux_linuxKeychainAPI/">model/KeychainAPI/linux/linuxKeychainAPI</a></li>
+      <li><a href="../model_KeychainAPI_macos_macOSKeychainAPI/">model/KeychainAPI/macos/macOSKeychainAPI</a></li>
+      <li><a href="../model_KeychainAPI_windows_windowsKeychainAPI/">model/KeychainAPI/windows/windowsKeychainAPI</a></li>
+      <li><a href="../model_secretManager/">model/secretManager</a></li>
+      <li><a href="../model_secureStorage/">model/secureStorage</a></li>
+      <li><a href="../view_addCourseView/">view/addCourseView</a></li>
+      <li><a href="../view_chooseCourseView/">view/chooseCourseView</a></li>
+      <li><a href="../view_importClassesView/">view/importClassesView</a></li>
+      <li><a href="../view_optionsView/">view/optionsView</a></li>
+      <li><a href="../view_showClassContentView/">view/showClassContentView</a></li>
+      <li><a href="../view_view/">view/view</a></li>
 </ol>
 
   </div>

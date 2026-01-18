@@ -30,28 +30,29 @@
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
-  <div class="toggle" id="theme-button" title="Toggle brightness">
-    <label for="theme">
-      <input type="checkbox" id="theme" value="light-theme">
-      <span id="dark-theme-button" class="material-symbols-outlined">
-        dark_mode
-      </span>
-      <span id="light-theme-button" class="material-symbols-outlined">
-        light_mode
-      </span>
-    </label>
-  </div>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
 </header>
 <main>
   <div id="dartdoc-main-content" class="main-content">
       
 <section class="desc markdown">
   <h1 id="celene_cli">Celene_CLI</h1>
-<h1 id="quel-est-le-but-de-cette-app-">Quel est le but de cette app ?</h1>
+<p><img src="https://github.com/user-attachments/assets/ba0c4911-c825-4297-b8b5-d196507ff6df" alt="Capture d’écran 2025-05-12 à 02 13 09"></p>
+<h1 id="quel-est-le-but-de-ce-programme-">Quel est le but de ce programme ?</h1>
 <ul>
 <li>Permettre d’accéder à la plateforme de E-Learning celene sans passer par le site web.</li>
 <li>Gérer les différentes ressources téléchargées sur cette plateforme et éviter d’à chaque fois re-télécharger des fichiers parce qu’on ne sait plus où ils sont</li>
 </ul>
+<h1 id="comment-utiliser-celene_cli">Comment utiliser celene_cli</h1>
+<p>Une fois vos identifiants entrés, vous pouvez importer vos cours Celene en appuyant sur la touche <code>I</code>de votre clavier, et supprimer les cours que vous ne voulez pas garder. Appuyez sur S pour enregistrer vos changements et redémarrez le programme</p>
+<p>Une fois les cours importés, vous pouvez sélectionner un cours et télécharger ses ressources</p>
 <h1 id="quelles-fonctionnalits-">Quelles fonctionnalités ?</h1>
 <h2 id="fonctionnalits-implmente">Fonctionnalités implémentée</h2>
 <p>✅ - Connexion automatique au CAS</p>
@@ -61,19 +62,19 @@
 <p>✅ - Persistance des sessions d'une instance du programme à l'autre (limitée dans le temps)</p>
 <p>✅ - Portabilité de l'outil (fonctionne sur GNU/Linux, MacOS et Windows)</p>
 <p>✅ - Affichage correct de pages avec énormément de ressources</p>
+<p>✅ - Affichage des catégorie parente des ressources d'une page celene</p>
+<p>✅ - Pouvoir réinitialiser depuis le CLI les préférences utilisateur</p>
+<p>✅ - Implémentations des fonctionnalités de modification et de suppressions des credentials au niveau des trousseaux systèmes (expliqué plus bas)</p>
 <h2 id="fonctionnalit--venir">Fonctionnalité à venir</h2>
 <blockquote>
 <p>Ces fonctionnalité sont classées par ordre de priorité (🟥 : Important, implémentation prochaine, 🟨: Moyennement important, implémentation une fois les fct importantes implémentées)</p>
 </blockquote>
-<p>🟥 - Pouvoir réinitialiser depuis le CLI les préférences utilisateur</p>
-<p>🟥 - Implémentations des fonctionnalités de modification et de suppressions des credentials au niveau des trousseaux systèmes (expliqué plus bas)</p>
+<p>🟥 - Pouvoir s'inscrire sur un cours en le cherchant depuis le CLI</p>
 <p>🟥 - Recherche dans une page cours</p>
-<p>🟥 - Affichage des catégorie parente des ressources d'une page celene</p>
-<p>🟥 - Implémentation des raccourcis pour les cours → par exemple donner au cours Ingénieurie u Web le raccourcis "webEng" pour y accéder rapidement</p>
-<p>🟥 - Implémentation d'une ouverture du "dernier" cours téléchargé en fonction du cours</p>
+<p>🟥 - Implémentation des raccourcis pour les cours → par exemple donner au cours Ingénieurie du Web le raccourcis "webEng" pour y accéder rapidement</p>
+<p>🟥 - Implémentation d'une ouverture du "dernier" fichier téléchargé en fonction du cours</p>
 <p>🟨 - Optimisations au niveau de l'usage de la ram (C'est pas très fameux en ce moment)</p>
 <p>N’hésitez pas à proposer des fonctionnalités si vous avez des idées, et même contribuer en faisant des pull requests</p>
-<h1 id="comment-utiliser-celene_cli">Comment utiliser celene_cli</h1>
 <h2 id="installation">Installation</h2>
 <ul>
 <li>Afin d’installer le logiciel, vous devez tout d’abord télécharger le binaire depuis la page Release de ce repo git en fonction de votre système d’exploitation</li>
@@ -87,14 +88,14 @@
 </ul>
 <h1 id="fonctionnement--de-la-connexion-automatique-et-persistance-de-session">Fonctionnement  de la connexion automatique et persistance de session</h1>
 <ul>
-<li>Lorsque vous acceptez d’enregistrer vos logins CAS lors de la première ouverture du programme ces derniers ne quittent jamais votre appareil et sont enregistrés de manière sécurisée. Les information de connexion sont enregistrées dans le "trousseau de clés" de votre système d’exploitation (<code>Keychain</code> pour MacOS, <code>Windows Credential Manager</code> pour Windows, et <code>GNOME-Secret</code> pour GNU/Linux) et sont lus au démarrage du programme pour pouvoir vous connecter automatiquement au CAS. Le programme ne lit aucune autre entrée du trousseau de clés et une attention particulière a été faite pour que les fonctions ne soient pas accessibles n'importe où à n'importe quel moment.</li>
+<li>Lorsque vous acceptez d’enregistrer vos logins CAS lors de la première ouverture du programme ces derniers ne quittent jamais votre appareil et sont enregistrés de manière sécurisée. Les information de connexion sont enregistrées dans le "trousseau de clés" de votre système d’exploitation (<code>Keychain</code> pour MacOS, <code>Windows Credential Manager</code> pour Windows, et <code>GNOME-Secret</code> pour GNU/Linux) et sont lus au démarrage du programme pour pouvoir vous connecter automatiquement au CAS. Le programme ne lit aucune autre entrée du trousseau de clés et une attention particulière a été portée pour que les fonctions ne soient pas accessibles n'importe où à n'importe quel moment.</li>
 <li>En ce qui concerne la persistance de session, les données de session sont stockées dans un fichier chiffré à l’aide d’un mot de passe généré aléatoirement pour chaque utilisateur qui lance le programme. Ce même mot de passe est stocké dans le trousseau de clé de votre système d’exploitation et n’est visible dans ce dit trousseau que si vous entrez le mot de passe de votre session</li>
 </ul>
 <blockquote>
 <p>Si cela n’est pas assez sécurisé à votre goût, vous pouvez toujours ne pas enregistrer vos informations de connexion et ne pas enregistrer vos données de sessions en répondant «&nbsp;no&nbsp;» ou «&nbsp;n&nbsp;» lorsqu’on vous pose la question au démarrage du programme</p>
 </blockquote>
 <blockquote>
-<p>J’ai essayé de prendre toutes les précautions possibles lorsqu’il s’agit de "sécuriser" ces données sensibles, cependant, de par mon manque d’expérience, je ne pense pas avoir la meilleure implémentation et suis à l’écoute de tout conseil visant à améliorer la sécurisation de ces données</p>
+<p>J’ai essayé de prendre toutes les précautions possibles lorsqu’il s’agit de "sécuriser" ces données sensibles, cependant, je ne pense pas avoir la meilleure implémentation et suis à l’écoute de tout conseil visant à améliorer la sécurisation de ces données</p>
 </blockquote>
 <h1 id="questions-frquentes">Questions fréquentes</h1>
 <ul>
@@ -115,7 +116,7 @@
 </blockquote>
 <ul>
 <li>En majeure partie parce que c’est le langage que je maitrise le mieux et puis que je le trouvais le plus approprié pour développer ce genre d’outil. Cependant je peux comprendre pourquoi python peut être plus intéressant sur certains points (plus de librairies disponibles, connu de tous, et performances correctes)</li>
-<li>Également cela m’as permis de réutiliser le code développé intégralement dans le GUI que j’ai développé à l’aide du framework Flutter au lieu de devoir réécrire toute la logique de connexion pour le GUI</li>
+<li>Également cela m’as permis de réutiliser le code développé intégralement dans le GUI que j’ai développé à l’aide du framework Flutter au lieu de devoir réécrire toute la logique de connexion</li>
 </ul>
 </li>
 </ul>
@@ -126,168 +127,182 @@
           <h2>Libraries</h2>
         <dl>
           <dt id="celeneCLI">
-  <span class="name"><a href="celeneCLI">celeneCLI</a></span> 
+  <span class="name"><a href="celeneCLI/">celeneCLI</a></span> 
 
 </dt>
 <dd>
 </dd>
 
           <dt id="addCourseController">
-  <span class="name"><a href="controller_addCourseController">controller/addCourseController</a></span> 
+  <span class="name"><a href="controller_addCourseController/">controller/addCourseController</a></span> 
 
 </dt>
 <dd>
 </dd>
 
           <dt id="chooseCourseController">
-  <span class="name"><a href="controller_chooseCourseController">controller/chooseCourseController</a></span> 
+  <span class="name"><a href="controller_chooseCourseController/">controller/chooseCourseController</a></span> 
 
 </dt>
 <dd>
 </dd>
 
           <dt id="controller">
-  <span class="name"><a href="controller_controller">controller/controller</a></span> 
+  <span class="name"><a href="controller_controller/">controller/controller</a></span> 
 
 </dt>
 <dd>
 </dd>
 
           <dt id="importClassesController">
-  <span class="name"><a href="controller_importClassesController">controller/importClassesController</a></span> 
+  <span class="name"><a href="controller_importClassesController/">controller/importClassesController</a></span> 
 
 </dt>
 <dd>
 </dd>
 
           <dt id="navigator">
-  <span class="name"><a href="controller_navigator">controller/navigator</a></span> 
+  <span class="name"><a href="controller_navigator/">controller/navigator</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="optionsController">
+  <span class="name"><a href="controller_optionsController/">controller/optionsController</a></span> 
 
 </dt>
 <dd>
 </dd>
 
           <dt id="showClassContentController">
-  <span class="name"><a href="controller_showClassContentController">controller/showClassContentController</a></span> 
+  <span class="name"><a href="controller_showClassContentController/">controller/showClassContentController</a></span> 
 
 </dt>
 <dd>
 </dd>
 
           <dt id="casAuthentification">
-  <span class="name"><a href="model_casAuthentification">model/casAuthentification</a></span> 
+  <span class="name"><a href="model_casAuthentification/">model/casAuthentification</a></span> 
 
 </dt>
 <dd>
 </dd>
 
           <dt id="celeneObject">
-  <span class="name"><a href="model_celeneObject">model/celeneObject</a></span> 
+  <span class="name"><a href="model_celeneObject/">model/celeneObject</a></span> 
 
 </dt>
 <dd>
 </dd>
 
           <dt id="DBManager">
-  <span class="name"><a href="model_DBManager">model/DBManager</a></span> 
+  <span class="name"><a href="model_DBManager/">model/DBManager</a></span> 
 
 </dt>
 <dd>
 </dd>
 
           <dt id="dbManager">
-  <span class="name"><a href="model_dbManager">model/dbManager</a></span> 
+  <span class="name"><a href="model_dbManager/">model/dbManager</a></span> 
 
 </dt>
 <dd>
 </dd>
 
           <dt id="extensions">
-  <span class="name"><a href="model_extensions">model/extensions</a></span> 
+  <span class="name"><a href="model_extensions/">model/extensions</a></span> 
 
 </dt>
 <dd>
 </dd>
 
           <dt id="fileManager">
-  <span class="name"><a href="model_fileManager">model/fileManager</a></span> 
+  <span class="name"><a href="model_fileManager/">model/fileManager</a></span> 
 
 </dt>
 <dd>
 </dd>
 
           <dt id="keyring">
-  <span class="name"><a href="model_KeychainAPI_keyring">model/KeychainAPI/keyring</a></span> 
+  <span class="name"><a href="model_KeychainAPI_keyring/">model/KeychainAPI/keyring</a></span> 
 
 </dt>
 <dd>
 </dd>
 
           <dt id="linuxKeychainAPI">
-  <span class="name"><a href="model_KeychainAPI_linux_linuxKeychainAPI">model/KeychainAPI/linux/linuxKeychainAPI</a></span> 
+  <span class="name"><a href="model_KeychainAPI_linux_linuxKeychainAPI/">model/KeychainAPI/linux/linuxKeychainAPI</a></span> 
 
 </dt>
 <dd>
 </dd>
 
           <dt id="macOSKeychainAPI">
-  <span class="name"><a href="model_KeychainAPI_macos_macOSKeychainAPI">model/KeychainAPI/macos/macOSKeychainAPI</a></span> 
+  <span class="name"><a href="model_KeychainAPI_macos_macOSKeychainAPI/">model/KeychainAPI/macos/macOSKeychainAPI</a></span> 
 
 </dt>
 <dd>
 </dd>
 
           <dt id="windowsKeychainAPI">
-  <span class="name"><a href="model_KeychainAPI_windows_windowsKeychainAPI">model/KeychainAPI/windows/windowsKeychainAPI</a></span> 
+  <span class="name"><a href="model_KeychainAPI_windows_windowsKeychainAPI/">model/KeychainAPI/windows/windowsKeychainAPI</a></span> 
 
 </dt>
 <dd>
 </dd>
 
           <dt id="secretManager">
-  <span class="name"><a href="model_secretManager">model/secretManager</a></span> 
+  <span class="name"><a href="model_secretManager/">model/secretManager</a></span> 
 
 </dt>
 <dd>
 </dd>
 
           <dt id="secureStorage">
-  <span class="name"><a href="model_secureStorage">model/secureStorage</a></span> 
+  <span class="name"><a href="model_secureStorage/">model/secureStorage</a></span> 
 
 </dt>
 <dd>
 </dd>
 
           <dt id="addCourseView">
-  <span class="name"><a href="view_addCourseView">view/addCourseView</a></span> 
+  <span class="name"><a href="view_addCourseView/">view/addCourseView</a></span> 
 
 </dt>
 <dd>
 </dd>
 
           <dt id="chooseCourseView">
-  <span class="name"><a href="view_chooseCourseView">view/chooseCourseView</a></span> 
+  <span class="name"><a href="view_chooseCourseView/">view/chooseCourseView</a></span> 
 
 </dt>
 <dd>
 </dd>
 
           <dt id="importClassesView">
-  <span class="name"><a href="view_importClassesView">view/importClassesView</a></span> 
+  <span class="name"><a href="view_importClassesView/">view/importClassesView</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="optionsView">
+  <span class="name"><a href="view_optionsView/">view/optionsView</a></span> 
 
 </dt>
 <dd>
 </dd>
 
           <dt id="showClassContentView">
-  <span class="name"><a href="view_showClassContentView">view/showClassContentView</a></span> 
+  <span class="name"><a href="view_showClassContentView/">view/showClassContentView</a></span> 
 
 </dt>
 <dd>
 </dd>
 
           <dt id="view">
-  <span class="name"><a href="view_view">view/view</a></span> 
+  <span class="name"><a href="view_view/">view/view</a></span> 
 
 </dt>
 <dd>
@@ -310,30 +325,32 @@
     <h5 class="hidden-xs"><span class="package-name">celene_cli</span> <span class="package-kind">package</span></h5>
     <ol>
       <li class="section-title">Libraries</li>
-      <li><a href="celeneCLI">celeneCLI</a></li>
-      <li><a href="controller_addCourseController">controller/addCourseController</a></li>
-      <li><a href="controller_chooseCourseController">controller/chooseCourseController</a></li>
-      <li><a href="controller_controller">controller/controller</a></li>
-      <li><a href="controller_importClassesController">controller/importClassesController</a></li>
-      <li><a href="controller_navigator">controller/navigator</a></li>
-      <li><a href="controller_showClassContentController">controller/showClassContentController</a></li>
-      <li><a href="model_casAuthentification">model/casAuthentification</a></li>
-      <li><a href="model_celeneObject">model/celeneObject</a></li>
-      <li><a href="model_DBManager">model/DBManager</a></li>
-      <li><a href="model_dbManager">model/dbManager</a></li>
-      <li><a href="model_extensions">model/extensions</a></li>
-      <li><a href="model_fileManager">model/fileManager</a></li>
-      <li><a href="model_KeychainAPI_keyring">model/KeychainAPI/keyring</a></li>
-      <li><a href="model_KeychainAPI_linux_linuxKeychainAPI">model/KeychainAPI/linux/linuxKeychainAPI</a></li>
-      <li><a href="model_KeychainAPI_macos_macOSKeychainAPI">model/KeychainAPI/macos/macOSKeychainAPI</a></li>
-      <li><a href="model_KeychainAPI_windows_windowsKeychainAPI">model/KeychainAPI/windows/windowsKeychainAPI</a></li>
-      <li><a href="model_secretManager">model/secretManager</a></li>
-      <li><a href="model_secureStorage">model/secureStorage</a></li>
-      <li><a href="view_addCourseView">view/addCourseView</a></li>
-      <li><a href="view_chooseCourseView">view/chooseCourseView</a></li>
-      <li><a href="view_importClassesView">view/importClassesView</a></li>
-      <li><a href="view_showClassContentView">view/showClassContentView</a></li>
-      <li><a href="view_view">view/view</a></li>
+      <li><a href="celeneCLI/">celeneCLI</a></li>
+      <li><a href="controller_addCourseController/">controller/addCourseController</a></li>
+      <li><a href="controller_chooseCourseController/">controller/chooseCourseController</a></li>
+      <li><a href="controller_controller/">controller/controller</a></li>
+      <li><a href="controller_importClassesController/">controller/importClassesController</a></li>
+      <li><a href="controller_navigator/">controller/navigator</a></li>
+      <li><a href="controller_optionsController/">controller/optionsController</a></li>
+      <li><a href="controller_showClassContentController/">controller/showClassContentController</a></li>
+      <li><a href="model_casAuthentification/">model/casAuthentification</a></li>
+      <li><a href="model_celeneObject/">model/celeneObject</a></li>
+      <li><a href="model_DBManager/">model/DBManager</a></li>
+      <li><a href="model_dbManager/">model/dbManager</a></li>
+      <li><a href="model_extensions/">model/extensions</a></li>
+      <li><a href="model_fileManager/">model/fileManager</a></li>
+      <li><a href="model_KeychainAPI_keyring/">model/KeychainAPI/keyring</a></li>
+      <li><a href="model_KeychainAPI_linux_linuxKeychainAPI/">model/KeychainAPI/linux/linuxKeychainAPI</a></li>
+      <li><a href="model_KeychainAPI_macos_macOSKeychainAPI/">model/KeychainAPI/macos/macOSKeychainAPI</a></li>
+      <li><a href="model_KeychainAPI_windows_windowsKeychainAPI/">model/KeychainAPI/windows/windowsKeychainAPI</a></li>
+      <li><a href="model_secretManager/">model/secretManager</a></li>
+      <li><a href="model_secureStorage/">model/secureStorage</a></li>
+      <li><a href="view_addCourseView/">view/addCourseView</a></li>
+      <li><a href="view_chooseCourseView/">view/chooseCourseView</a></li>
+      <li><a href="view_importClassesView/">view/importClassesView</a></li>
+      <li><a href="view_optionsView/">view/optionsView</a></li>
+      <li><a href="view_showClassContentView/">view/showClassContentView</a></li>
+      <li><a href="view_view/">view/view</a></li>
 </ol>
 
   </div>

@@ -25,7 +25,7 @@
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../../index.html">celene_cli</a></li>
-    <li><a href="../../model_secretManager">model&#47;secretManager.dart</a></li>
+    <li><a href="../../model_secretManager/">model&#47;secretManager.dart</a></li>
     <li><a href="../../model_secretManager/SecretManager-class.html">SecretManager</a></li>
     <li class="self-crumb">getSecureEntry method</li>
   </ol>
@@ -33,17 +33,14 @@
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
-  <div class="toggle" id="theme-button" title="Toggle brightness">
-    <label for="theme">
-      <input type="checkbox" id="theme" value="light-theme">
-      <span id="dark-theme-button" class="material-symbols-outlined">
-        dark_mode
-      </span>
-      <span id="light-theme-button" class="material-symbols-outlined">
-        light_mode
-      </span>
-    </label>
-  </div>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
 </header>
 <main>
 <div
@@ -57,8 +54,8 @@
 
     <section class="multi-line-signature">
       
-<span class="returntype"><a href="https://api.dart.dev/stable/3.7.2/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/3.7.2/dart-core/String-class.html">String</a></span>&gt;</span></span>
-<span class="name ">getSecureEntry</span>(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="getSecureEntry-param-prompt"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.7.2/dart-core/String-class.html">String</a></span> <span class="parameter-name">prompt</span> = <span class="default-value">&#39;&gt; &#39;</span>, </span></li>
+<span class="returntype"><a href="https://api.dart.dev/stable/3.8.1/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/3.8.1/dart-core/String-class.html">String</a></span>&gt;</span></span>
+<span class="name ">getSecureEntry</span>(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="getSecureEntry-param-prompt"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.1/dart-core/String-class.html">String</a></span> <span class="parameter-name">prompt</span> = <span class="default-value">&#39;&gt; &#39;</span>, </span></li>
 </ol>})
 
       
@@ -74,15 +71,13 @@
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Future&lt;String&gt; getSecureEntry({String prompt = &#39;&gt; &#39;}) async {
-  &#47;&#47; Dumb function to cover dart lack of secure keyboard entry capabilities (doesn&#39;t logger stdin to the screen when the secure entry is written by the user)
+  &#47;&#47; Dumb function to cover dart lack of secure keyboard entry capabilities (doesn&#39;t print stdin to the screen when the secure entry is written by the user)
   &#47;&#47; Doesn&#39;t work on windows for some weird reason
   if (!Platform.isWindows){
     stdin.echoMode = false;
     stdin.lineMode = false;
   }
   stdout.write(prompt);
-  final buffer = &lt;int&gt;[];
-  final completer = Completer&lt;String&gt;();
   String pass = stdin.readLineSync() ?? &quot;&quot;;
   if (!Platform.isWindows){
     stdin.echoMode = true;
@@ -103,7 +98,7 @@
 </header>
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">celene_cli</a></li>
-    <li><a href="../../model_secretManager">secretManager</a></li>
+    <li><a href="../../model_secretManager/">secretManager</a></li>
     <li><a href="../../model_secretManager/SecretManager-class.html">SecretManager</a></li>
     <li class="self-crumb">getSecureEntry method</li>
 </ol>

@@ -25,7 +25,7 @@
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../../index.html">celene_cli</a></li>
-    <li><a href="../../model_celeneObject">model&#47;celeneObject.dart</a></li>
+    <li><a href="../../model_celeneObject/">model&#47;celeneObject.dart</a></li>
     <li><a href="../../model_celeneObject/CeleneParser-class.html">CeleneParser</a></li>
     <li class="self-crumb">getClassData method</li>
   </ol>
@@ -33,17 +33,14 @@
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
-  <div class="toggle" id="theme-button" title="Toggle brightness">
-    <label for="theme">
-      <input type="checkbox" id="theme" value="light-theme">
-      <span id="dark-theme-button" class="material-symbols-outlined">
-        dark_mode
-      </span>
-      <span id="light-theme-button" class="material-symbols-outlined">
-        light_mode
-      </span>
-    </label>
-  </div>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
 </header>
 <main>
 <div
@@ -57,9 +54,8 @@
 
     <section class="multi-line-signature">
       
-<span class="returntype"><a href="https://api.dart.dev/stable/3.7.2/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/3.7.2/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../model_celeneObject/Course-class.html">Course</a></span>&gt;</span></span>&gt;</span></span>
-<span class="name ">getClassData</span>(<wbr><ol class="parameter-list single-line"> <li><span class="parameter" id="getClassData-param-cID"><span class="type-annotation">dynamic</span> <span class="parameter-name">cID</span>, </span></li>
-<li><span class="parameter" id="getClassData-param-classID"><span class="type-annotation">dynamic</span> <span class="parameter-name">classID</span></span></li>
+<span class="returntype"><a href="https://api.dart.dev/stable/3.8.1/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/3.8.1/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../model_celeneObject/Course-class.html">Course</a></span>&gt;</span></span>&gt;</span></span>
+<span class="name ">getClassData</span>(<wbr><ol class="parameter-list single-line"> <li><span class="parameter" id="getClassData-param-cID"><span class="type-annotation">dynamic</span> <span class="parameter-name">cID</span></span></li>
 </ol>)
 
       
@@ -74,8 +70,8 @@
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Future&lt;List&lt;Course&gt;&gt; getClassData(cID,classID) async{
-  List&lt;FileEntry&gt; downloadedCourse = files.containsKey(classID) ? files[classID]! : [];
+  <pre class="language-dart"><code class="language-dart">Future&lt;List&lt;Course&gt;&gt; getClassData(cID) async{
+  List&lt;FileEntry&gt; downloadedCourse = files.containsKey(cID) ? files[cID]! : [];
   logger(files);
   logger(&quot;Loaded downloaded courses&quot;);
   List&lt;Course&gt; courses = [];
@@ -85,7 +81,6 @@
     if (!result){
       throw Exception(&quot;ERROR WHILE CONNECTING TO CELENE&quot;);
     }
-
     logger(&quot;Successfully logged in to Celene&quot;);
   }
   logger(_casAuth?.session.cookieStore.cookies);
@@ -118,6 +113,7 @@
         for (Bs4Element i in li_elements){
           Course? newCourse = Course.constructFromCeleneInfo(i,parent: topic);
           if (newCourse != null){
+            print(&quot;DOWNLOADED COURSES ARE ${downloadedCourse}&quot;);
             FileEntry? associatedFile = downloadedCourse.where((e) =&gt; e.entryName == newCourse.name).toList().firstOrNull;
             newCourse.downloaded = associatedFile != null;
             newCourse.associatedFile = associatedFile;
@@ -125,7 +121,7 @@
               logger(&quot;The folder is downloaded so we have to add all files in this folder&quot;);
               for (FileEntry j in (newCourse.associatedFile!.children)!){
                 logger(&quot;Adding subCourse&quot;);
-                Course subCourse = Course.constructFromFileInfo(j,parent: topic);
+                Course subCourse = Course.constructFromFileInfo(j,topic: topic,parentFolder: newCourse.name);
                 subCourse.setFile(j);
                 courses.add(subCourse);
               }
@@ -154,7 +150,7 @@
 </header>
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">celene_cli</a></li>
-    <li><a href="../../model_celeneObject">celeneObject</a></li>
+    <li><a href="../../model_celeneObject/">celeneObject</a></li>
     <li><a href="../../model_celeneObject/CeleneParser-class.html">CeleneParser</a></li>
     <li class="self-crumb">getClassData method</li>
 </ol>
