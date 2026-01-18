@@ -25,24 +25,21 @@
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../index.html">celene_cli</a></li>
-    <li><a href="../celeneCLI">celeneCLI.dart</a></li>
+    <li><a href="../celeneCLI/">celeneCLI.dart</a></li>
     <li class="self-crumb">main function</li>
   </ol>
   <div class="self-name">main</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
-  <div class="toggle" id="theme-button" title="Toggle brightness">
-    <label for="theme">
-      <input type="checkbox" id="theme" value="light-theme">
-      <span id="dark-theme-button" class="material-symbols-outlined">
-        dark_mode
-      </span>
-      <span id="light-theme-button" class="material-symbols-outlined">
-        light_mode
-      </span>
-    </label>
-  </div>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
 </header>
 <main>
   <div
@@ -57,7 +54,7 @@
 
     <section class="multi-line-signature">
         
-<span class="returntype"><a href="https://api.dart.dev/stable/3.7.2/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/3.7.2/dart-core/int-class.html">int</a></span>&gt;</span></span>
+<span class="returntype"><a href="https://api.dart.dev/stable/3.8.1/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/3.8.1/dart-core/int-class.html">int</a></span>&gt;</span></span>
 <span class="name ">main</span>(<wbr>)
 
         
@@ -72,15 +69,12 @@
   <pre class="language-dart"><code class="language-dart">Future&lt;int&gt; main() async{
   &#47;&#47; Initialisation de la classe DBManager pour récupérer les préférences utilisateur
   DBManager db = DBManager();
-
   &#47;&#47; Reconstructions des attributs utilisés par l&#39;objet CeleneParser et SecretManager pour les passer après aux classes concernées
   Map&lt;String,dynamic&gt; dbData = db.reconstruct();
-
   &#47;&#47; Création de l&#39;objet SecretManager
   &#47;&#47; dbData[&quot;secureStorageStatus&quot;] -&gt; Indique si l&#39;utilisateur à activé la persistance de session
   &#47;&#47; dbData[&quot;credentialSaved&quot;] -&gt; Indique si l&#39;utilisateur à enregistré ses logins CAS dans le trousseau
   SecretManager secrets = SecretManager(dbData[&quot;secureStorageStatus&quot;],dbData[&quot;credentialSaved&quot;], dbData[&quot;username&quot;]);
-
   &#47;&#47; Si SecretsManager ne trouve pas de login lors de la phase d&#39;initialisation
   if (!secrets.getCredentialStatus()){
     &#47;&#47; Alors on demande à l&#39;utilisateur de donner ses identifiants
@@ -96,8 +90,8 @@
 
   &#47;&#47; Si l&#39;utilisateur à activé la persistance de session
   if (dbData[&quot;secureStorageStatus&quot;]){
+    logger(&quot;Session persistance enabled&quot;);
     &#47;&#47; Alors on crée&#47;lit le stockage sécurisé
-
     &#47;&#47; Création de l&#39;objet SecureStorage en passant la clé de chiffrement en paramètre (secrets.getSecureStorageKey())
     secureStorage = SecureStorage(dbData[&quot;secureStorageStatus&quot;], secrets.getSecureStorageKey(), secrets.getSecureStorageIV());
 
@@ -106,7 +100,7 @@
     cas.setSecureStorage(secureStorage);
   }
 
-  &#47;&#47; Création de la classe CeleneParser en lui passant en paramètre les cours enregistré par l&#39;utilisateur
+  &#47;&#47; Création de la classe CeleneParser en lui passant en paramètre les cours enregistrés par l&#39;utilisateur
   CeleneParser celene = CeleneParser(dbData[&quot;courses&quot;]);
   &#47;&#47; On passe les logins CAS à la classe pour se connecter à Celene ensuite
   celene.setCredentials(secrets.getCredentials());
@@ -117,7 +111,7 @@
   &#47;&#47; On passe les fichiers téléchargés par l&#39;utilisateur à la classe CeleneParser
   celene.files = dbData[&quot;files&quot;];
 
-  &#47;&#47; Si aucune session n&#39;as pu être chargée (soit pas de session, soit session trop vieille)
+  &#47;&#47; Si aucune session n&#39;as pu être chargée (soit pas de session existante, soit session trop vieille)
   if (!celene.loadCeleneSession()){
     &#47;&#47; Alors on se connecte à celene
     print(&quot;No session detected, need to log in&quot;);
@@ -133,7 +127,7 @@
   }
 
   print(&quot;Logged in to celene sucessuflly&quot;);
-  &#47;&#47; Initialisons de la page de sélection de cours (initialisation du controlleur et de la vue)
+  &#47;&#47; Initialison de la page de sélection de cours (initialisation du controlleur et de la vue)
   ChooseCourseController ccController = ChooseCourseController(celene,db);
   ChooseCourseView ccView = ChooseCourseView(ccController);
   &#47;&#47; On fixe la vue à afficher à celle de sélection de cours (ccView)
@@ -157,7 +151,7 @@
 </header>
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../index.html">celene_cli</a></li>
-    <li><a href="../celeneCLI">celeneCLI</a></li>
+    <li><a href="../celeneCLI/">celeneCLI</a></li>
     <li class="self-crumb">main function</li>
 </ol>
 

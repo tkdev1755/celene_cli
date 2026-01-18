@@ -25,7 +25,7 @@
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../../index.html">celene_cli</a></li>
-    <li><a href="../../view_showClassContentView">view&#47;showClassContentView.dart</a></li>
+    <li><a href="../../view_showClassContentView/">view&#47;showClassContentView.dart</a></li>
     <li><a href="../../view_showClassContentView/ShowClassContentView-class.html">ShowClassContentView</a></li>
     <li class="self-crumb">draw method</li>
   </ol>
@@ -33,17 +33,14 @@
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
-  <div class="toggle" id="theme-button" title="Toggle brightness">
-    <label for="theme">
-      <input type="checkbox" id="theme" value="light-theme">
-      <span id="dark-theme-button" class="material-symbols-outlined">
-        dark_mode
-      </span>
-      <span id="light-theme-button" class="material-symbols-outlined">
-        light_mode
-      </span>
-    </label>
-  </div>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
 </header>
 <main>
 <div
@@ -59,7 +56,7 @@
       
   <div>
     <ol class="annotation-list">
-        <li>@<a href="https://api.dart.dev/stable/3.7.2/dart-core/override-constant.html">override</a></li>
+        <li>@<a href="https://api.dart.dev/stable/3.8.1/dart-core/override-constant.html">override</a></li>
     </ol>
   </div>
 <span class="returntype">void</span>
@@ -79,32 +76,55 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">@override
 void draw() {
+  if (console.windowHeight != height || console.windowWidth != width) {
+    height = console.windowHeight;
+    width  = console.windowWidth;
+    separator = &#39;─&#39;*width;
+    _computeSublist();
+  }
+
+  displayedElements = 0;
+  int availableLines = height;
   if (controller.getFlag(&quot;downloadCourse&quot;)){
     return;
   }
-  MAX_DISPLAY_LINES = ((console.windowHeight&#47;2).floor())-5 &gt; 5 ? ((console.windowHeight&#47;2).floor())-5 : 5 ;
-  maxSublists = (optionLength &#47; MAX_DISPLAY_LINES).ceil();
-  int startIndex = (displayedSubList)*MAX_DISPLAY_LINES;
-  int endIndex = (displayedSubList+1)*(MAX_DISPLAY_LINES);
-  int displayEndIndex = endIndex &lt; options.length ? endIndex : options.length;
   console.clearScreen();
   console.setForegroundColor(ConsoleColor.cyan);
-  console.writeLine(&#39;=== Selectionne le fichier à télécharger&#47;ouvrir ===&#39;);
+  console.writeLine(headerText);
+  availableLines -= (headerText.getLineUsed(width) + footerText.getLineUsed(width) + separator.getLineUsed(width));
   console.resetColorAttributes();
-  for (int i = startIndex; i &lt; displayEndIndex; i++) {
+  int startIndex = sublistIndex[displayedSubList];
+  int endIndex = displayedSubList == (sublistIndex.length)-1 ? optionLength: sublistIndex[displayedSubList+1];
+  for (int i = startIndex; i &lt; endIndex; i++) {
     String textToWrite = options[i].downloaded ? &#39;${options[i]} (Téléchargé)&#39; : &#39;${options[i]}&#39;;
+    String textToDisplay = i == selectedIndex ? &#39;&gt;$textToWrite&#39; : &#39; $textToWrite&#39;;
     if (i == selectedIndex) {
       ConsoleColor dLSelectedColor = options[i].downloaded ? ConsoleColor.green : ConsoleColor.yellow;
       console.setForegroundColor(ConsoleColor.black);
       console.setBackgroundColor(dLSelectedColor);
-      console.writeLine(&#39;&gt; $textToWrite&#39;);
+      console.writeLine(textToDisplay);
       console.resetColorAttributes();
       console.write(&quot;\n&quot;);
     } else {
-      console.writeLine(&#39;  $textToWrite&#39;);
+      console.writeLine(textToDisplay);
+      console.resetColorAttributes();
       console.write(&quot;\n&quot;);
     }
+    availableLines -= textToDisplay.getLineUsed(console.windowWidth) + 1;
+    displayedElements++;
+    if (availableLines &lt; 5){
+      endIndex = i;
+      &#47;&#47; No more lines available to display text on terminal, so change displayEndIndex to this one
+    }
   }
+  &#47;&#47;final linesToFill = realTerminalHeight - (MAX_DISPLAY_LINES*2)-2; &#47;&#47; -2 pour marge et footer
+  for (int i = 0; i &lt; availableLines-1; i++) {
+    console.writeLine(&#39;&#39;);
+  }
+  console.setForegroundColor(ConsoleColor.brightCyan);
+  console.writeLine(separator); &#47;&#47; ligne de séparation
+  console.setForegroundColor(ConsoleColor.brightCyan);
+  console.writeLine(footerText);
 }</code></pre>
 </section>
 
@@ -119,7 +139,7 @@ void draw() {
 </header>
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">celene_cli</a></li>
-    <li><a href="../../view_showClassContentView">showClassContentView</a></li>
+    <li><a href="../../view_showClassContentView/">showClassContentView</a></li>
     <li><a href="../../view_showClassContentView/ShowClassContentView-class.html">ShowClassContentView</a></li>
     <li class="self-crumb">draw method</li>
 </ol>

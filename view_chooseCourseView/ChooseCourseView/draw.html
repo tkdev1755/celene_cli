@@ -25,7 +25,7 @@
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../../index.html">celene_cli</a></li>
-    <li><a href="../../view_chooseCourseView">view&#47;chooseCourseView.dart</a></li>
+    <li><a href="../../view_chooseCourseView/">view&#47;chooseCourseView.dart</a></li>
     <li><a href="../../view_chooseCourseView/ChooseCourseView-class.html">ChooseCourseView</a></li>
     <li class="self-crumb">draw method</li>
   </ol>
@@ -33,17 +33,14 @@
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
-  <div class="toggle" id="theme-button" title="Toggle brightness">
-    <label for="theme">
-      <input type="checkbox" id="theme" value="light-theme">
-      <span id="dark-theme-button" class="material-symbols-outlined">
-        dark_mode
-      </span>
-      <span id="light-theme-button" class="material-symbols-outlined">
-        light_mode
-      </span>
-    </label>
-  </div>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
 </header>
 <main>
 <div
@@ -59,7 +56,7 @@
       
   <div>
     <ol class="annotation-list">
-        <li>@<a href="https://api.dart.dev/stable/3.7.2/dart-core/override-constant.html">override</a></li>
+        <li>@<a href="https://api.dart.dev/stable/3.8.1/dart-core/override-constant.html">override</a></li>
     </ol>
   </div>
 <span class="returntype">void</span>
@@ -79,36 +76,45 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">@override
 void draw() {
+  displayedElements = 0;
+  int width = console.windowWidth;
+  int availableLines = console.windowHeight;
+
+  int startIndex = (displayedSubList)*MAX_DISPLAY_LINES;
+  int endIndex = (displayedSubList+1)*(MAX_DISPLAY_LINES);
+  int displayEndIndex = endIndex &lt; options.length ? endIndex : options.length;
   console.clearScreen();
   console.setForegroundColor(ConsoleColor.cyan);
-  console.writeLine(&#39;=== Menu Principal ===&#39;);
+  String titleText = &#39;=== Menu Principal ===&#39;;
+  String footerText = &#39;n : Ajouter un cours   |   e : Éditer les cours   |   r : Rechercher \ni: Importer les cours depuis Celene | o : Options | esc : Quitter&#39;;
+  console.writeLine(titleText);
+  availableLines -= (titleText.getLineUsed(width) + footerText.getLineUsed(width) +2);
   console.resetColorAttributes();
-  for (int i = 0; i &lt; options.length; i++) {
+  for (int i = startIndex; i &lt; displayEndIndex; i++) {
+    String lineText = i == selectedIndex ? &#39;&gt; ${options[i]}&#39;: &#39;  ${options[i]}&#39;;
     if (i == selectedIndex) {
       console.setForegroundColor(ConsoleColor.black);
       console.setBackgroundColor(ConsoleColor.yellow);
-      console.writeLine(&#39;&gt; ${options[i]}&#39;);
+      console.writeLine(lineText);
       console.resetColorAttributes();
     } else {
-      console.writeLine(&#39;  ${options[i]}&#39;);
+      console.writeLine(lineText);
+    }
+    availableLines -= lineText.getLineUsed(width);
+    displayedElements++;
+    if (availableLines == 0){
+      &#47;&#47; No more lines available to display text on terminal, so change displayEndIndex to the last line printed on screen to finish the loop
+      displayEndIndex = i;
     }
   }
-  final terminalHeight = console.windowHeight;
-  final currentLinesUsed = options.length + 1; &#47;&#47; +1 pour le titre
-  final linesToFill = terminalHeight - currentLinesUsed - 4; &#47;&#47; -2 pour marge et footer
-
-  for (int i = 0; i &lt; linesToFill; i++) {
+  for (int i = 0; i &lt; availableLines; i++) {
     console.writeLine(&#39;&#39;);
   }
-
   console.setForegroundColor(ConsoleColor.brightCyan);
   console.writeLine(&#39;─&#39; * console.windowWidth); &#47;&#47; ligne de séparation
-
   console.setForegroundColor(ConsoleColor.brightCyan);
-  console.writeLine(&#39;n : Ajouter un cours   |   e : Éditer les cours   |   r : Rechercher \ni: Importer les cours depuis Celene | esc : Quitter&#39;);
-
+  console.writeLine(footerText);
   console.resetColorAttributes();
-
 }</code></pre>
 </section>
 
@@ -123,7 +129,7 @@ void draw() {
 </header>
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">celene_cli</a></li>
-    <li><a href="../../view_chooseCourseView">chooseCourseView</a></li>
+    <li><a href="../../view_chooseCourseView/">chooseCourseView</a></li>
     <li><a href="../../view_chooseCourseView/ChooseCourseView-class.html">ChooseCourseView</a></li>
     <li class="self-crumb">draw method</li>
 </ol>
